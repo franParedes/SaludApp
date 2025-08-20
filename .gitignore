@@ -117,3 +117,126 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+
+# .NET GitIgnore
+###################
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.cache
+*.suo
+*.buildlog
+*.log
+*.tlog
+*.obj
+*.idb
+*.ipch
+*.pch
+*.rsp
+*.ilk
+*.pdb
+*.rsp
+*.tmp
+
+# Include dlls if they’re in the NuGet packages directory
+!/packages/*/lib/*.dll
+!/packages/*/lib/*/*.dll
+# Include dlls if they're in the CommonReferences directory
+!*CommonReferences/*.dll
+
+####################
+# VS Upgrade stuff #
+####################
+UpgradeLog.XML
+_UpgradeReport_Files/
+
+###############
+# Directories #
+###############
+bin/
+obj/
+TestResults/
+.vs/
+.publish/
+
+###################
+# Web publish log #
+###################
+*.Publish.xml
+*.deploy.cmd
+*.pubxml
+*.pubxml.user
+
+#############
+# Resharper #
+#############
+/_ReSharper.*
+*.ReSharper.*
+
+############
+# Packages #
+############
+*.nuget/
+packages/
+NuGet.exe
+
+#########################
+# Logs and databases #
+#########################
+*.log
+*.sqlite
+
+##################
+# User-specific #
+##################
+.vscode/
+*.csproj.user
+*.vcxproj.user
+*.userosscache
+*.sln.docstates
+
+#####################
+# Entity Framework #
+#####################
+Migrations/
+*.edmx*
+*.tt
+*.csdl
+*.msl
+*.ssdl
+
+#####################
+# Local certificates #
+#####################
+*.pfx
+*.snk
+
+###################
+# Project-specific #
+###################
+.vs/CreditsAppInvSost/
+CreditsAppInvSost/obj/Debug/net8.0/
+.vs/CreditsAppInvSost/v17/.suo
+CreditsAppInvSost/obj/
+CreditsAppInvSost/obj/Debug/net8.0/
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+[Bb]in
+[Oo]bj
+[Tt]est[Rr]esults
+*.suo
+*.user
+*.[Cc]ache
+*[Rr]esharper*
+.vs/CreditsAppInvSost/v17/.suo
+.vs/CreditsAppInvSost/v17/DocumentLayout.json
