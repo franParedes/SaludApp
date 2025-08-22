@@ -126,3 +126,60 @@ CREATE TABLE tb_pacientes (
     FOREIGN KEY (Ocupacion) REFERENCES tb_ocupaciones(Id_ocupacion) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (Religion) REFERENCES tb_religiones(Id_religion) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE = InnoDB;
+
+
+-- Tabla de especialidades médicas
+CREATE TABLE tb_especialidades (
+	Id_especialidad INT PRIMARY KEY AUTO_INCREMENT,
+    Especialidad VARCHAR(50)
+) ENGINE = InnoDB;
+
+-- Tabla de universidades
+CREATE TABLE tb_universidades (
+	Id_universidad INT PRIMARY KEY AUTO_INCREMENT,
+    Universidad VARCHAR(50)
+) ENGINE = InnoDB;
+
+-- Tabla de areas medicas por ejemplo: Ginecología, ER, Labor y parto, etc
+CREATE TABLE tb_areas_medicas (
+	Id_area INT PRIMARY KEY AUTO_INCREMENT,
+    Area VARCHAR(50)
+) ENGINE = InnoDB;
+
+-- Tabla de centros médicos es decir, nombre ya sea de hospitales, centros de salud, puestos de salud.
+CREATE TABLE tb_centros_medicos (
+	Id_centro INT PRIMARY KEY AUTO_INCREMENT,
+    Centro VARCHAR(50),
+    Departamento INT,
+    Municipio INT,
+    
+    FOREIGN KEY (Departamento) REFERENCES tb_departamentos(Id_departamento) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Municipio) REFERENCES tb_municipios(Id_municipio) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
+
+-- Tabla de turnos por ejemplo: nocturno 12 h, 24h, doble turno, etc
+CREATE TABLE tb_turnos_medicos (
+	Id_turno INT PRIMARY KEY AUTO_INCREMENT,
+    Turno VARCHAR(50)
+) ENGINE = InnoDB;
+
+-- Médicos
+CREATE TABLE tb_medicos (
+	Id_medico INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Cod_sanitario VARCHAR(50) NOT NULL UNIQUE,
+    Especialidad INT,
+    Egresado_de INT,
+    Egresado_el DATE NOT NULL,
+    Experiencia_anyos INT NOT NULL,
+    Area_actual INT,
+    Centro_actual INT,
+    Turno_actual INT,
+    
+    FOREIGN KEY (Id_usuario) REFERENCES tb_usuarios(Id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Especialidad) REFERENCES tb_especialidades(Id_especialidad) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Egresado_de) REFERENCES tb_universidades(Id_universidad) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Area_actual) REFERENCES tb_areas_medicas(Id_area) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Centro_actual) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Turno_actual) REFERENCES tb_turnos_medicos(Id_turno) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
