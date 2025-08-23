@@ -1,4 +1,12 @@
+using SaludAppBackend.API.ContenedorDepenConfig;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureServiceCollection(builder.Configuration, builder.Environment);
+
+//Configura Serilog como el proveedor de logs global del host de la app
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
