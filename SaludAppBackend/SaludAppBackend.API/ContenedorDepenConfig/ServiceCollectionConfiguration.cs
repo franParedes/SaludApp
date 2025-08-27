@@ -2,6 +2,9 @@
 using Serilog;
 using SaludAppBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using SaludAppBackend.Data.UnitOfWork;
+using SaludAppBackend.Data.Repositories.Usuarios;
+using SaludAppBackend.Services.UsuarioService;
 
 namespace SaludAppBackend.API.ContenedorDepenConfig
 {
@@ -35,6 +38,13 @@ namespace SaludAppBackend.API.ContenedorDepenConfig
                         ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection")
                     )
                 ));
+
+                //Registrando repositorios
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+                services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+                //Registrando servicios
+                services.AddScoped<IUsuarioService, UsuarioService>();
             }
         }
 

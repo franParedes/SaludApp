@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SaludAppBackend.Data\SaludAppBackend.Data.csproj" />
+    <ProjectReference Include="..\SaludAppBackend.Services\SaludAppBackend.Services.csproj" />
   </ItemGroup>
 
 </Project>
