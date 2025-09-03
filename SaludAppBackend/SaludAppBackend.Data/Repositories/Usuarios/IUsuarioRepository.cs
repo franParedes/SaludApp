@@ -7,6 +7,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
     {
         Task<IEnumerable<TbUsuario>> GetAllUsuariosSPAsync();
         Task<TbUsuario?> GetUsuarioByIdSPAsync(int idUsuario);
-        Task<bool> CheckIfUserExistsAsync(string email);
+        Task<int> BuscarUsuarioPorCorreo(string email);
+        Task AddUsuarioAsync(TbUsuario usuario);
     }
 }

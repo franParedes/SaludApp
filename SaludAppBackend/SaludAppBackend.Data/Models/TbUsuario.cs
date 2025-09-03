@@ -43,5 +43,7 @@ public partial class TbUsuario
 
     public virtual TbPasswd? TbPasswd { get; set; }
 
+    public virtual ICollection<TbTelefono> TbTelefonos { get; set; } = new List<TbTelefono>();
+
     public virtual TbTipoUsuario? TipoUsuarioNavigation { get; set; }
 }

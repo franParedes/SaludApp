@@ -19,14 +19,19 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             _logger = logger;
         }
 
-        public async Task<bool> CheckIfUserExistsAsync(string email)
+        public async Task AddUsuarioAsync(TbUsuario usuario)
+        {
+            await _appDbContext.TbUsuarios.AddAsync(usuario);
+        }
+
+        public async Task<int> BuscarUsuarioPorCorreo(string email)
         {
             try
             {
-                var sql = "SELECT F_VALIDAR_USUARIO_EXISTE(@EmailParam)";
+                var sql = "SELECT f_buscar_usuario_por_correo(@EmailParam)";
                 var parameters = new { EmailParam = email };
 
-                return await ExecuteScalarAsync<bool>(sql, parameters);
+                return await ExecuteScalarAsync<int>(sql, parameters);
 
             } catch(Exception ex)
             {

@@ -341,12 +341,21 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.Compania, "Compania");
 
+            entity.HasIndex(e => e.IdUsuario, "Id_usuario");
+
+            entity.HasIndex(e => e.Telefono, "Telefono").IsUnique();
+
             entity.Property(e => e.IdTelefono).HasColumnName("Id_telefono");
-            entity.Property(e => e.IsUserapp).HasColumnName("Is_userapp");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
 
             entity.HasOne(d => d.CompaniaNavigation).WithMany(p => p.TbTelefonos)
                 .HasForeignKey(d => d.Compania)
                 .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_telefonos_ibfk_2");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.TbTelefonos)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tb_telefonos_ibfk_1");
         });
 

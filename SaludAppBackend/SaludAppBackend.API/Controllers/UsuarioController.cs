@@ -5,7 +5,7 @@ namespace SaludAppBackend.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : Controller
+    public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
         private readonly ILogger<UsuarioController> _logger;
@@ -21,8 +21,8 @@ namespace SaludAppBackend.API.Controllers
         {
             try
             {
-                var usuario = await _usuarioService.BuscarUsuarioPorCorre(correo);
-                if (!usuario)
+                var usuario = await _usuarioService.BuscarUsuarioPorCorreo(correo);
+                if (usuario > 0)
                 {
                     return Ok(new { existe = false });
                 }

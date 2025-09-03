@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SaludAppBackend.Models.Usuarios;
 
 namespace SaludAppBackend.Services.UsuarioService
 {
     public interface IUsuarioService
     {
-        Task<bool> BuscarUsuarioPorCorre(string correo);
+        Task<int> BuscarUsuarioPorCorreo(string correo);
     }
 }

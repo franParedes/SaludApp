@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SaludAppBackend.Data.UnitOfWork;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Services.UsuarioService;
+using SaludAppBackend.Data.Repositories.Pacientes;
+using SaludAppBackend.Services.PacienteService;
 
 namespace SaludAppBackend.API.ContenedorDepenConfig
 {
@@ -42,9 +44,11 @@ namespace SaludAppBackend.API.ContenedorDepenConfig
                 //Registrando repositorios
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+                services.AddScoped<IPacienteRepository, PacienteRepository>();
 
                 //Registrando servicios
                 services.AddScoped<IUsuarioService, UsuarioService>();
+                services.AddScoped<IPacienteService, PacienteService>();
             }
         }
 
