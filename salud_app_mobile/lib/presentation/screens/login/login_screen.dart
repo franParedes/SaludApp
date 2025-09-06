@@ -20,13 +20,6 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Botón de regresar
-              IconButton(
-                iconSize: 40,
-                icon: const Icon(Icons.arrow_back, color: Color(0xFF1c1ec5)),
-                onPressed: () {},
-              ),
-
               const SizedBox(height: 80),
 
               const Center(child: LoginTitle()),
