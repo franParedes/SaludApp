@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salud_app_mobile/presentation/screens/login/login_screen.dart';
+import 'package:salud_app_mobile/presentation/screens/welcome/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Salud App',
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }

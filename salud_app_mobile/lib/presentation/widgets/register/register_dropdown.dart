@@ -13,7 +13,7 @@ class RegisterDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedGender,
+      initialValue: selectedGender,
       decoration: const InputDecoration(
         labelText: "Género",
         border: OutlineInputBorder(),
