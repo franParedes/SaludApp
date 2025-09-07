@@ -1,0 +1,17 @@
+#propiedades del splash screen
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  color: "#0800FF"
+  image: assets/image/logo.png
+
+  android_12:
+  
+    color: "#0800FF"
+    image: assets/image/logo.png
+
+  android_gravity: center
+  ios_content_mode: center
+ 
