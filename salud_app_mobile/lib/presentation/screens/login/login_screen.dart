@@ -14,15 +14,15 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 80),
+              const SizedBox(height: 50),
 
-              const Center(child: LoginTitle()),
+              const Center(child: LoginTitle(text: "Bienvenido")),
 
               const SizedBox(height: 100),
 
@@ -36,11 +36,11 @@ class LoginScreen extends StatelessWidget {
 
               const RememberForgotRow(),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
 
               const LoginButton(),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 1),
 
               // Separador
               Row(
@@ -54,9 +54,11 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
 
               const SocialLoginRow(),
+
+              const SizedBox(height: 10),
 
               const RegisterText(),
             ],

@@ -26,14 +26,17 @@ class _RememberForgotRowState extends State<RememberForgotRow> {
                 });
               },
             ),
-            const Text("Recordarme"),
+            const Text("Recordarme", style: TextStyle(fontSize: 12)),
           ],
         ),
         TextButton(
           onPressed: () {},
           child: const Text(
             "Olvidé mi contraseña",
-            style: TextStyle(color: Color.fromARGB(255, 91, 91, 97)),
+            style: TextStyle(
+              color: Color.fromARGB(255, 91, 91, 97),
+              fontSize: 10,
+            ),
           ),
         ),
       ],

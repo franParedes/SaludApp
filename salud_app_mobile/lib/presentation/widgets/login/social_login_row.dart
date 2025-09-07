@@ -5,28 +5,27 @@ class SocialLoginRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.facebook, color: Colors.blue, size: 35),
-          onPressed: () {},
+    return Center(
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black87,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Colors.grey), // borde gris suave
+          ),
+          elevation: 3, // sombrita para que resalte
         ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(Icons.g_mobiledata, color: Colors.red, size: 40),
-          onPressed: () {},
+        onPressed: () {
+          // Aquí va tu lógica para login con Google
+        },
+        icon: const Icon(Icons.g_mobiledata, color: Colors.red, size: 32),
+        label: const Text(
+          "Continuar con Google",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(
-            Icons.close,
-            color: Colors.black,
-            size: 35,
-          ), // simulando X
-          onPressed: () {},
-        ),
-      ],
+      ),
     );
   }
 }
