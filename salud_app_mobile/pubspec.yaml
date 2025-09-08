@@ -95,9 +95,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-  #config del icono de la app
-  flutter_icons:
-      android: true
-      ios: true
-      image_path: "assets/icon/icon.png"
