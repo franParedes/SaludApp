@@ -76,13 +76,19 @@ CREATE TABLE tb_departamentos (
 -- Municipios
 CREATE TABLE tb_municipios (
 	Id_municipio INT PRIMARY KEY AUTO_INCREMENT,
-    Municipio VARCHAR(50)
+    Municipio VARCHAR(50),
+    Departamento_al_que_pertenece INT,
+    
+    FOREIGN KEY (Departamento_al_que_pertenece) REFERENCES tb_departamentos(Id_departamento) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE = InnoDB;
 
 -- Barrios
 CREATE TABLE tb_barrios (
 	Id_barrio INT PRIMARY KEY AUTO_INCREMENT,
-    Barrio VARCHAR(50)
+    Barrio VARCHAR(50),
+    Municipio_al_que_pertenece INT,
+    
+    FOREIGN KEY (Municipio_al_que_pertenece) REFERENCES tb_municipios(Id_municipio) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE = InnoDB;
 
 -- Tabla que guarda todas las direcciones, cada usuario puede tener varias direcciones
@@ -290,7 +296,7 @@ CREATE TABLE tb_historial_medico (
     Id_paciente INT NOT NULL,
     Id_direccion_habitual INT NOT NULL,
     Cantidad_citas_hechas INT,
-    Anteced_fam_patologicos INT NOT NULL, -- aplica para todos
+    Anteced_fam_patologicos INT, -- aplica para todos
     -- aplica cuando es adulto --
     Anteced_per_no_patologicos INT, 
     Es_fumador INT,
