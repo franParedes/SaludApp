@@ -12,4 +12,6 @@ public partial class TbDepartamento
     public virtual ICollection<TbCentrosMedico> TbCentrosMedicos { get; set; } = new List<TbCentrosMedico>();
 
     public virtual ICollection<TbDireccione> TbDirecciones { get; set; } = new List<TbDireccione>();
+
+    public virtual ICollection<TbMunicipio> TbMunicipios { get; set; } = new List<TbMunicipio>();
 }

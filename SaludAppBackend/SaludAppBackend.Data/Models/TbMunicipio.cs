@@ -9,6 +9,12 @@ public partial class TbMunicipio
 
     public string? Municipio { get; set; }
 
+    public int? DepartamentoAlQuePertenece { get; set; }
+
+    public virtual TbDepartamento? DepartamentoAlQuePerteneceNavigation { get; set; }
+
+    public virtual ICollection<TbBarrio> TbBarrios { get; set; } = new List<TbBarrio>();
+
     public virtual ICollection<TbCentrosMedico> TbCentrosMedicos { get; set; } = new List<TbCentrosMedico>();
 
     public virtual ICollection<TbDireccione> TbDirecciones { get; set; } = new List<TbDireccione>();

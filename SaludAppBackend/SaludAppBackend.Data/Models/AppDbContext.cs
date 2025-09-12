@@ -155,8 +155,16 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tb_barrios");
 
+            entity.HasIndex(e => e.MunicipioAlQuePertenece, "Municipio_al_que_pertenece");
+
             entity.Property(e => e.IdBarrio).HasColumnName("Id_barrio");
             entity.Property(e => e.Barrio).HasMaxLength(50);
+            entity.Property(e => e.MunicipioAlQuePertenece).HasColumnName("Municipio_al_que_pertenece");
+
+            entity.HasOne(d => d.MunicipioAlQuePerteneceNavigation).WithMany(p => p.TbBarrios)
+                .HasForeignKey(d => d.MunicipioAlQuePertenece)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_barrios_ibfk_1");
         });
 
         modelBuilder.Entity<TbCentrosMedico>(entity =>
@@ -558,8 +566,16 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tb_municipios");
 
+            entity.HasIndex(e => e.DepartamentoAlQuePertenece, "Departamento_al_que_pertenece");
+
             entity.Property(e => e.IdMunicipio).HasColumnName("Id_municipio");
+            entity.Property(e => e.DepartamentoAlQuePertenece).HasColumnName("Departamento_al_que_pertenece");
             entity.Property(e => e.Municipio).HasMaxLength(50);
+
+            entity.HasOne(d => d.DepartamentoAlQuePerteneceNavigation).WithMany(p => p.TbMunicipios)
+                .HasForeignKey(d => d.DepartamentoAlQuePertenece)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_municipios_ibfk_1");
         });
 
         modelBuilder.Entity<TbOcupacione>(entity =>

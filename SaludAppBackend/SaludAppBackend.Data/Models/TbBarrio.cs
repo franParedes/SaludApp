@@ -9,5 +9,9 @@ public partial class TbBarrio
 
     public string? Barrio { get; set; }
 
+    public int? MunicipioAlQuePertenece { get; set; }
+
+    public virtual TbMunicipio? MunicipioAlQuePerteneceNavigation { get; set; }
+
     public virtual ICollection<TbDireccione> TbDirecciones { get; set; } = new List<TbDireccione>();
 }
