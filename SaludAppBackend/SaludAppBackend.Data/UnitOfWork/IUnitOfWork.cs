@@ -1,5 +1,6 @@
 ﻿using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Usuarios;
+using SaludAppBackend.Data.Repositories.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace SaludAppBackend.Data.UnitOfWork
     {
         IUsuarioRepository Usuarios { get; }
         IPacienteRepository Pacientes { get; }
+        IUtilitiesRepository Utilities { get; }
         Task<int> CompleteAsync();
     }
 }

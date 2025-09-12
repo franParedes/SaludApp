@@ -7,6 +7,8 @@ using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Services.UsuarioService;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Services.PacienteService;
+using SaludAppBackend.Data.Repositories.Utilities;
+using SaludAppBackend.Services.UtilitiesService;
 
 namespace SaludAppBackend.API.ContenedorDepenConfig
 {
@@ -45,10 +47,12 @@ namespace SaludAppBackend.API.ContenedorDepenConfig
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 services.AddScoped<IUsuarioRepository, UsuarioRepository>();
                 services.AddScoped<IPacienteRepository, PacienteRepository>();
+                services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 
                 //Registrando servicios
                 services.AddScoped<IUsuarioService, UsuarioService>();
                 services.AddScoped<IPacienteService, PacienteService>();
+                services.AddScoped<IUtilitiesService, UtilitiesService>();
             }
         }
 

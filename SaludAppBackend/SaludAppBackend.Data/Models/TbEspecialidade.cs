@@ -9,5 +9,7 @@ public partial class TbEspecialidade
 
     public string? Especialidad { get; set; }
 
+    public virtual ICollection<TbCitasMedica> TbCitasMedicas { get; set; } = new List<TbCitasMedica>();
+
     public virtual ICollection<TbMedico> TbMedicos { get; set; } = new List<TbMedico>();
 }
