@@ -300,7 +300,7 @@ CREATE TABLE tb_historial_medico (
     
     FOREIGN KEY (Id_paciente) REFERENCES tb_pacientes(Id_paciente) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (Anteced_fam_patologicos) REFERENCES tb_antecedentes_familiares_patologicos(Id_antecendente_famp) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (Anteced_fam_patologicos) REFERENCES tb_antecedentes_familiares_patologicos(Id_antecendente_famp) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Anteced_per_no_patologicos) REFERENCES tb_antecedentes_personales_no_patologicos(Id_antecedente_per_nop) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (Es_fumador) REFERENCES tb_es_fumador(Id_fumador) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (Es_alcoholico) REFERENCES tb_es_alcoholico(Id_alcoholico) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (Drogas_legales) REFERENCES tb_drogas_legales(Id_drogas_legales) ON UPDATE CASCADE ON DELETE SET NULL
