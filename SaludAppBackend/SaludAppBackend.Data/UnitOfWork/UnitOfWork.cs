@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Usuarios;
+using SaludAppBackend.Data.Repositories.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         // Propiedades privadas para almacenar la instancia del repositorio una vez creada
         private IUsuarioRepository? _usuarios;
         private IPacienteRepository? _pacientes;
+        private IUtilitiesRepository? _utilities;
 
         // Inyectamos el DbContext y el IServiceProvider
         public UnitOfWork(AppDbContext context, IServiceProvider serviceProvider, ILogger<UnitOfWork> logger)
@@ -38,6 +40,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         // Esta es la magia. El repositorio solo se crea la primera vez que se pide.
         public IUsuarioRepository Usuarios => _usuarios ??= _serviceProvider.GetRequiredService<IUsuarioRepository>();
         public IPacienteRepository Pacientes => _pacientes ??= _serviceProvider.GetRequiredService<IPacienteRepository>();
+        public IUtilitiesRepository Utilities => _utilities ??= _serviceProvider.GetRequiredService<IUtilitiesRepository>();
         // Cuando agregues un nuevo repositorio:
         // 1. Agrega la propiedad a la interfaz IUnitOfWork.
         // 2. Agrega estos dos campos aquí:

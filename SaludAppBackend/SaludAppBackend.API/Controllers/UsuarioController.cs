@@ -16,7 +16,7 @@ namespace SaludAppBackend.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetUsuarioPorEmail")]
+        [HttpGet("GetUsuarioPorEmail/{correo}")]
         public async Task<IActionResult> GetUsuarioPorEmail(string correo)
         {
             try

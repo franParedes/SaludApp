@@ -62,5 +62,15 @@ namespace SaludAppBackend.Data.Repositories.Generic
         {
             return await _connection.QueryAsync<T>(sql, param, commandType: CommandType.Text);
         }
+
+        /// <summary>
+        /// Trae todos los datos de la tabla consultada
+        /// </summary>
+        protected async Task<IEnumerable<T>> GetAllAsync<T>() where T : class
+        {
+            // 1. _context.Set<T>() -> Le pides a EF Core el "cajón" para el tipo T.
+            // 2. .ToListAsync() -> Ejecutas la consulta "SELECT * FROM ..." de forma asíncrona.
+            return await _appDbContext.Set<T>().ToListAsync();
+        }
     }
 }

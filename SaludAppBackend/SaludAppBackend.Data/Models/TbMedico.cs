@@ -35,5 +35,7 @@ public partial class TbMedico
 
     public virtual TbUsuario IdUsuarioNavigation { get; set; } = null!;
 
+    public virtual ICollection<TbCitasMedica> TbCitasMedicas { get; set; } = new List<TbCitasMedica>();
+
     public virtual TbTurnosMedico? TurnoActualNavigation { get; set; }
 }
