@@ -14,13 +14,13 @@ namespace SaludAppBackend.Models.Usuarios
             Direcciones = [];
         }
 
-        public UsuarioModel GeneralInfo { get; set; }
+        public UsuarioModel GeneralInfo { get; set; } = null!;
         public string? NumeroInss { get; set; }
         public int Ocupacion { get; set; }
-        public string? Escolaridad { get; set; }
+        public string Escolaridad { get; set; } = null!;
         public int Religion { get; set; }
         public int Edad { get; set; }
-        public string? EstadoCivil { get; set; }
+        public string EstadoCivil { get; set; } = null!;
         public int CantidadHermanos { get; set; }
         public List<TelefonoModel> Telefonos { get; set; }
         public List<DireccionesModel> Direcciones { get; set; }
@@ -37,6 +37,6 @@ namespace SaludAppBackend.Models.Usuarios
         public int Departamento { get; set; }
         public int Municipio { get; set; }
         public int Barrio { get; set; }
-        public string? Direccion { get; set; }
+        public string Direccion { get; set; } = null!;
     }
 }

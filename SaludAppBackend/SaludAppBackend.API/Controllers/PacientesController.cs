@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SaludAppBackend.Data.Models;
 using SaludAppBackend.Models.Usuarios;
 using SaludAppBackend.Services.PacienteService;
 
@@ -23,7 +24,7 @@ namespace SaludAppBackend.API.Controllers
         {
             try
             {
-                _logger.LogInformation("Recibida petición para crear nuevo paciente con cédula {Cedula}", paciente.GeneralInfo.Cedula);
+                _logger.LogInformation($"Recibida petición para crear nuevo paciente con cédula {paciente.GeneralInfo.Cedula}");
 
                 var nuevoPaciente = await _pacienteService.CrearNuevoPacienteAsync(paciente);
 

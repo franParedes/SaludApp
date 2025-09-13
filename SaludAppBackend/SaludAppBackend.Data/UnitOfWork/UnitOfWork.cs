@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
+using SaludAppBackend.Data.Repositories.Medicos;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Data.Repositories.Utilities;
@@ -17,9 +18,9 @@ namespace SaludAppBackend.Data.UnitOfWork
         private readonly AppDbContext _context;
 
         /*
-         Para evitar el constructor gigante, usaremos el proveedor de servicios (IServiceProvider) 
-        para que el UnitOfWork pueda "solicitar" un repositorio solo cuando se necesite. 
-        Esto se llama Lazy Loading (carga perezosa).
+            Para evitar el constructor gigante, usaremos el proveedor de servicios (IServiceProvider) 
+            para que el UnitOfWork pueda "solicitar" un repositorio solo cuando se necesite. 
+            Esto se llama Lazy Loading (carga perezosa).
          */
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<UnitOfWork> _logger;
@@ -27,6 +28,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         // Propiedades privadas para almacenar la instancia del repositorio una vez creada
         private IUsuarioRepository? _usuarios;
         private IPacienteRepository? _pacientes;
+        private IMedicoRepository? _medicos;
         private IUtilitiesRepository? _utilities;
 
         // Inyectamos el DbContext y el IServiceProvider
@@ -38,15 +40,19 @@ namespace SaludAppBackend.Data.UnitOfWork
         }
 
         // Esta es la magia. El repositorio solo se crea la primera vez que se pide.
+        /*
+             Cuando agregues un nuevo repositorio:
+             1. Agrega la propiedad a la interfaz IUnitOfWork.
+             2. Agrega estos dos campos aquí:
+                private IMedicoRepository? _medicos;
+                public IMedicoRepository Medicos => _medicos ??= _serviceProvider.GetRequiredService<IMedicoRepository>();
+
+            ¡El constructor no cambia!
+         */
         public IUsuarioRepository Usuarios => _usuarios ??= _serviceProvider.GetRequiredService<IUsuarioRepository>();
         public IPacienteRepository Pacientes => _pacientes ??= _serviceProvider.GetRequiredService<IPacienteRepository>();
+        public IMedicoRepository Medicos => _medicos ??= _serviceProvider.GetRequiredService<IMedicoRepository>();
         public IUtilitiesRepository Utilities => _utilities ??= _serviceProvider.GetRequiredService<IUtilitiesRepository>();
-        // Cuando agregues un nuevo repositorio:
-        // 1. Agrega la propiedad a la interfaz IUnitOfWork.
-        // 2. Agrega estos dos campos aquí:
-        // private IMedicoRepository? _medicos;
-        // public IMedicoRepository Medicos => _medicos ??= _serviceProvider.GetRequiredService<IMedicoRepository>();
-        // ¡El constructor no cambia!
 
         public async Task<int> CompleteAsync()
         {
