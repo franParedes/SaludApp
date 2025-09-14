@@ -5,7 +5,7 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return  TextFormField(
       decoration: InputDecoration(
         hintText: "Ingrese su correo electrónico",
         prefixIcon: const Icon(Icons.email_outlined),
