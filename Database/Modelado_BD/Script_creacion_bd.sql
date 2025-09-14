@@ -194,20 +194,87 @@ CREATE TABLE tb_medicos (
 ) ENGINE = InnoDB;
 
 /****************** MANEJO DE CITAS MEDICAS ******************/
-CREATE TABLE tb_citas_medicas (
+CREATE TABLE tb_tipos_citas (
+	Id_tipo_cita INT PRIMARY KEY AUTO_INCREMENT,
+    Tipo VARCHAR(100) NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_citas(
 	Id_cita INT PRIMARY KEY AUTO_INCREMENT,
     Paciente_id INT NOT NULL,
-    Medico_id INT NOT NULL,
-    Especialidad INT,
-	Fecha_solicitud DATETIME NOT NULL,
+    Fecha_solicitud DATETIME NOT NULL,
     Fecha_cita DATETIME,
     Estado ENUM("pendiente", "aprobada", "rechazada", "reprogramada", "cancelada") DEFAULT "pendiente" NOT NULL,
-    Motivo_rechazo TEXT,
     Motivo_cita TEXT,
+    Motivo_rechazo TEXT,
+    Tipo_cita INT,
     
     FOREIGN KEY (Paciente_id) REFERENCES tb_pacientes(Id_paciente) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Tipo_cita) REFERENCES tb_tipos_citas(Id_tipo_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
+)ENGINE = InnoDB;
+
+CREATE TABLE tb_citas_medicas (
+	Id_cita_medica INT PRIMARY KEY AUTO_INCREMENT,
+    Id_cita INT NOT NULL,
+    Medico_id INT NOT NULL,
+    Especialidad INT,
+    
+    FOREIGN KEY (Id_cita) REFERENCES tb_citas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (Medico_id) REFERENCES tb_medicos(Id_medico) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (Especialidad) REFERENCES tb_especialidades(Id_especialidad) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_examenes_disponibles_lab(
+	Id_examen INT PRIMARY KEY AUTO_INCREMENT,
+    Examen VARCHAR(100)
+)ENGINE = InnoDB;
+
+CREATE TABLE tb_citas_laboratorio (
+	Id_cita_lab INT PRIMARY KEY AUTO_INCREMENT,
+    Id_cita INT NOT NULL,
+    Examenes_realizar VARCHAR(250), -- Lista seaparada por comas
+    
+    FOREIGN KEY (Id_cita) REFERENCES tb_citas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_resumen_cita_medica (
+	Id_resumen_cita INT PRIMARY KEY AUTO_INCREMENT,
+    Id_cita INT NOT NULL,
+    Presion_arterial VARCHAR(50),
+    Temperatura_corporal FLOAT, -- valor normal 36.1 - 37.2
+    Frecuencia_cardiaca INT, -- valor normal 60 - 100 por minuto
+    Frecuencia_respiratoria INT, -- valor normal 12 - 18 por minuto
+    Diagnostico TEXT NOT NULL,
+    
+    FOREIGN KEY (Id_cita) REFERENCES tb_citas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_vias_adminitracion (
+	Id_via_adm INT PRIMARY KEY AUTO_INCREMENT,
+    Via_adm VARCHAR(100) NOT NULL
+)ENGINE = InnoDB;
+
+CREATE TABLE tb_medicamentos_recetados (
+	Id_medicamento INT PRIMARY KEY AUTO_INCREMENT,
+    Id_resumen_cita INT NOT NULL,
+    Medicamento VARCHAR(200) NOT NULL,
+    Dosis VARCHAR(100), -- Por ejemplo: 600 mg o 2 pastillas de 400 mg
+    Frecuencia_horas INT, -- Por ejemplo: 8 quiere decir cada 8 horas
+    Via_administracion INT,
+    Duracion_dias INT,
+    
+    FOREIGN KEY (Id_resumen_cita) REFERENCES tb_resumen_cita_medica(Id_resumen_cita) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Via_administracion) REFERENCES tb_vias_adminitracion(Id_via_adm) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
+
+-- Manejo de archivos (cuando se hace la cita se puede subir una foto del problema)
+CREATE TABLE tb_archivos (
+	Archivo_id INT PRIMARY KEY AUTO_INCREMENT,
+    Cita_id INT NOT NULL,
+    Nombre_archivo VARCHAR(200) NOT NULL,
+    Tipo_archivo VARCHAR(50),
+    
+    FOREIGN KEY (Cita_id) REFERENCES tb_citas_medicas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE = InnoDB;
 
 /****************** MANEJO DE HISTORIAL MEDICO ******************/
