@@ -16,11 +16,7 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                iconSize: 30,
-                icon: const Icon(Icons.arrow_back, color: Color(0xFF1c1ec5)),
-                onPressed: () => Navigator.pop(context),
-              ),
+              const SizedBox(height: 10),
               const Center(child: LoginTitle(text: "Regístrate")),
               const SizedBox(height: 10),
 

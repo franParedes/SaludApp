@@ -13,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
       child: Column(
         children: [
           Flexible(
-            flex: 8,
+            flex: 6,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
               child: Center(
@@ -24,14 +24,14 @@ class WelcomeScreen extends StatelessWidget {
                       TextSpan(
                         text: 'Bienvenido a PacienteApp!\n',
                         style: TextStyle(
-                          fontSize: 40.0,
+                          fontSize: 35.0,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       TextSpan(
                         text:
                             '\nInicia sesion si tienes ya una cuenta, o registrate',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: 21),
                       ),
                     ],
                   ),
