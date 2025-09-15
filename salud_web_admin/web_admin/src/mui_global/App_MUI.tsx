@@ -1,9 +1,10 @@
 import { createTheme, type Theme } from '@mui/material/styles';
 
+// Reglas globales de estilos a los components
 const theme: Theme = createTheme({
   palette: {
     primary: {
-      main: '#bg-azul-claro',
+      main: '#0088FF',
     },
   },
   
@@ -11,22 +12,34 @@ const theme: Theme = createTheme({
     MuiTextField: {
         styleOverrides: {
         root: {
-          borderRadius: '40px',
-         
+          "& label": {
+            color: "#0088FF", 
+          },
+          "& label.Mui-focused": {
+            color: "#0088FF",
+          },
+       
+          borderRadius: '3rem'
         },
       },
     },
     MuiOutlinedInput: {
     styleOverrides: {
       root: {
-        borderRadius: '40rem', // redondeo extremo
+        "& fieldset": {
+          borderColor: "#0088FF", 
+        },
+        "&:hover fieldset": {
+          borderColor: "#0088FF"
+        },
+        borderRadius: '3rem'
       },
     },
   },
     MuiButton: {
         styleOverrides: {
         root: {
-            borderRadius: '30',
+            borderRadius: '2.5rem',
             textTransform: 'none', 
         },
       },
