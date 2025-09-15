@@ -15,7 +15,7 @@ class LoginButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF1c1ec5),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           onPressed: () {
@@ -25,7 +25,7 @@ class LoginButton extends StatelessWidget {
             );
           },
           child: const Text(
-            "Login",
+            "Iniciar Sesion",
             style: TextStyle(fontSize: 18, color: Colors.white),
           ),
         ),

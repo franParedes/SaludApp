@@ -1,4 +1,5 @@
-﻿using SaludAppBackend.Data.Repositories.Pacientes;
+﻿using SaludAppBackend.Data.Repositories.Medicos;
+using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Data.Repositories.Utilities;
 using System;
@@ -13,6 +14,7 @@ namespace SaludAppBackend.Data.UnitOfWork
     {
         IUsuarioRepository Usuarios { get; }
         IPacienteRepository Pacientes { get; }
+        IMedicoRepository Medicos { get; }
         IUtilitiesRepository Utilities { get; }
         Task<int> CompleteAsync();
     }

@@ -27,37 +27,35 @@ namespace SaludAppBackend.Services.PacienteService
             var usuarioExiste = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(paciente.GeneralInfo.Correo);
 
             if (usuarioExiste > 0)
-            {
                 throw new InvalidOperationException($"El paciente con correo {paciente.GeneralInfo.Correo} ya existe");
-            }
 
-            string userName = $"@{paciente.GeneralInfo.PrimerNombre.Substring(0, 1)}{paciente.GeneralInfo.PrimerApellido}";
+            string userName = $"@{paciente.GeneralInfo.PrimerNombre!.Substring(0, 1)}{paciente.GeneralInfo.PrimerApellido}";
             var nuevoUsuario = new TbUsuario
             {
-                Username = userName,
-                Cedula = paciente.GeneralInfo.Cedula,
-                PrimerNombre = paciente.GeneralInfo.PrimerNombre,
-                SegundoNombre = paciente.GeneralInfo.SegundoNombre,
-                PrimerApellido = paciente.GeneralInfo.PrimerApellido,
-                SegundoApellido = paciente.GeneralInfo.SegundoApellido,
-                Correo = paciente.GeneralInfo.Correo,
-                Genero = paciente.GeneralInfo.Genero,
-                FechaNacimiento = paciente.GeneralInfo.FechaNacimiento,
-                TipoUsuario = paciente.GeneralInfo.TipoUsuario,
-                FechaCreacion = DateOnly.FromDateTime(DateTime.Now),
+                Username           = userName,
+                Cedula             = paciente.GeneralInfo.Cedula,
+                PrimerNombre       = paciente.GeneralInfo.PrimerNombre,
+                SegundoNombre      = paciente.GeneralInfo.SegundoNombre,
+                PrimerApellido     = paciente.GeneralInfo.PrimerApellido,
+                SegundoApellido    = paciente.GeneralInfo.SegundoApellido,
+                Correo             = paciente.GeneralInfo.Correo,
+                Genero             = paciente.GeneralInfo.Genero,
+                FechaNacimiento    = paciente.GeneralInfo.FechaNacimiento,
+                TipoUsuario        = paciente.GeneralInfo.TipoUsuario,
+                FechaCreacion      = DateOnly.FromDateTime(DateTime.Now),
                 FechaActualizacion = DateOnly.FromDateTime(DateTime.Now),
-                Activo = true
+                Activo             = true
             };
 
             var nuevoPaciente = new TbPaciente
             {
-                NumeroInss = paciente.NumeroInss,
-                Ocupacion = paciente.Ocupacion,
-                Escolaridad = paciente.Escolaridad,
-                Religion = paciente.Religion,
-                Edad = paciente.Edad,
-                EstadoCivil = paciente.EstadoCivil,
-                CantidadHermanos = paciente.CantidadHermanos,
+                NumeroInss          = paciente.NumeroInss,
+                Ocupacion           = paciente.Ocupacion,
+                Escolaridad         = paciente.Escolaridad,
+                Religion            = paciente.Religion,
+                Edad                = paciente.Edad,
+                EstadoCivil         = paciente.EstadoCivil,
+                CantidadHermanos    = paciente.CantidadHermanos,
                 IdUsuarioNavigation = nuevoUsuario
             };
 
@@ -74,9 +72,9 @@ namespace SaludAppBackend.Services.PacienteService
                     new TbDireccione
                     {
                         Departamento = dir.Departamento,
-                        Municipio = dir.Municipio,
-                        Barrio = dir.Barrio,
-                        Direccion = dir.Direccion
+                        Municipio    = dir.Municipio,
+                        Barrio       = dir.Barrio,
+                        Direccion    = dir.Direccion
                     }
                 );
             }

@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-azul-claro: #0088FF;
+  --color-white: #fff;
+}
