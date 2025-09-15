@@ -226,5 +226,21 @@ namespace SaludAppBackend.API.Controllers
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
+
+        [HttpGet]
+        [Route("ObtenerTipoDeCita")]
+        public async Task<IActionResult> GetTipoDeCitasAsync()
+        {
+            try
+            {
+                var tiposUsuario = await _utilitiesService.GetTipoDeCitasAsync();
+                return Ok(tiposUsuario);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error inesperado al obtener los tipos de citas");
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
     }
 }

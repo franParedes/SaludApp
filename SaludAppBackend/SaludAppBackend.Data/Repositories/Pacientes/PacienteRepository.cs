@@ -22,5 +22,21 @@ namespace SaludAppBackend.Data.Repositories.Pacientes
         {
             await _appDbContext.TbPacientes.AddAsync(paciente);
         }
+
+        public async Task<int> BuscarPacientePorIdAsync(int idPaciente)
+        {
+            try
+            {
+                var sql = "SELECT f_buscar_paciente_por_id(@IdPacienteParam)";
+                var parameters = new { IdPacienteParam = idPaciente };
+
+                return await ExecuteScalarAsync<int>(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar comprobar la existencia del paciente");
+                throw;
+            }
+        }
     }
 }

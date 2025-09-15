@@ -48,5 +48,8 @@ namespace SaludAppBackend.Data.Repositories.Utilities
 
         public async Task<IEnumerable<TbUniversidade>> GetUniversidadesAsync()
             => await GetAllAsync<TbUniversidade>();
+
+        public async Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync()
+            => await GetAllAsync<TbTiposCita>();
     }
 }

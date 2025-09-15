@@ -17,6 +17,12 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbAntecedentesPersonalesPatologico> TbAntecedentesPersonalesPatologicos { get; set; }
 
+    public virtual DbSet<TbArchivo> TbArchivos { get; set; }
+
+    public virtual DbSet<TbArchivosCitasLab> TbArchivosCitasLabs { get; set; }
+
+    public virtual DbSet<TbArchivosCitasMedica> TbArchivosCitasMedicas { get; set; }
+
     public virtual DbSet<TbAreasMedica> TbAreasMedicas { get; set; }
 
     public virtual DbSet<TbBarrio> TbBarrios { get; set; }
@@ -24,6 +30,10 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<TbCentrosMedico> TbCentrosMedicos { get; set; }
 
     public virtual DbSet<TbCirugia> TbCirugias { get; set; }
+
+    public virtual DbSet<TbCita> TbCitas { get; set; }
+
+    public virtual DbSet<TbCitasLaboratorio> TbCitasLaboratorios { get; set; }
 
     public virtual DbSet<TbCitasMedica> TbCitasMedicas { get; set; }
 
@@ -45,6 +55,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbEspecialidade> TbEspecialidades { get; set; }
 
+    public virtual DbSet<TbExamenesDisponiblesLab> TbExamenesDisponiblesLabs { get; set; }
+
     public virtual DbSet<TbFarmacosActuale> TbFarmacosActuales { get; set; }
 
     public virtual DbSet<TbGenero> TbGeneros { get; set; }
@@ -52,6 +64,8 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<TbHistorialMedico> TbHistorialMedicos { get; set; }
 
     public virtual DbSet<TbHospitalizacione> TbHospitalizaciones { get; set; }
+
+    public virtual DbSet<TbMedicamentosRecetado> TbMedicamentosRecetados { get; set; }
 
     public virtual DbSet<TbMedico> TbMedicos { get; set; }
 
@@ -67,6 +81,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbReligione> TbReligiones { get; set; }
 
+    public virtual DbSet<TbResumenCitaMedica> TbResumenCitaMedicas { get; set; }
+
     public virtual DbSet<TbTelefono> TbTelefonos { get; set; }
 
     public virtual DbSet<TbTipoActFisica> TbTipoActFisicas { get; set; }
@@ -75,11 +91,15 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbTipoUsuario> TbTipoUsuarios { get; set; }
 
+    public virtual DbSet<TbTiposCita> TbTiposCitas { get; set; }
+
     public virtual DbSet<TbTurnosMedico> TbTurnosMedicos { get; set; }
 
     public virtual DbSet<TbUniversidade> TbUniversidades { get; set; }
 
     public virtual DbSet<TbUsuario> TbUsuarios { get; set; }
+
+    public virtual DbSet<TbViasAdminitracion> TbViasAdminitracions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -137,6 +157,78 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.EnfInfectoContagiosas)
                 .HasMaxLength(250)
                 .HasColumnName("Enf_infecto_contagiosas");
+        });
+
+        modelBuilder.Entity<TbArchivo>(entity =>
+        {
+            entity.HasKey(e => e.ArchivoId).HasName("PRIMARY");
+
+            entity.ToTable("tb_archivos");
+
+            entity.Property(e => e.ArchivoId).HasColumnName("Archivo_id");
+            entity.Property(e => e.Base64).HasColumnType("text");
+            entity.Property(e => e.FechaSubida)
+                .HasColumnType("datetime")
+                .HasColumnName("Fecha_subida");
+            entity.Property(e => e.NombreArchivo)
+                .HasMaxLength(200)
+                .HasColumnName("Nombre_archivo");
+            entity.Property(e => e.TipoArchivo)
+                .HasMaxLength(50)
+                .HasColumnName("Tipo_archivo");
+            entity.Property(e => e.TipoMime)
+                .HasMaxLength(50)
+                .HasColumnName("Tipo_mime");
+        });
+
+        modelBuilder.Entity<TbArchivosCitasLab>(entity =>
+        {
+            entity.HasKey(e => e.ArchivoCitasLabId).HasName("PRIMARY");
+
+            entity.ToTable("tb_archivos_citas_lab");
+
+            entity.HasIndex(e => e.ArchivoId, "Archivo_id");
+
+            entity.HasIndex(e => e.CitaId, "Cita_id");
+
+            entity.Property(e => e.ArchivoCitasLabId).HasColumnName("Archivo_citas_lab_id");
+            entity.Property(e => e.ArchivoId).HasColumnName("Archivo_id");
+            entity.Property(e => e.CitaId).HasColumnName("Cita_id");
+
+            entity.HasOne(d => d.Archivo).WithMany(p => p.TbArchivosCitasLabs)
+                .HasForeignKey(d => d.ArchivoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_archivos_citas_lab_ibfk_1");
+
+            entity.HasOne(d => d.Cita).WithMany(p => p.TbArchivosCitasLabs)
+                .HasForeignKey(d => d.CitaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_archivos_citas_lab_ibfk_2");
+        });
+
+        modelBuilder.Entity<TbArchivosCitasMedica>(entity =>
+        {
+            entity.HasKey(e => e.ArchivoCitasMedId).HasName("PRIMARY");
+
+            entity.ToTable("tb_archivos_citas_medicas");
+
+            entity.HasIndex(e => e.ArchivoId, "Archivo_id");
+
+            entity.HasIndex(e => e.CitaId, "Cita_id");
+
+            entity.Property(e => e.ArchivoCitasMedId).HasColumnName("Archivo_citas_med_id");
+            entity.Property(e => e.ArchivoId).HasColumnName("Archivo_id");
+            entity.Property(e => e.CitaId).HasColumnName("Cita_id");
+
+            entity.HasOne(d => d.Archivo).WithMany(p => p.TbArchivosCitasMedicas)
+                .HasForeignKey(d => d.ArchivoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_archivos_citas_medicas_ibfk_1");
+
+            entity.HasOne(d => d.Cita).WithMany(p => p.TbArchivosCitasMedicas)
+                .HasForeignKey(d => d.CitaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_archivos_citas_medicas_ibfk_2");
         });
 
         modelBuilder.Entity<TbAreasMedica>(entity =>
@@ -201,17 +293,17 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Cirugia).HasMaxLength(100);
         });
 
-        modelBuilder.Entity<TbCitasMedica>(entity =>
+        modelBuilder.Entity<TbCita>(entity =>
         {
             entity.HasKey(e => e.IdCita).HasName("PRIMARY");
 
-            entity.ToTable("tb_citas_medicas");
+            entity.ToTable("tb_citas");
 
-            entity.HasIndex(e => e.Especialidad, "Especialidad");
-
-            entity.HasIndex(e => e.MedicoId, "Medico_id");
+            entity.HasIndex(e => e.Lugar, "Lugar");
 
             entity.HasIndex(e => e.PacienteId, "Paciente_id");
+
+            entity.HasIndex(e => e.TipoCita, "Tipo_cita");
 
             entity.Property(e => e.IdCita).HasColumnName("Id_cita");
             entity.Property(e => e.Estado)
@@ -223,7 +315,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.FechaSolicitud)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_solicitud");
-            entity.Property(e => e.MedicoId).HasColumnName("Medico_id");
             entity.Property(e => e.MotivoCita)
                 .HasColumnType("text")
                 .HasColumnName("Motivo_cita");
@@ -231,21 +322,73 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("text")
                 .HasColumnName("Motivo_rechazo");
             entity.Property(e => e.PacienteId).HasColumnName("Paciente_id");
+            entity.Property(e => e.TipoCita).HasColumnName("Tipo_cita");
+
+            entity.HasOne(d => d.LugarNavigation).WithMany(p => p.TbCita)
+                .HasForeignKey(d => d.Lugar)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_citas_ibfk_3");
+
+            entity.HasOne(d => d.Paciente).WithMany(p => p.TbCita)
+                .HasForeignKey(d => d.PacienteId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_citas_ibfk_1");
+
+            entity.HasOne(d => d.TipoCitaNavigation).WithMany(p => p.TbCita)
+                .HasForeignKey(d => d.TipoCita)
+                .HasConstraintName("tb_citas_ibfk_2");
+        });
+
+        modelBuilder.Entity<TbCitasLaboratorio>(entity =>
+        {
+            entity.HasKey(e => e.IdCitaLab).HasName("PRIMARY");
+
+            entity.ToTable("tb_citas_laboratorio");
+
+            entity.HasIndex(e => e.IdCita, "Id_cita");
+
+            entity.Property(e => e.IdCitaLab).HasColumnName("Id_cita_lab");
+            entity.Property(e => e.ExamenesRealizar)
+                .HasMaxLength(250)
+                .HasColumnName("Examenes_realizar");
+            entity.Property(e => e.IdCita).HasColumnName("Id_cita");
+
+            entity.HasOne(d => d.IdCitaNavigation).WithMany(p => p.TbCitasLaboratorios)
+                .HasForeignKey(d => d.IdCita)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_citas_laboratorio_ibfk_1");
+        });
+
+        modelBuilder.Entity<TbCitasMedica>(entity =>
+        {
+            entity.HasKey(e => e.IdCitaMedica).HasName("PRIMARY");
+
+            entity.ToTable("tb_citas_medicas");
+
+            entity.HasIndex(e => e.Especialidad, "Especialidad");
+
+            entity.HasIndex(e => e.IdCita, "Id_cita");
+
+            entity.HasIndex(e => e.MedicoId, "Medico_id");
+
+            entity.Property(e => e.IdCitaMedica).HasColumnName("Id_cita_medica");
+            entity.Property(e => e.IdCita).HasColumnName("Id_cita");
+            entity.Property(e => e.MedicoId).HasColumnName("Medico_id");
 
             entity.HasOne(d => d.EspecialidadNavigation).WithMany(p => p.TbCitasMedicas)
                 .HasForeignKey(d => d.Especialidad)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tb_citas_medicas_ibfk_3");
 
+            entity.HasOne(d => d.IdCitaNavigation).WithMany(p => p.TbCitasMedicas)
+                .HasForeignKey(d => d.IdCita)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_citas_medicas_ibfk_1");
+
             entity.HasOne(d => d.Medico).WithMany(p => p.TbCitasMedicas)
                 .HasForeignKey(d => d.MedicoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tb_citas_medicas_ibfk_2");
-
-            entity.HasOne(d => d.Paciente).WithMany(p => p.TbCitasMedicas)
-                .HasForeignKey(d => d.PacienteId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tb_citas_medicas_ibfk_1");
         });
 
         modelBuilder.Entity<TbDepartamento>(entity =>
@@ -379,6 +522,16 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Especialidad).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TbExamenesDisponiblesLab>(entity =>
+        {
+            entity.HasKey(e => e.IdExamen).HasName("PRIMARY");
+
+            entity.ToTable("tb_examenes_disponibles_lab");
+
+            entity.Property(e => e.IdExamen).HasColumnName("Id_examen");
+            entity.Property(e => e.Examen).HasMaxLength(100);
+        });
+
         modelBuilder.Entity<TbFarmacosActuale>(entity =>
         {
             entity.HasKey(e => e.IdFarmaco).HasName("PRIMARY");
@@ -495,6 +648,35 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.PacienteId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tb_hospitalizaciones_ibfk_1");
+        });
+
+        modelBuilder.Entity<TbMedicamentosRecetado>(entity =>
+        {
+            entity.HasKey(e => e.IdMedicamento).HasName("PRIMARY");
+
+            entity.ToTable("tb_medicamentos_recetados");
+
+            entity.HasIndex(e => e.IdResumenCita, "Id_resumen_cita");
+
+            entity.HasIndex(e => e.ViaAdministracion, "Via_administracion");
+
+            entity.Property(e => e.IdMedicamento).HasColumnName("Id_medicamento");
+            entity.Property(e => e.Dosis).HasMaxLength(100);
+            entity.Property(e => e.DuracionDias).HasColumnName("Duracion_dias");
+            entity.Property(e => e.FrecuenciaHoras).HasColumnName("Frecuencia_horas");
+            entity.Property(e => e.IdResumenCita).HasColumnName("Id_resumen_cita");
+            entity.Property(e => e.Medicamento).HasMaxLength(200);
+            entity.Property(e => e.ViaAdministracion).HasColumnName("Via_administracion");
+
+            entity.HasOne(d => d.IdResumenCitaNavigation).WithMany(p => p.TbMedicamentosRecetados)
+                .HasForeignKey(d => d.IdResumenCita)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_medicamentos_recetados_ibfk_1");
+
+            entity.HasOne(d => d.ViaAdministracionNavigation).WithMany(p => p.TbMedicamentosRecetados)
+                .HasForeignKey(d => d.ViaAdministracion)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_medicamentos_recetados_ibfk_2");
         });
 
         modelBuilder.Entity<TbMedico>(entity =>
@@ -670,6 +852,30 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Religion).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<TbResumenCitaMedica>(entity =>
+        {
+            entity.HasKey(e => e.IdResumenCita).HasName("PRIMARY");
+
+            entity.ToTable("tb_resumen_cita_medica");
+
+            entity.HasIndex(e => e.IdCita, "Id_cita");
+
+            entity.Property(e => e.IdResumenCita).HasColumnName("Id_resumen_cita");
+            entity.Property(e => e.Diagnostico).HasColumnType("text");
+            entity.Property(e => e.FrecuenciaCardiaca).HasColumnName("Frecuencia_cardiaca");
+            entity.Property(e => e.FrecuenciaRespiratoria).HasColumnName("Frecuencia_respiratoria");
+            entity.Property(e => e.IdCita).HasColumnName("Id_cita");
+            entity.Property(e => e.PresionArterial)
+                .HasMaxLength(50)
+                .HasColumnName("Presion_arterial");
+            entity.Property(e => e.TemperaturaCorporal).HasColumnName("Temperatura_corporal");
+
+            entity.HasOne(d => d.IdCitaNavigation).WithMany(p => p.TbResumenCitaMedicas)
+                .HasForeignKey(d => d.IdCita)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_resumen_cita_medica_ibfk_1");
+        });
+
         modelBuilder.Entity<TbTelefono>(entity =>
         {
             entity.HasKey(e => e.IdTelefono).HasName("PRIMARY");
@@ -726,6 +932,16 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TipoUsuario)
                 .HasMaxLength(50)
                 .HasColumnName("Tipo_usuario");
+        });
+
+        modelBuilder.Entity<TbTiposCita>(entity =>
+        {
+            entity.HasKey(e => e.IdTipoCita).HasName("PRIMARY");
+
+            entity.ToTable("tb_tipos_citas");
+
+            entity.Property(e => e.IdTipoCita).HasColumnName("Id_tipo_cita");
+            entity.Property(e => e.Tipo).HasMaxLength(100);
         });
 
         modelBuilder.Entity<TbTurnosMedico>(entity =>
@@ -795,6 +1011,18 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.TipoUsuario)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tb_usuarios_ibfk_2");
+        });
+
+        modelBuilder.Entity<TbViasAdminitracion>(entity =>
+        {
+            entity.HasKey(e => e.IdViaAdm).HasName("PRIMARY");
+
+            entity.ToTable("tb_vias_adminitracion");
+
+            entity.Property(e => e.IdViaAdm).HasColumnName("Id_via_adm");
+            entity.Property(e => e.ViaAdm)
+                .HasMaxLength(100)
+                .HasColumnName("Via_adm");
         });
 
         OnModelCreatingPartial(modelBuilder);

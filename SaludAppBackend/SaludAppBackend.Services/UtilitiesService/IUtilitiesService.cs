@@ -27,5 +27,7 @@ namespace SaludAppBackend.Services.UtilitiesService
         Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosAsync();
         Task<IEnumerable<TbTurnosMedico>> GetTurnosMedicosAsync();
 
+        //Métodos para citas
+        Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync();
     }
 }

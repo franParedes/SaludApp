@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaludAppBackend.Data.Models;
 using SaludAppBackend.Models.Usuarios;
 using SaludAppBackend.Services.PacienteService;
 

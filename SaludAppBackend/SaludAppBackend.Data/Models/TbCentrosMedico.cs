@@ -17,5 +17,7 @@ public partial class TbCentrosMedico
 
     public virtual TbMunicipio? MunicipioNavigation { get; set; }
 
+    public virtual ICollection<TbCita> TbCita { get; set; } = new List<TbCita>();
+
     public virtual ICollection<TbMedico> TbMedicos { get; set; } = new List<TbMedico>();
 }
