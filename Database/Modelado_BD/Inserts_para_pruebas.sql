@@ -41,3 +41,6 @@ INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Ortopedi
 INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Cirugía');
 
 INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('José Rubí', '1', '1');
+
+INSERT INTO `db_saludapp`.`tb_tipos_citas` (`Tipo`) VALUES ('Médica');
+INSERT INTO `db_saludapp`.`tb_tipos_citas` (`Tipo`) VALUES ('Laboratorio');
