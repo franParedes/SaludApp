@@ -19,7 +19,7 @@ const theme: Theme = createTheme({
             color: "#0088FF",
           },
        
-          borderRadius: '3rem'
+          borderRadius: '3rem',
         },
       },
     },
