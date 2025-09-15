@@ -13,47 +13,45 @@ class WelcomeScreen extends StatelessWidget {
       child: Column(
         children: [
           Flexible(
-            flex: 8,
+            flex: 6,
             child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 0,
-              horizontal: 40,
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+              child: Center(
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Bienvenido a PacienteApp!\n',
+                        style: TextStyle(
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextSpan(
+                        text:
+                            '\nInicia sesion si tienes ya una cuenta, o registrate',
+                        style: TextStyle(fontSize: 21),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            child: Center(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Bienvenido a PacienteApp!\n',
-                      style: TextStyle(
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.w600,
-                      )),
-                    TextSpan(
-                      text:
-                        '\nInicia sesion si tienes ya una cuenta, o registrate',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ))  
-                  ]
-                )
-               ),
-            ),
-          )),
+          ),
           const Flexible(
             flex: 1,
             child: Align(
               alignment: Alignment.bottomRight,
-              child: Row( 
-                children: [ 
+              child: Row(
+                children: [
                   Expanded(
                     child: WelcomeButtons(
                       buttonText: 'Iniciar Sesion',
                       onTap: LoginScreen(),
                       color: Colors.transparent,
                       textColor: Colors.white,
-                    )
+                    ),
                   ),
                   Expanded(
                     child: WelcomeButtons(
@@ -61,9 +59,9 @@ class WelcomeScreen extends StatelessWidget {
                       onTap: RegisterScreen(),
                       color: Colors.white,
                       textColor: Colors.blueAccent,
-                    )
+                    ),
                   ),
-                ]
+                ],
               ),
             ),
           ),
