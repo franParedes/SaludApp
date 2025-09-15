@@ -58,5 +58,8 @@ namespace SaludAppBackend.Services.UtilitiesService
 
         public async Task<IEnumerable<TbUniversidade>> GetUniversidadesAsync()
             => await _unitOfWork.Utilities.GetUniversidadesAsync();
+
+        public async Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync()
+            => await _unitOfWork.Utilities.GetTipoDeCitasAsync();
     }
 }

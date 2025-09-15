@@ -20,7 +20,7 @@ namespace SaludAppBackend.API.Controllers
         }
 
         [HttpPost]
-        [Route("CrearPaciente")]
+        [Route("CrearMedico")]
         public async Task<IActionResult> CrearNuevoPaciente([FromBody] MedicoModel medico)
         {
             try

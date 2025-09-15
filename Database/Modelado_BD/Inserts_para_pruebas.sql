@@ -4,19 +4,6 @@ INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Tigo');
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Claro');
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Cootel');
 
-INSERT INTO `db_saludapp`.`tb_turnos_medicos` (`Turno`) VALUES ('8 Horas vespertino');
-
-INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('ER');
-INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('Obstetricia');
-
-INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('UNAN León');
-INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('UNAN Managua');
-INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('Gaspar García Laviana');
-
-INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('General');
-INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Ortopedia');
-INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Cirugía');
-
 INSERT INTO `db_saludapp`.`tb_tipo_usuarios` (`Tipo_usuario`) VALUES ('Paciente');
 INSERT INTO `db_saludapp`.`tb_tipo_usuarios` (`Tipo_usuario`) VALUES ('Médico');
 INSERT INTO `db_saludapp`.`tb_tipo_usuarios` (`Tipo_usuario`) VALUES ('Contacto');
@@ -39,5 +26,18 @@ INSERT INTO `db_saludapp`.`tb_municipios` (`Municipio`, `Departamento_al_que_per
 INSERT INTO `db_saludapp`.`tb_barrios` (`Barrio`, `Municipio_al_que_pertenece`) VALUES ('Roberto Gonzales', '1');
 INSERT INTO `db_saludapp`.`tb_barrios` (`Barrio`, `Municipio_al_que_pertenece`) VALUES ('Bello Amanecer', '2');
 INSERT INTO `db_saludapp`.`tb_barrios` (`Barrio`, `Municipio_al_que_pertenece`) VALUES ('Guadalupe', '3');
+
+INSERT INTO `db_saludapp`.`tb_turnos_medicos` (`Turno`) VALUES ('8 Horas vespertino');
+
+INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('ER');
+INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('Obstetricia');
+
+INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('UNAN León');
+INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('UNAN Managua');
+INSERT INTO `db_saludapp`.`tb_universidades` (`Universidad`) VALUES ('Gaspar García Laviana');
+
+INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('General');
+INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Ortopedia');
+INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Cirugía');
 
 INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('José Rubí', '1', '1');

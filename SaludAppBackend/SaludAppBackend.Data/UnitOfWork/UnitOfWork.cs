@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
+using SaludAppBackend.Data.Repositories.Archivos;
+using SaludAppBackend.Data.Repositories.Citas;
 using SaludAppBackend.Data.Repositories.Medicos;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Usuarios;
@@ -30,6 +32,8 @@ namespace SaludAppBackend.Data.UnitOfWork
         private IPacienteRepository? _pacientes;
         private IMedicoRepository? _medicos;
         private IUtilitiesRepository? _utilities;
+        private ICitasRepository? _citas;
+        private IArchivoRepository? _archivos;
 
         // Inyectamos el DbContext y el IServiceProvider
         public UnitOfWork(AppDbContext context, IServiceProvider serviceProvider, ILogger<UnitOfWork> logger)
@@ -53,6 +57,8 @@ namespace SaludAppBackend.Data.UnitOfWork
         public IPacienteRepository Pacientes => _pacientes ??= _serviceProvider.GetRequiredService<IPacienteRepository>();
         public IMedicoRepository Medicos => _medicos ??= _serviceProvider.GetRequiredService<IMedicoRepository>();
         public IUtilitiesRepository Utilities => _utilities ??= _serviceProvider.GetRequiredService<IUtilitiesRepository>();
+        public ICitasRepository Citas => _citas ??= _serviceProvider.GetRequiredService<ICitasRepository>();
+        public IArchivoRepository Archivos => _archivos ??= _serviceProvider.GetRequiredService<IArchivoRepository>();
 
         public async Task<int> CompleteAsync()
         {
@@ -65,7 +71,7 @@ namespace SaludAppBackend.Data.UnitOfWork
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocurrió un error al intentar guardar los cambios en la base de datos (Commit).");
+                _logger.LogError(ex.InnerException, ex.Message, "Ocurrió un error al intentar guardar los cambios en la base de datos (Commit).");
                 throw;
             }
         }

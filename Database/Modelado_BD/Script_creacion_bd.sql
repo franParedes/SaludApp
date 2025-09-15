@@ -56,7 +56,6 @@ CREATE TABLE tb_prov_telefonicos (
 ) ENGINE = InnoDB;
 
 -- Número de telefonos, cada usuario puede tener varios
-drop table if exists tb_telefonos;
 CREATE TABLE tb_telefonos (
 	Id_telefono INT PRIMARY KEY AUTO_INCREMENT,
     Telefono INT UNIQUE NOT NULL,
@@ -202,6 +201,7 @@ CREATE TABLE tb_tipos_citas (
 CREATE TABLE tb_citas(
 	Id_cita INT PRIMARY KEY AUTO_INCREMENT,
     Paciente_id INT NOT NULL,
+    Lugar INT,
     Fecha_solicitud DATETIME NOT NULL,
     Fecha_cita DATETIME,
     Estado ENUM("pendiente", "aprobada", "rechazada", "reprogramada", "cancelada") DEFAULT "pendiente" NOT NULL,
@@ -210,7 +210,8 @@ CREATE TABLE tb_citas(
     Tipo_cita INT,
     
     FOREIGN KEY (Paciente_id) REFERENCES tb_pacientes(Id_paciente) ON UPDATE RESTRICT ON DELETE RESTRICT,
-    FOREIGN KEY (Tipo_cita) REFERENCES tb_tipos_citas(Id_tipo_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
+    FOREIGN KEY (Tipo_cita) REFERENCES tb_tipos_citas(Id_tipo_cita) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Lugar) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE = InnoDB;
 
 CREATE TABLE tb_citas_medicas (
@@ -244,7 +245,7 @@ CREATE TABLE tb_resumen_cita_medica (
     Temperatura_corporal FLOAT, -- valor normal 36.1 - 37.2
     Frecuencia_cardiaca INT, -- valor normal 60 - 100 por minuto
     Frecuencia_respiratoria INT, -- valor normal 12 - 18 por minuto
-    Diagnostico TEXT NOT NULL,
+    Diagnostico TEXT,
     
     FOREIGN KEY (Id_cita) REFERENCES tb_citas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE = InnoDB;
@@ -270,11 +271,29 @@ CREATE TABLE tb_medicamentos_recetados (
 -- Manejo de archivos (cuando se hace la cita se puede subir una foto del problema)
 CREATE TABLE tb_archivos (
 	Archivo_id INT PRIMARY KEY AUTO_INCREMENT,
-    Cita_id INT NOT NULL,
     Nombre_archivo VARCHAR(200) NOT NULL,
-    Tipo_archivo VARCHAR(50),
+    Tipo_archivo VARCHAR(50) NOT NULL,
+    Tipo_mime VARCHAR(50) NOT NULL,
+    Base64 TEXT NOT NULL,
+    Fecha_subida DATETIME NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_archivos_citas_lab (
+	Archivo_citas_lab_id INT PRIMARY KEY AUTO_INCREMENT,
+    Archivo_id INT NOT NULL,
+    Cita_id INT NOT NULL,
     
-    FOREIGN KEY (Cita_id) REFERENCES tb_citas_medicas(Id_cita) ON UPDATE RESTRICT ON DELETE RESTRICT
+    FOREIGN KEY (Archivo_id) REFERENCES tb_archivos(Archivo_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Cita_id) REFERENCES tb_citas_laboratorio(Id_cita_lab) ON UPDATE RESTRICT ON DELETE RESTRICT
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_archivos_citas_medicas (
+	Archivo_citas_med_id INT PRIMARY KEY AUTO_INCREMENT,
+    Archivo_id INT NOT NULL,
+    Cita_id INT NOT NULL,
+    
+    FOREIGN KEY (Archivo_id) REFERENCES tb_archivos(Archivo_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (Cita_id) REFERENCES tb_citas_medicas(Id_cita_medica) ON UPDATE RESTRICT ON DELETE RESTRICT
 ) ENGINE = InnoDB;
 
 /****************** MANEJO DE HISTORIAL MEDICO ******************/

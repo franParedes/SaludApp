@@ -29,7 +29,7 @@ public partial class TbPaciente
 
     public virtual TbReligione? ReligionNavigation { get; set; }
 
-    public virtual ICollection<TbCitasMedica> TbCitasMedicas { get; set; } = new List<TbCitasMedica>();
+    public virtual ICollection<TbCita> TbCita { get; set; } = new List<TbCita>();
 
     public virtual ICollection<TbFarmacosActuale> TbFarmacosActuales { get; set; } = new List<TbFarmacosActuale>();
 
