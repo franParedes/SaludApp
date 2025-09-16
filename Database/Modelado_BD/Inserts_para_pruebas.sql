@@ -44,3 +44,7 @@ INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Munic
 
 INSERT INTO `db_saludapp`.`tb_tipos_citas` (`Tipo`) VALUES ('Médica');
 INSERT INTO `db_saludapp`.`tb_tipos_citas` (`Tipo`) VALUES ('Laboratorio');
+
+INSERT INTO `db_saludapp`.`tb_ocupaciones` (`Ocupacion`) VALUES ('Estudiante');
+
+INSERT INTO `db_saludapp`.`tb_religiones` (`Religion`) VALUES ("Catolica"), ("Evangelica"), ("Mormona"), ("Otras");

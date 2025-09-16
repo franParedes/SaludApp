@@ -118,6 +118,7 @@ CREATE TABLE tb_ocupaciones (
     Ocupacion VARCHAR(100)
 ) ENGINE = InnoDB;
 
+
 -- Pacientes 
 CREATE TABLE tb_pacientes (
 	Id_paciente INT PRIMARY KEY AUTO_INCREMENT,
