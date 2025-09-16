@@ -212,6 +212,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             // solo si encontramos uno real
                             setState(() {
                               generoSeleccionado = gen;
+                              genero = gen.nombre;
                             });
                           }
                         },
@@ -378,6 +379,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             // solo si encontramos uno real
                             setState(() {
                               religionSeleccionado = rel;
+                              religion = rel.nombre;
                             });
                           }
                         },
