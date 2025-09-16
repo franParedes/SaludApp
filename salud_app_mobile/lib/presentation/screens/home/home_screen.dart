@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:salud_app_mobile/presentation/widgets/home/home_image_card.dart';
-
 import '../../screens/welcome/welcome.dart';
 import '../../widgets/home/home_next_appoitment.dart';
 import '../../widgets/home/home_search.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/navigation_bar.dart';
+import 'package:salud_app_mobile/theme/app_colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,9 +63,10 @@ class _HomeContent extends StatelessWidget {
           const Text(
             "¿Cómo te sientes hoy?",
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              fontFamily: 'Kanit',
+              fontWeight: FontWeight.w500,
+              fontSize: 30,
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 12),
@@ -77,8 +78,8 @@ class _HomeContent extends StatelessWidget {
             "Selecciona la categoría",
             style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(height: 12),
@@ -125,6 +126,7 @@ class _HomeContent extends StatelessWidget {
                   title: "Seguimiento de pacientes",
                 ),
               ],
+              
             ),
           ),
         ],

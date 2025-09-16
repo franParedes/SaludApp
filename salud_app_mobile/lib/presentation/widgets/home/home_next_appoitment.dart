@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salud_app_mobile/theme/app_colors.dart';
 
 class HomeNextAppoitment extends StatelessWidget {
   const HomeNextAppoitment({super.key});
@@ -6,41 +7,56 @@ class HomeNextAppoitment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.blue[100],
+        gradient: AppColors.gradientPrimary,
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
         ],
       ),
-      child: Row(
+      child: Stack(
         children: [
-          const Icon(Icons.calendar_month, size: 30, color: Colors.blue),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Fecha y hora:",
-                  style: TextStyle(color: Colors.grey, fontSize: 10),
+          Row(
+            children: [
+              const Icon(Icons.calendar_month,
+                  size: 60, color: AppColors.bgLight),
+              const SizedBox(width: 9),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Fecha y hora:",
+                        style: TextStyle(color: AppColors.bgLight)),
+                    Text("Jueves, 11 de septiembre | 10:00 a.m.",
+                        style:
+                            TextStyle(color: AppColors.bgLight, fontSize: 15)),
+                    SizedBox(height: 15),
+                    Text("Doctor:",
+                        style:
+                            TextStyle(color: AppColors.bgLight, fontSize: 15)),
+                    Text("Juan Pérez",
+                        style:
+                            TextStyle(color: AppColors.bgLight, fontSize: 15)),
+                  ],
                 ),
-                Text(
-                  "Jueves, 11 de septiembre | 10:00 a.m.",
-                  style: TextStyle(color: Colors.black, fontSize: 10),
-                ),
-                SizedBox(height: 4),
-                Text("Doctor:", style: TextStyle(fontSize: 12)),
-                Text("Dr. Juan Pérez", style: TextStyle(fontSize: 10)),
-              ],
-            ),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              "Ver detalles",
-              style: TextStyle(color: Colors.blue, fontSize: 8),
+
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.bgLight,
+                foregroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: const Text("Ver detalles"),
             ),
           ),
         ],

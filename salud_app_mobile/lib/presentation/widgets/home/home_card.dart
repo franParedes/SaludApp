@@ -6,11 +6,11 @@ class HomeCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const HomeCard({
-    Key? key,
+    super.key,
     required this.image,
     required this.title,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

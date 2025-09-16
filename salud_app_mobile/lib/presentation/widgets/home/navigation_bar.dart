@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salud_app_mobile/theme/app_colors.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -17,7 +18,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: const Color.fromARGB(36, 0, 51, 255),
             spreadRadius: 2,
             blurRadius: 10,
             offset: const Offset(0, 3),
@@ -29,7 +30,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.bgLight,
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey,
           showSelectedLabels: false,
