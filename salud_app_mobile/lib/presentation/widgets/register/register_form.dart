@@ -294,6 +294,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   setState(() {
                                     municipioSeleccionado = mun;
                                     barrioSeleccionado = null;
+                                    municipioController.text = mun.nombre;
                                   });
                                   _loadBarrios(mun.id);
                                 },
@@ -322,6 +323,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           );
                           setState(() {
                             departamentoSeleccionado = dep;
+                            departamentoController.text = dep.nombre;
                           });
                           _loadMunicipios(dep.id);
                         },
@@ -439,6 +441,7 @@ class _RegisterFormState extends State<RegisterForm> {
           // Botón
           RegisterButton(
             onPressed: () {
+              // Depuración para ver los datos que se enviarán a la API
               debugPrint("Primer Nombre: ${primerNombreController.text}");
               debugPrint("Segundo Nombre: ${segundoNombreController.text}");
               debugPrint("Primer Apellido: ${primerApellidoController.text}");
@@ -459,6 +462,8 @@ class _RegisterFormState extends State<RegisterForm> {
               debugPrint("Tipo de Usuario: $tipoUsuario");
               debugPrint("Religión: $religion");
               debugPrint("Estado Civil: $estadoCivil");
+
+              // Enviar datos a la API
             },
           ),
         ],
