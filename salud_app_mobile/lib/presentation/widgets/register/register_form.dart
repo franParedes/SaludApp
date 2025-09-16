@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:salud_app_mobile/presentation/widgets/register/register_form/apellidos_field.dart';
 import '../../../domain/models/barrio.dart';
 import '../../../domain/models/departamento.dart';
 import '../../../domain/models/generos.dart';
 import '../../../domain/models/municipio.dart';
+import '../../../domain/models/ocupacion.dart';
+import '../../../domain/models/paciente.dart';
 import '../../../domain/models/religion.dart';
 import '../../../domain/repositories/barrio_repository.dart';
 import '../../../domain/repositories/departamento_repository.dart';
 import '../../../domain/repositories/genero_repository.dart';
 import '../../../domain/repositories/municipio_repository.dart';
+import '../../../domain/repositories/ocupacion_repository.dart';
+import '../../../domain/repositories/paciente_repository.dart';
 import '../../../domain/repositories/religion_repository.dart';
+import 'register_form/barrio_municipio_field.dart';
+import 'register_form/cantidadhermanos_inss_field.dart';
+import 'register_form/cedula_genero_field.dart';
+import 'register_form/departamento_correo_field.dart';
+import 'register_form/estadoc_religion_field.dart';
+import 'register_form/nombres_field.dart';
+import 'register_form/ocupacion_escolaridad_field.dart';
 import 'register_text_field.dart';
 import 'register_date_fieldd.dart';
-import 'register_droopdown.dart';
 import 'register_button.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -40,11 +52,15 @@ class _RegisterFormState extends State<RegisterForm> {
   final telefonoController = TextEditingController();
   final passwordController = TextEditingController();
 
-  String? genero;
-  String? tipoUsuario;
-  String? religion;
+  int genero = 1;
+  int tipoUsuario = 1;
+  int religion = 1;
+  int ocupacion = 1;
+  int edad = 1;
   String? estadoCivil;
   String? escolaridad;
+
+  DateTime fechaNacimientoDate = DateTime.now();
 
   // variables para cargar los dropdowns
   final _departamentoRepo = DepartamentoRepository();
@@ -52,35 +68,44 @@ class _RegisterFormState extends State<RegisterForm> {
   final _barrioRepo = BarrioRepository();
   final _generoRepo = GeneroRepository();
   final _religionRepo = ReligionRepository();
+  final _ocupacionRepo = OcupacionRepository();
 
   Departamento? departamentoSeleccionado;
   Municipio? municipioSeleccionado;
   Barrio? barrioSeleccionado;
   Generos? generoSeleccionado;
   Religion? religionSeleccionado;
+  Ocupacion? ocupacionSeleccionado;
 
   List<Departamento> departamentos = [];
   List<Municipio> municipios = [];
   List<Barrio> barrios = [];
   List<Generos> generos = [];
   List<Religion> religions = [];
+  List<Ocupacion> ocupaciones = [];
 
   bool loadingDepartamentos = true;
   bool loadingMunicipios = false;
   bool loadingBarrios = false;
   bool loadingGeneros = false;
   bool loadingReligions = false;
-  ////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////
-  ///
-  ///
+  bool loadingOcupaciones = false;
+
   @override
   void initState() {
     super.initState();
     _loadDepartamentos();
     _loadGeneros();
     _loadReligions();
+    _loadOcupaciones();
+  }
+
+  Future<void> _loadOcupaciones() async {
+    final data = await _ocupacionRepo.getOcupaciones();
+    setState(() {
+      ocupaciones = data;
+      loadingOcupaciones = false;
+    });
   }
 
   Future<void> _loadReligions() async {
@@ -136,7 +161,6 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  ///
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -144,81 +168,31 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         children: [
           // Primer nombre - Segundo nombre
-          Row(
-            children: [
-              Expanded(
-                child: RegisterTextField(
-                  label: "Primer nombre",
-                  controller: primerNombreController,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: RegisterTextField(
-                  label: "Segundo nombre",
-                  controller: segundoNombreController,
-                ),
-              ),
-            ],
+          NombresFields(
+            primerNombreController: primerNombreController,
+            segundoNombreController: segundoNombreController,
           ),
           const SizedBox(height: 10),
 
           // Primer apellido - Segundo apellido
-          Row(
-            children: [
-              Expanded(
-                child: RegisterTextField(
-                  label: "Primer apellido",
-                  controller: primerApellidoController,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: RegisterTextField(
-                  label: "Segundo apellido",
-                  controller: segundoApellidoController,
-                ),
-              ),
-            ],
+          ApellidosFields(
+            primerApellidoController: primerApellidoController,
+            segundoApellidoController: segundoApellidoController,
           ),
           const SizedBox(height: 10),
 
           // Cédula - Género
-          Row(
-            children: [
-              Expanded(
-                child: RegisterTextField(
-                  label: "Cédula",
-                  controller: cedulaController,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: loadingGeneros
-                    ? const CircularProgressIndicator()
-                    : RegisterDropdown(
-                        label: "Género",
-                        selectedValue: generoSeleccionado?.nombre,
-                        items: generos.map((g) => g.nombre).toList(),
-                        onChanged: (value) {
-                          final gen = generos.firstWhere(
-                            (g) => g.nombre == value,
-                            orElse: () => Generos(
-                              id: -1,
-                              nombre: '',
-                            ), // ❌ valor por defecto válido
-                          );
-                          if (gen.id != -1) {
-                            // solo si encontramos uno real
-                            setState(() {
-                              generoSeleccionado = gen;
-                              genero = gen.nombre;
-                            });
-                          }
-                        },
-                      ),
-              ),
-            ],
+          CedulaGeneroField(
+            cedulaController: cedulaController,
+            generos: generos,
+            generoSeleccionado: generoSeleccionado,
+            loadingGeneros: loadingGeneros,
+            onGeneroChanged: (gen) {
+              setState(() {
+                generoSeleccionado = gen;
+                genero = gen.id;
+              });
+            },
           ),
           const SizedBox(height: 10),
 
@@ -244,191 +218,90 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 10),
 
           // Barrio - Municipio
-          // Barrio - Municipio con Dropdowns
-          // Barrio - Municipio con Dropdowns
-          Row(
-            children: [
-              Expanded(
-                child: loadingBarrios
-                    ? const CircularProgressIndicator()
-                    : RegisterDropdown(
-                        label: "Barrio",
-                        selectedValue: barrioSeleccionado?.nombre,
-                        items: barrios.map((b) => b.nombre).toList(),
-                        onChanged: (value) {
-                          final bar = barrios.firstWhere(
-                            (b) => b.nombre == value,
-                            orElse: () => Barrio(
-                              id: -1,
-                              nombre: '',
-                              municipioId: 0,
-                            ), // ❌ valor por defecto válido
-                          );
-                          if (bar.id != -1) {
-                            // solo si encontramos uno real
-                            setState(() {
-                              barrioSeleccionado = bar;
-                              barrioController.text = bar.nombre;
-                            });
-                          }
-                        },
-                      ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: loadingMunicipios
-                    ? const CircularProgressIndicator()
-                    : // Dropdown Municipio
-                      Expanded(
-                        child: loadingMunicipios
-                            ? const CircularProgressIndicator()
-                            : RegisterDropdown(
-                                label: "Municipio",
-                                selectedValue: municipioSeleccionado?.nombre,
-                                items: municipios.map((m) => m.nombre).toList(),
-                                onChanged: (value) {
-                                  final mun = municipios.firstWhere(
-                                    (m) => m.nombre == value,
-                                    orElse: () => municipios
-                                        .first, // evita errores si no encuentra
-                                  );
-                                  setState(() {
-                                    municipioSeleccionado = mun;
-                                    barrioSeleccionado = null;
-                                    municipioController.text = mun.nombre;
-                                  });
-                                  _loadBarrios(mun.id);
-                                },
-                              ),
-                      ),
-              ),
-            ],
+          BarrioMunicipioField(
+            barrios: barrios,
+            municipios: municipios,
+            loadingBarrios: loadingBarrios,
+            loadingMunicipios: loadingMunicipios,
+            barrioSeleccionado: barrioSeleccionado,
+            municipioSeleccionado: municipioSeleccionado,
+            onBarrioChanged: (bar) {
+              setState(() {
+                barrioSeleccionado = bar;
+                barrioController.text = bar.id.toString();
+              });
+            },
+            onMunicipioChanged: (mun) {
+              setState(() {
+                municipioSeleccionado = mun;
+                barrioSeleccionado = null;
+                municipioController.text = mun.id.toString();
+                _loadBarrios(mun.id);
+              });
+            },
           ),
-
           const SizedBox(height: 10),
 
           // Departamento - Correo
-          Row(
-            children: [
-              Expanded(
-                child: // 🔹 Dropdown Departamento
-                loadingDepartamentos
-                    ? const CircularProgressIndicator()
-                    : RegisterDropdown(
-                        label: "Departamento",
-                        selectedValue: departamentoSeleccionado?.nombre,
-                        items: departamentos.map((d) => d.nombre).toList(),
-                        onChanged: (value) {
-                          final dep = departamentos.firstWhere(
-                            (d) => d.nombre == value,
-                          );
-                          setState(() {
-                            departamentoSeleccionado = dep;
-                            departamentoController.text = dep.nombre;
-                          });
-                          _loadMunicipios(dep.id);
-                        },
-                      ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: RegisterTextField(
-                  label: "Correo",
-                  controller: correoController,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ),
-            ],
+          DepartamentoCorreoField(
+            departamentos: departamentos,
+            loadingDepartamentos: loadingDepartamentos,
+            departamentoSeleccionado: departamentoSeleccionado,
+            onDepartamentoChanged: (dep) {
+              setState(() {
+                departamentoSeleccionado = dep;
+                departamentoController.text = dep.id.toString();
+              });
+              _loadMunicipios(dep.id);
+            },
+            correoController: correoController,
           ),
           const SizedBox(height: 10),
 
           // Estado civil - Religión
-          Row(
-            children: [
-              Expanded(
-                child: RegisterDropdown(
-                  label: "Estado civil",
-                  selectedValue: estadoCivil,
-                  items: [
-                    "Soltero",
-                    "Casado",
-                    "Divorciado",
-                    "Viudo",
-                    "Union libre",
-                  ],
-                  onChanged: (val) => setState(() => estadoCivil = val),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: loadingReligions
-                    ? const CircularProgressIndicator()
-                    : RegisterDropdown(
-                        label: "Religión",
-                        selectedValue: religionSeleccionado?.nombre,
-                        items: religions.map((r) => r.nombre).toList(),
-                        onChanged: (value) {
-                          final rel = religions.firstWhere(
-                            (r) => r.nombre == value,
-                            orElse: () => Religion(
-                              id: -1,
-                              nombre: '',
-                            ), // ❌ valor por defecto válido
-                          );
-                          if (rel.id != -1) {
-                            // solo si encontramos uno real
-                            setState(() {
-                              religionSeleccionado = rel;
-                              religion = rel.nombre;
-                            });
-                          }
-                        },
-                      ),
-              ),
-            ],
+          EstadoReligionField(
+            estadoCivil: estadoCivil,
+            onEstadoCivilChanged: (val) {
+              setState(() {
+                estadoCivil = val;
+              });
+            },
+            religions: religions,
+            loadingReligions: loadingReligions,
+            religionSeleccionado: religionSeleccionado,
+            onReligionChanged: (rel) {
+              setState(() {
+                religionSeleccionado = rel;
+                religion = rel.id;
+              });
+            },
           ),
           const SizedBox(height: 10),
 
-          // Ocupación - Escolaridad
-          Row(
-            children: [
-              Expanded(
-                child: RegisterTextField(
-                  label: "Ocupación",
-                  controller: ocupacionController,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: RegisterDropdown(
-                  label: "Escolaridad",
-                  selectedValue: escolaridad,
-                  items: ["No tiene", "Primaria", "Secundaria", "Universidad"],
-                  onChanged: (val) => setState(() => escolaridad = val),
-                ),
-              ),
-            ],
+          // Ocupación - Escolaridad - Religión
+          OcupacionEscolaridadField(
+            ocupaciones: ocupaciones,
+            loadingOcupaciones: loadingOcupaciones,
+            ocupacionSeleccionado: ocupacionSeleccionado,
+            onOcupacionChanged: (ocup) {
+              setState(() {
+                ocupacionSeleccionado = ocup;
+                ocupacion = ocup.id;
+              });
+            },
+            escolaridad: escolaridad,
+            onEscolaridadChanged: (val) {
+              setState(() {
+                escolaridad = val;
+              });
+            },
           ),
           const SizedBox(height: 10),
 
           // Cantidad de hermanos - N° INSS
-          Row(
-            children: [
-              Expanded(
-                child: RegisterTextField(
-                  label: "Cantidad de hermanos",
-                  controller: hermanosController,
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: RegisterTextField(
-                  label: "N° INSS",
-                  controller: inssController,
-                ),
-              ),
-            ],
+          HermanosInssField(
+            hermanosController: hermanosController,
+            inssController: inssController,
           ),
           const SizedBox(height: 10),
 
@@ -442,34 +315,71 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 10),
           // Botón
           RegisterButton(
-            onPressed: () {
-              // Depuración para ver los datos que se enviarán a la API
-              debugPrint("Primer Nombre: ${primerNombreController.text}");
-              debugPrint("Segundo Nombre: ${segundoNombreController.text}");
-              debugPrint("Primer Apellido: ${primerApellidoController.text}");
-              debugPrint("Segundo Apellido: ${segundoApellidoController.text}");
-              debugPrint("Cédula: ${cedulaController.text}");
-              debugPrint("Fecha: ${fechaController.text}");
-              debugPrint("Dirección: ${direccionController.text}");
-              debugPrint("Barrio: ${barrioController.text}");
-              debugPrint("Municipio: ${municipioController.text}");
-              debugPrint("Departamento: ${departamentoController.text}");
-              debugPrint("Correo: ${correoController.text}");
-              debugPrint("Ocupación: ${ocupacionController.text}");
-              debugPrint("Escolaridad: ${escolaridadController.text}");
-              debugPrint("Hermanos: ${hermanosController.text}");
-              debugPrint("INSS: ${inssController.text}");
-              debugPrint("Teléfono: ${telefonoController.text}");
-              debugPrint("Género: $genero");
-              debugPrint("Tipo de Usuario: $tipoUsuario");
-              debugPrint("Religión: $religion");
-              debugPrint("Estado Civil: $estadoCivil");
-
+            onPressed: () async {
               // Enviar datos a la API
+              sendPacienteToApi();
             },
           ),
         ],
       ),
     );
+  }
+
+  // Función para calcular edad
+  int calcularEdad(DateTime fechaNac) {
+    DateTime hoy = DateTime.now();
+    int edad = hoy.year - fechaNac.year;
+    if (hoy.month < fechaNac.month ||
+        (hoy.month == fechaNac.month && hoy.day < fechaNac.day)) {
+      edad--;
+    }
+    return edad;
+  }
+
+  // FUNCION PARA ENVIAR DATOS A LA API
+  void sendPacienteToApi() async {
+    final paciente = Paciente(
+      generalInfo: GeneralInfo(
+        cedula: cedulaController.text,
+        primerNombre: primerNombreController.text,
+        segundoNombre: segundoNombreController.text,
+        primerApellido: primerApellidoController.text,
+        segundoApellido: segundoApellidoController.text,
+        correo: correoController.text,
+        genero: genero,
+        fechaNacimiento: DateFormat("yyyy-MM-dd").format(fechaNacimientoDate),
+        tipoUsuario: tipoUsuario,
+      ),
+      numeroInss: inssController.text,
+      ocupacion: ocupacion,
+      escolaridad: escolaridad.toString(),
+      religion: religion,
+      edad: edad,
+      estadoCivil: estadoCivil.toString(),
+      cantidadHermanos: int.tryParse(hermanosController.text) ?? 0,
+      telefonos: [
+        Telefono(
+          telefono: int.tryParse(telefonoController.text) ?? 0,
+          compania: 1,
+        ),
+      ],
+      direcciones: [
+        Direccion(
+          departamento: int.tryParse(departamentoController.text) ?? 0,
+          municipio: int.tryParse(municipioController.text) ?? 0,
+          barrio: int.tryParse(barrioController.text) ?? 0,
+          direccion: direccionController.text,
+        ),
+      ],
+    );
+
+    final repo = PacienteRepository();
+    final exito = await repo.crearPaciente(paciente);
+
+    if (exito) {
+      debugPrint("✅ Paciente creado correctamente");
+    } else {
+      debugPrint("❌ Error al crear el paciente");
+    }
   }
 }
