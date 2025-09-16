@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.UnitOfWork;
+using SaludAppBackend.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace SaludAppBackend.Services.UtilitiesService
         public async Task<IEnumerable<TbAreasMedica>> GetAreasMedicasAsync()
             => await _unitOfWork.Utilities.GetAreasMedicasAsync();
 
-        public async Task<IEnumerable<TbBarrio>> GetBarriosAsync()
-            => await _unitOfWork.Utilities.GetBarriosAsync();
+        public async Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio)
+            => await _unitOfWork.Utilities.GetBarriosPorMunicipioAsync(municipio);
 
         public async Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosAsync()
             => await _unitOfWork.Utilities.GetCentrosMedicosAsync();
@@ -38,8 +39,8 @@ namespace SaludAppBackend.Services.UtilitiesService
         public async Task<IEnumerable<TbGenero>> GetGenerosAsync()
             => await _unitOfWork.Utilities.GetGenerosAsync();
 
-        public async Task<IEnumerable<TbMunicipio>> GetMunicipiosAsync()
-            => await _unitOfWork.Utilities.GetMunicipiosAsync();
+        public async Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento)
+            => await _unitOfWork.Utilities.GetMunicipiosPorDepartamentoAsync(departamento);
 
         public async Task<IEnumerable<TbOcupacione>> GetOcupacionesPacientesAsync()
             => await _unitOfWork.Utilities.GetOcupacionesPacientesAsync();

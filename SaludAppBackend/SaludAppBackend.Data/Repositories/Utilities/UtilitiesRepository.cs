@@ -1,5 +1,6 @@
 ﻿using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
+using SaludAppBackend.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,11 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         public async Task<IEnumerable<TbAreasMedica>> GetAreasMedicasAsync() 
             => await GetAllAsync<TbAreasMedica>();
 
-        public async Task<IEnumerable<TbBarrio>> GetBarriosAsync() 
-            => await GetAllAsync<TbBarrio>();
+        public async Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio) 
+            => await QuerySPAsync<BarriosDTO>("sp_devolver_barrios_por_municipio", new
+            {
+                iNId_municipio = municipio
+            });
 
         public async Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosAsync()
             => await GetAllAsync<TbCentrosMedico>();
@@ -28,8 +32,10 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         public async Task<IEnumerable<TbGenero>> GetGenerosAsync()
             => await GetAllAsync<TbGenero>();
 
-        public async Task<IEnumerable<TbMunicipio>> GetMunicipiosAsync()
-            => await GetAllAsync<TbMunicipio>();
+        public async Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento)
+            => await QuerySPAsync<MunicipiosDTO>("sp_devolver_municipios_por_departamento", new {
+                iNId_departamento = departamento
+            });
 
         public async Task<IEnumerable<TbOcupacione>> GetOcupacionesPacientesAsync()
             => await GetAllAsync<TbOcupacione>();

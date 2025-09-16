@@ -84,13 +84,13 @@ namespace SaludAppBackend.API.Controllers
         }
 
         [HttpGet]
-        [Route("ObtenerMunicipios")]
-        public async Task<IActionResult> GetMunicipiosAsync()
+        [Route("ObtenerMunicipios/{departamento}")]
+        public async Task<IActionResult> GetMunicipiosAsync(int departamento)
         {
             try
             {
-                var tiposUsuario = await _utilitiesService.GetMunicipiosAsync();
-                return Ok(tiposUsuario);
+                var municipios = await _utilitiesService.GetMunicipiosPorDepartamentoAsync(departamento);
+                return Ok(municipios);
             }
             catch (Exception ex)
             {
@@ -100,12 +100,12 @@ namespace SaludAppBackend.API.Controllers
         }
 
         [HttpGet]
-        [Route("ObtenerBarrios")]
-        public async Task<IActionResult> GetBarriosAsync()
+        [Route("ObtenerBarrios/{municipio}")]
+        public async Task<IActionResult> GetBarriosAsync(int municipio)
         {
             try
             {
-                var tiposUsuario = await _utilitiesService.GetBarriosAsync();
+                var tiposUsuario = await _utilitiesService.GetBarriosPorMunicipioAsync(municipio);
                 return Ok(tiposUsuario);
             }
             catch (Exception ex)

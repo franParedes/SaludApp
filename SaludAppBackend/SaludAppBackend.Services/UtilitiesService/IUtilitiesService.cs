@@ -1,4 +1,5 @@
 ﻿using SaludAppBackend.Data.Models;
+using SaludAppBackend.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace SaludAppBackend.Services.UtilitiesService
         Task<IEnumerable<TbGenero>> GetGenerosAsync();
         Task<IEnumerable<TbProvTelefonico>> GetProveedoresTelefonicoAsync();
         Task<IEnumerable<TbDepartamento>> GetDepartamentosAsync();
-        Task<IEnumerable<TbMunicipio>> GetMunicipiosAsync();
-        Task<IEnumerable<TbBarrio>> GetBarriosAsync();
+        Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento);
+        Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio);
         Task<IEnumerable<TbReligione>> GetReligionesAsync();
         Task<IEnumerable<TbOcupacione>> GetOcupacionesPacientesAsync();
 
