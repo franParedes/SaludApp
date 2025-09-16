@@ -10,7 +10,7 @@ const theme: Theme = createTheme({
   
   components: {
     MuiTextField: {
-        styleOverrides: {
+      styleOverrides: {
         root: {
           "& label": {
             color: "#0088FF", 
@@ -23,21 +23,35 @@ const theme: Theme = createTheme({
         },
       },
     },
+     MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "#0088FF",
+        }  
+      }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          color: "#0088FF",
+        }  
+      }
+    },
     MuiOutlinedInput: {
-    styleOverrides: {
-      root: {
-        "& fieldset": {
-          borderColor: "#0088FF", 
+      styleOverrides: {
+        root: {
+          "& fieldset": {
+            borderColor: "#0088FF", 
+          },
+          "&:hover fieldset": {
+            borderColor: "#0088FF"
+          },
+          borderRadius: '3rem'
         },
-        "&:hover fieldset": {
-          borderColor: "#0088FF"
-        },
-        borderRadius: '3rem'
       },
     },
-  },
     MuiButton: {
-        styleOverrides: {
+      styleOverrides: {
         root: {
             borderRadius: '2.5rem',
             textTransform: 'none', 
