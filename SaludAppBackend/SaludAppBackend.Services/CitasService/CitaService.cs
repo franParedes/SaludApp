@@ -34,7 +34,6 @@ namespace SaludAppBackend.Services.CitasService
                 FechaSolicitud = citaLaboratorio.FechaSolicitud,
                 Estado = "pendiente",
                 MotivoCita = citaLaboratorio.MotivoCita,
-                MotivoRechazo = citaLaboratorio.MotivoRechazo,
                 TipoCita = citaLaboratorio.TipoCita
             };
 
@@ -71,6 +70,12 @@ namespace SaludAppBackend.Services.CitasService
 
             if (pacienteExiste == 0)
                 throw new InvalidOperationException($"El paciente con id {citaMedica.PacienteId} no existe");
+            
+            //Hay que cambiar esto para que asigne automáticamente el médico
+            var medicoAsignar = await _unitOfWork.Medicos.AsignarMedicoAcita(citaMedica.Especialidad);
+
+            if (medicoAsignar == 0)
+                throw new InvalidOperationException($"No hay profesional disponible para esta especialidad");
 
             var nuevaCita = new TbCita
             {
@@ -79,14 +84,13 @@ namespace SaludAppBackend.Services.CitasService
                 FechaSolicitud = citaMedica.FechaSolicitud,
                 Estado = "pendiente",
                 MotivoCita = citaMedica.MotivoCita,
-                MotivoRechazo = citaMedica.MotivoRechazo,
                 TipoCita = citaMedica.TipoCita
             };
 
             var nuevaCitaMedica = new TbCitasMedica
             {
                 IdCitaNavigation = nuevaCita,
-                MedicoId = citaMedica.MedicoId,
+                MedicoId = medicoAsignar,
                 Especialidad = citaMedica.Especialidad,
             };
 
@@ -102,9 +106,16 @@ namespace SaludAppBackend.Services.CitasService
                 nuevaCitaMedica.TbArchivosCitasMedicas.Add(nuevoArchivoMed);
             }
 
-            //await _unitOfWork.Citas.AddCita(nuevaCita);
-            await _unitOfWork.Citas.AddCitaMedica(nuevaCitaMedica);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                await _unitOfWork.Citas.AddCita(nuevaCita);
+                await _unitOfWork.Citas.AddCitaMedica(nuevaCitaMedica);
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
             return nuevaCitaMedica.IdCitaMedica;
         }

@@ -8,7 +8,6 @@ namespace SaludAppBackend.Models.Citas
 {
     public class CitaMedicaModel : CitaModel
     {
-        public int MedicoId { get; set; }
         public int Especialidad { get; set; }
     }
 }

@@ -22,5 +22,37 @@ namespace SaludAppBackend.Data.Repositories.Medicos
         {
             await _appDbContext.TbMedicos.AddAsync(medico);
         }
+
+        public async Task<int> BuscarMedicoPorIdAsync(int idMedico)
+        {
+            try
+            {
+                var sql = "SELECT f_buscar_medico_por_id(@IdMedParam)";
+                var parameters = new { IdMedParam = idMedico };
+
+                return await ExecuteScalarAsync<int>(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar comprobar la existencia del medico");
+                throw;
+            }
+        }
+
+        public async Task<int> AsignarMedicoAcita(int idEspecialidad)
+        {
+            try
+            {
+                var sql = "SELECT f_asignar_medico(@IdEspecialidad)";
+                var parameters = new { IdEspecialidad = idEspecialidad };
+
+                return await ExecuteScalarAsync<int>(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar comprobar la existencia del medico");
+                throw;
+            }
+        }
     }
 }

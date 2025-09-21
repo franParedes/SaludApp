@@ -21,7 +21,7 @@ namespace SaludAppBackend.API.Controllers
 
         [HttpPost]
         [Route("AgendarCitaMedica")]
-        public async Task<IActionResult> CrearNuevoPaciente([FromBody] CitaMedicaModel cita)
+        public async Task<IActionResult> CrearNuevaCitaMedicaAsync([FromBody] CitaMedicaModel cita)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace SaludAppBackend.API.Controllers
                 var nuevaCitaMed = await _citaService.CrearNuevaCitaMedicaAsync(cita);
 
                 // Devolvemos 201 Created y el objeto creado.
-                return Ok(new { id = nuevaCitaMed });
+                return Ok(new { idCitaMedica = nuevaCitaMed });
             }
             catch (InvalidOperationException ex)
             {
@@ -47,7 +47,7 @@ namespace SaludAppBackend.API.Controllers
 
         [HttpPost]
         [Route("AgendarCitaLaboratorio")]
-        public async Task<IActionResult> CrearNuevoPaciente([FromBody] CitaLaboratorioModel cita)
+        public async Task<IActionResult> CrearNuevaCitaDeLaboratorioAsync([FromBody] CitaLaboratorioModel cita)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace SaludAppBackend.API.Controllers
                 var nuevaCitaLab = await _citaService.CrearNuevaCitaDeLaboratorioAsync(cita);
 
                 // Devolvemos 201 Created y el objeto creado.
-                return Ok(new { id = nuevaCitaLab });
+                return Ok(new { idCitaLaboratorio = nuevaCitaLab });
             }
             catch (InvalidOperationException ex)
             {
