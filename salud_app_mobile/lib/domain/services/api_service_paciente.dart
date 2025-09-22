@@ -6,7 +6,7 @@ class ApiServicePaciente {
   static const String baseUrl = "https://10.0.2.2:7239/api";
 
   // para dispositivo físico
-  // static const String baseUrl = "https://192.168.0.12:7239/api";
+  //static const String baseUrl = "https://192.168.0.12:7239/api";
 
   static Future<dynamic> post(
     String endpoint,
