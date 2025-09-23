@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SaludAppBackend.Models.Citas;
-using SaludAppBackend.Models.Usuarios;
 using SaludAppBackend.Services.CitasService;
 
 namespace SaludAppBackend.API.Controllers
@@ -34,13 +32,13 @@ namespace SaludAppBackend.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // Capturamos errores de negocio, como cédula o correo duplicado.
                 _logger.LogWarning(ex.Message);
                 return Conflict(new { message = ex.Message }); // HTTP 409
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error inesperado al crear cita médica");
+                _logger.LogError("Error inesperado al crear cita médica: {message}", ex.Message);
+
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
@@ -66,7 +64,85 @@ namespace SaludAppBackend.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error inesperado al crear cita de laboratorio");
+                _logger.LogError("Error inesperado al crear cita de laboratorio: {message}", ex.Message);
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpPut]
+        [Route("AprobarCita/{idCita}/{fechaCita}")]
+        public async Task<IActionResult> AprobarCita(int idCita, DateTime fechaCita)
+        {
+            try
+            {
+                _logger.LogInformation("Recibida petición para aprobar cita");
+
+                var citaAprobada = await _citaService.AprobarCita(idCita, fechaCita);
+
+                // Devolvemos 201 Created y el objeto creado.
+                return Ok(citaAprobada);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al aprobar cita: {message}", ex.Message);
+
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpPut]
+        [Route("RechazarCita/{idCita}/{motivoRechazo}")]
+        public async Task<IActionResult> RechazarCita(int idCita, string motivoRechazo)
+        {
+            try
+            {
+                _logger.LogInformation("Recibida petición para rechazar cita");
+
+                var citaRechazada = await _citaService.RechazarCita(idCita, motivoRechazo);
+
+                // Devolvemos 201 Created y el objeto creado.
+                return Ok(citaRechazada);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al rechazar cita: {message}", ex.Message);
+
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpPut]
+        [Route("CambiarEstadoCita/{idCita}/{estado}")]
+        public async Task<IActionResult> CambiarEstadoCita(int idCita, string estado)
+        {
+            try
+            {
+                _logger.LogInformation("Recibida petición para cambiar estado de cita");
+
+                var hecho = await _citaService.CambiarEstadoCita(estado, idCita);
+
+                // Devolvemos 201 Created y el objeto creado.
+                return Ok(hecho);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al cambiar estado de cita: {message}", ex.Message);
+
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }

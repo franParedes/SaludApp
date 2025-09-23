@@ -19,9 +19,44 @@ namespace SaludAppBackend.Services.CitasService
             _logger = logger;
         }
 
+        public async Task<bool> AprobarCita(int idCita, DateTime fechaCita)
+        {
+            _logger.LogInformation("Trantando de aprobar la cita {idCita} para la fecha {fechaCita}", idCita, fechaCita);
+
+            try
+            {
+                _unitOfWork.Citas.AprobarCita(idCita, fechaCita);
+                 var filasAfectadas = await _unitOfWork.CompleteAsync();
+
+                return filasAfectadas > 0;
+            } catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> CambiarEstadoCita(string Estado, int idCita)
+        {
+            _logger.LogInformation("Intentando cambiar el estado de la cita con id {idCita}", idCita);
+            try
+            {
+                _unitOfWork.Citas.CambiarEstadoCita(Estado, idCita);
+                var filas = await _unitOfWork.CompleteAsync();
+
+                return filas > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return false;
+            }
+        }
+
         public async Task<int> CrearNuevaCitaDeLaboratorioAsync(CitaLaboratorioModel citaLaboratorio)
         {
             _logger.LogInformation("Creando nueva solicitud de cita de laboratorio");
+            
             var pacienteExiste = await _unitOfWork.Pacientes.BuscarPacientePorIdAsync(citaLaboratorio.PacienteId);
 
             if (pacienteExiste == 0)
@@ -56,9 +91,16 @@ namespace SaludAppBackend.Services.CitasService
                 nuevaCitaLab.TbArchivosCitasLabs.Add(nuevoArchivoLab);
             }
 
-            //await _unitOfWork.Citas.AddCita(nuevaCita);
-            await _unitOfWork.Citas.AddCitaLaboratorio(nuevaCitaLab);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                //await _unitOfWork.Citas.AddCita(nuevaCita);
+                await _unitOfWork.Citas.AddCitaLaboratorio(nuevaCitaLab);
+                await _unitOfWork.CompleteAsync(); 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
 
             return nuevaCitaLab.IdCitaLab;
         }
@@ -71,7 +113,6 @@ namespace SaludAppBackend.Services.CitasService
             if (pacienteExiste == 0)
                 throw new InvalidOperationException($"El paciente con id {citaMedica.PacienteId} no existe");
             
-            //Hay que cambiar esto para que asigne automáticamente el médico
             var medicoAsignar = await _unitOfWork.Medicos.AsignarMedicoAcita(citaMedica.Especialidad);
 
             if (medicoAsignar == 0)
@@ -108,7 +149,7 @@ namespace SaludAppBackend.Services.CitasService
 
             try
             {
-                await _unitOfWork.Citas.AddCita(nuevaCita);
+                //await _unitOfWork.Citas.AddCita(nuevaCita);
                 await _unitOfWork.Citas.AddCitaMedica(nuevaCitaMedica);
                 await _unitOfWork.CompleteAsync();
             }
@@ -118,6 +159,23 @@ namespace SaludAppBackend.Services.CitasService
             }
 
             return nuevaCitaMedica.IdCitaMedica;
+        }
+
+        public async Task<bool> RechazarCita(int idCita, string motivoRechazo)
+        {
+            _logger.LogInformation("Intentando rechazar la cita con id {idCita}", idCita);
+            try
+            {
+                _unitOfWork.Citas.RechazarCita(idCita, motivoRechazo);
+                var filas = await _unitOfWork.CompleteAsync();
+
+                return filas > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return false;
+            }
         }
     }
 }
