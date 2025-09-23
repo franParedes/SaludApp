@@ -59,11 +59,16 @@ export default function Textfields() {
 
         {/* fecha de nacimiento */}
         <Grid size={{ xs: 12, sm: 6 }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateField']}>
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <DemoContainer components={['DateField']} >
               <DateField 
                 label="Fecha de nacimiento" 
                 variant="outlined"
+                slotProps={{
+                  textField: {
+                    color: "primary"
+                  }
+                }}
                 />
             </DemoContainer>
           </LocalizationProvider>
@@ -113,6 +118,7 @@ export default function Textfields() {
             label="Egresado de" 
             fullWidth />
         </Grid>
+        
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField 
             label="Egresado el" 

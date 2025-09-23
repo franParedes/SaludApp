@@ -1,3 +1,20 @@
+# SaluddApp - Web Admin
+
+## Descripcion
+SaludApp Web Admin es un panel de administración para gestionar citas médicas, registros de pacientes y otros datos relacionados con la gestión de una clínica u hospital.  
+El frontend está desarrollado en **React con TypeScript**, utilizando **Vite** como bundler, **Tailwind CSS** para estilos y **Material UI (MUI)** para componentes.  
+Consume **APIs desarrolladas en C# con Swagger**, lo que permite una integración fácil y documentada con el backend.
+
+## Tecnologías
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Material UI (MUI)  
+- **Backend:** C# ASP.NET Core Web API, Swagger  
+- **Comunicación:** Axios o Fetch para consumir APIs
+
+## Instalación
+1. Clonar el repositorio:
+   ```bash
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

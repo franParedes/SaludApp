@@ -2,59 +2,65 @@ import { createTheme, type Theme } from '@mui/material/styles';
 
 // Reglas globales de estilos a los components
 const theme: Theme = createTheme({
-  palette: {
+ palette: {
     primary: {
       main: '#0088FF',
     },
   },
-  
   components: {
-    MuiTextField: {
+    MuiAppBar: {
       styleOverrides: {
         root: {
-          "& label": {
-            color: "#0088FF", 
-          },
-          "& label.Mui-focused": {
-            color: "#0088FF",
-          },
-       
-          borderRadius: '3rem',
-        },
+       backgroundColor: "#0088FF", 
+        color: "#fff",              
+        borderRadius: "1rem",       
+        margin: "1rem",            
+        }
       },
     },
-     MuiInputLabel: {
+    MuiInputLabel: {
       styleOverrides: {
         root: {
           color: "#0088FF",
-        }  
-      }
+
+          "&.Mui-focused": {
+            color: "#0088FF",
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+
+          borderRadius: '3rem',
+          "& fieldset": {
+            borderColor: "#0088FF",
+          },
+
+          "&:hover fieldset": {
+            borderColor: "#0088FF",
+          },
+
+          "&.Mui-focused fieldset": {
+            borderColor: "#0088FF",
+          },
+        },
+      },
     },
     MuiSelect: {
       styleOverrides: {
         root: {
           color: "#0088FF",
-        }  
-      }
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          "& fieldset": {
-            borderColor: "#0088FF", 
-          },
-          "&:hover fieldset": {
-            borderColor: "#0088FF"
-          },
-          borderRadius: '3rem'
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-            borderRadius: '2.5rem',
-            textTransform: 'none', 
+          borderRadius: '2.5rem',
+          
+          textTransform: 'none',
         },
       },
     },
