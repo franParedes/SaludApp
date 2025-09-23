@@ -1,16 +1,74 @@
-# salud_app_mobile
+# Salud App Mobile
 
-A new Flutter project.
+Servicio de aplicación móvil para SaludApp, donde los pacientes podran gestionar sus citas, ver su historial médico y tendran un recordatorio de sus medicamentos.
+Esta app consume una API elaborada en .NET que cuenta con acceso a MySQL.
 
-## Getting Started
+## Rquisitos previos
 
-This project is a starting point for a Flutter application.
+Antes de comenzar asegurate de tener instalados los siguientes programas:
+- [Flutter](https://docs.flutter.dev/get-started/install)  
+- [Android Studio](https://developer.android.com/studio) (con un emulador configurado)  
+- [Visual Studio Code](https://code.visualstudio.com/)  
+- [Visual Studio](https://visualstudio.microsoft.com/) (con soporte para **ASP.NET Core**)  
+- [MySQL](https://dev.mysql.com/downloads/)  
+- Un **gestor de base de datos MySQL** como [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) o [DBeaver](https://dbeaver.io/)
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## ¿Cómo ejecutar el proyecto en un entorno local?
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Clonar el repositorio
+```bash
+git clone https://github.com/franParedes/SaludApp.git
+cd SaludApp 
+```
+
+### Configurar la base de datos
+
+Abre tu gestor de base de datos de preferencia y navega a la carpeta /Database/Modelado_BD donde encontraras los scritps necesarios para generar la base de datos, funciones y procedimientos almacenados necesarios para el buen funcionamiento del API
+
+### Configura el API en Visual Studio .NET
+
+Abre el proyecto SaludAppBackend.sln en visual estudio, navega a la carpeta para encontrarlo
+
+```bash
+cd SaludApp/SaludAppBackend
+```
+
+y abrir el proyecto, luego de eso, Configurar la cadena de conexión a MySQL en appsettings.json
+
+
+```bash
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=db_saludapp;Uid=root;Pwd=[Aqui va tu contraseña]"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "LogPath": "C:\\LogsSaludApp\\LogSaludApp.log",
+  "LogLevelMin": "Information"
+}
+
+```
+
+Ejecuta el programa con F5
+
+### Configurar y ejecutar la app de flutter
+
+Se deben seguir los siguientes pasos:
+
+- Ejecutar el emulador de android 
+- Abrir la carpeta del proyecto en vscode
+- Abrir una terminal en la carpeta del proyecto y ejecutar: flutter pub get
+- Seleccionar el dispositivo emulado
+- Ejecutar el proyecto con CTRL+F5
+
+
+
+
+
