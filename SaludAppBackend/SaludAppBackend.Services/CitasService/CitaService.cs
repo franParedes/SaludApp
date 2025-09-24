@@ -161,6 +161,40 @@ namespace SaludAppBackend.Services.CitasService
             return nuevaCitaMedica.IdCitaMedica;
         }
 
+        public async Task<bool> EliminarCitaLab(int idCitaLab)
+        {
+            _logger.LogInformation("Intentando eliminar la cita de laboratorio con id {idCita}", idCitaLab);
+            try
+            {
+                _unitOfWork.Citas.EliminarCitaLab(idCitaLab);
+                var filas = await _unitOfWork.CompleteAsync();
+
+                return filas > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> EliminarCitaMedica(int idCitaMedica)
+        {
+            _logger.LogInformation("Intentando eliminar la cita médica con id {idCita}", idCitaMedica);
+            try
+            {
+                _unitOfWork.Citas.EliminarCitaMedica(idCitaMedica);
+                var filas = await _unitOfWork.CompleteAsync();
+
+                return filas > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return false;
+            }
+        }
+
         public async Task<bool> RechazarCita(int idCita, string motivoRechazo)
         {
             _logger.LogInformation("Intentando rechazar la cita con id {idCita}", idCita);

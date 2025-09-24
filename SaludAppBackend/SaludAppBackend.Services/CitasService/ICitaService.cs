@@ -14,5 +14,7 @@ namespace SaludAppBackend.Services.CitasService
         Task<bool> CambiarEstadoCita(string Estado, int idCita);
         Task<bool> AprobarCita(int idCita, DateTime fechaCita);
         Task<bool> RechazarCita(int idCita, string motivoRechazo);
+        Task<bool> EliminarCitaMedica(int idCitaMedica);
+        Task<bool> EliminarCitaLab(int idCitaLab);
     }
 }
