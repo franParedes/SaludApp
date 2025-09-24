@@ -146,5 +146,57 @@ namespace SaludAppBackend.API.Controllers
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
+
+        [HttpDelete]
+        [Route("EliminarCitaMedica/{idCitaMedica}")]
+        public async Task<IActionResult> EliminarCitaMedica(int idCitaMedica)
+        {
+            try
+            {
+                _logger.LogInformation("Recibida petición para elimnar cita médica");
+
+                var hecho = await _citaService.EliminarCitaMedica(idCitaMedica);
+
+                // Devolvemos 201 Created y el objeto creado.
+                return Ok(hecho);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al eliminar cita médica: {message}", ex.Message);
+
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpDelete]
+        [Route("EliminarCitaLaboratorio/{idCitaLab}")]
+        public async Task<IActionResult> EliminarCitaLab(int idCitaLab)
+        {
+            try
+            {
+                _logger.LogInformation("Recibida petición para elimnar cita de laboratorio");
+
+                var hecho = await _citaService.EliminarCitaLab(idCitaLab);
+
+                // Devolvemos 201 Created y el objeto creado.
+                return Ok(hecho);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al eliminar cita de laboratorio: {message}", ex.Message);
+
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
     }
 }

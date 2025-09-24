@@ -62,6 +62,18 @@ namespace SaludAppBackend.Data.Repositories.Citas
             _appDbContext.Entry(cita).Property(x => x.Estado).IsModified = true;
         }
 
+        public void EliminarCitaLab(int idCitaLab)
+        {
+            var cita = new TbCitasLaboratorio { IdCitaLab = idCitaLab };
+            _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        }
+
+        public void EliminarCitaMedica(int idCitaMedica)
+        {
+            var cita = new TbCitasMedica { IdCitaMedica = idCitaMedica };
+            _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        }
+
         public void RechazarCita(int idCita, string motivoRechazo)
         {
             var cita = new TbCita { IdCita= idCita };
