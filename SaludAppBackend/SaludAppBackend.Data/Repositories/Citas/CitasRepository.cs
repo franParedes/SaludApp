@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SaludAppBackend.Data.Repositories.Citas
 {
@@ -31,6 +26,63 @@ namespace SaludAppBackend.Data.Repositories.Citas
         public async Task AddCitaMedica(TbCitasMedica citaMedica)
         {
             await _appDbContext.TbCitasMedicas.AddAsync(citaMedica);
+        }
+
+        public void AprobarCita(int idCita, DateTime fechaCita)
+        {
+            /*
+             solo una propiedad asignada: el Id del registro que quieres modificar. Esto es como decir 
+             "yo ya sé cuál es la cita, solo necesito su Id para encontrarla".
+             */
+            var cita = new TbCita { IdCita = idCita };
+
+            /*
+             Esto le dice a Entity Framework: "Empieza a seguir este objeto para hacer cambios, pero 
+             no asumas que es nuevo, porque este ya existe en la base de datos".
+             */
+            _appDbContext.TbCitas.Attach(cita);
+
+            cita.Estado = "aprobada";
+            cita.FechaCita = fechaCita;
+
+            /*
+             Especificamos las propiedades que se modificaron
+             */
+            _appDbContext.Entry(cita).Property(x => x.Estado).IsModified = true;
+            _appDbContext.Entry(cita).Property(x => x.FechaCita).IsModified = true;
+        }
+
+        public void CambiarEstadoCita(string Estado, int idCita)
+        {
+            var cita = new TbCita { IdCita = idCita };
+
+            _appDbContext.TbCitas.Attach(cita);
+            cita.Estado = Estado;
+
+            _appDbContext.Entry(cita).Property(x => x.Estado).IsModified = true;
+        }
+
+        public void EliminarCitaLab(int idCitaLab)
+        {
+            var cita = new TbCitasLaboratorio { IdCitaLab = idCitaLab };
+            _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        }
+
+        public void EliminarCitaMedica(int idCitaMedica)
+        {
+            var cita = new TbCitasMedica { IdCitaMedica = idCitaMedica };
+            _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        }
+
+        public void RechazarCita(int idCita, string motivoRechazo)
+        {
+            var cita = new TbCita { IdCita= idCita };
+            _appDbContext.TbCitas.Attach(cita);
+            cita.Estado = "rechazada";
+            cita.MotivoRechazo = motivoRechazo;
+
+            _appDbContext.Entry(cita).Property(x => x.Estado).IsModified = true;
+            _appDbContext.Entry(cita).Property(x => x.MotivoRechazo).IsModified = true;
         }
     }
 }

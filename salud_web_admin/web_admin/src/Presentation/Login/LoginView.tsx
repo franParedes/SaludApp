@@ -1,7 +1,8 @@
-import {  Button, TextField, Divider } from '@mui/material';
+import {  Button, Divider } from '@mui/material';
 import logo from '../../assets/logos/Logo.png'
 import GoogleLogo from '../../assets/logos/GoogleIcon.png'
 import { Link } from 'react-router-dom';
+import Textfields from './Textfields/Textfields';
 
 
 function LoginView() {
@@ -31,24 +32,18 @@ function LoginView() {
       </div>
         {/* Lado derecho: Login */}
       <form 
-        className="bg-stone-50 md:w-3/5 min-h-full flex flex-col gap-7 justify-center px-4 md:px-[7rem] items-center text-center">
+        className="bg-stone-50 md:w-3/5 min-h-full flex flex-col gap-7 justify-center px-4 md:px-[7rem] items-center text-center"
+      >
         <h1 className="text-azul-claro font-bold text-4xl md:text-4xl text-center">
           Iniciar sesión en <span className="block py-5"> PacienteAppp </span>
         </h1>
-        <TextField 
-          id="outlined-username" 
-          label="Usuario" 
-          variant="outlined" 
-          fullWidth />
-        <TextField 
-          id="outlined-password" 
-          label="Contraseña" 
-          variant="outlined" 
-          type='password' 
-          fullWidth/>
+
+        <Textfields />
+
         <Button 
           variant="contained"
-          type="submit"
+          component={Link}
+          to="/home"
           fullWidth 
           sx={{ mt:1, paddingY: 1 }}
         >

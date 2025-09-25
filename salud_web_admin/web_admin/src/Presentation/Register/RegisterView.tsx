@@ -15,6 +15,14 @@ function RegisterView() {
         </h1>  
         <div className="overflow-y-auto max-h-[70vh] w-full md:pb-10">
           <Textfields />
+          <Button 
+            variant="contained"
+            type="submit"
+            fullWidth 
+            sx={{ mt: 3, paddingY: 1 }}
+          >
+            REGISTRARME
+          </Button>
         </div>
       </form>
     {/* Lado derecho: Bienvenido */}
