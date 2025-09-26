@@ -55,6 +55,10 @@ BEGIN
 	GROUP BY Medico_id
 	ORDER BY total_citas ASC
 	LIMIT 1;
+    
+    IF _medicoId IS NULL THEN 
+		SELECT Id_medico INTO _medicoId FROM tb_medicos WHERE especialidad = iNEspecialidad LIMIT 1;
+    END IF;
 
 	RETURN _medicoId;
 END //
