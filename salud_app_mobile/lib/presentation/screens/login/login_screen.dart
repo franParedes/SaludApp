@@ -8,13 +8,16 @@ import '../../widgets/login/login_button.dart';
 import '../../widgets/login/register_text.dart';
 import '../../widgets/login/social_login_row.dart';
 
+final email = TextEditingController();
+final password = TextEditingController();
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -26,11 +29,11 @@ class LoginScreen extends StatelessWidget {
 
               const SizedBox(height: 100),
 
-              const EmailField(),
+              EmailField(controller: email),
 
               const SizedBox(height: 15),
 
-              const PasswordField(),
+              PasswordField(controller: password),
 
               const SizedBox(height: 10),
 
@@ -38,7 +41,7 @@ class LoginScreen extends StatelessWidget {
 
               const SizedBox(height: 5),
 
-              const LoginButton(),
+              LoginButton(email: email.text, password: password.text),
 
               const SizedBox(height: 1),
 

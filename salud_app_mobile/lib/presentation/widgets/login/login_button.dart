@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../screens/home/home_screen.dart';
+import 'package:salud_app_mobile/presentation/screens/home/home_screen.dart';
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({super.key});
+  final String email;
+  final String password;
+
+  const LoginButton({
+    super.key,
+    required String this.email,
+    required String this.password,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +25,15 @@ class LoginButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
+            print("Email: ${email}");
+            print("Password: ${password}");
+
+            if (email.isNotEmpty && password.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            }
           },
           child: const Text(
             "Iniciar Sesion",

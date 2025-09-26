@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../register_text_field.dart';
 
 class HermanosInssField extends StatelessWidget {
@@ -25,6 +26,7 @@ class HermanosInssField extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: RegisterTextField(
+            inputFormatters: [LengthLimitingTextInputFormatter(9)],
             label: "N° INSS",
             controller: inssController,
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salud_app_mobile/presentation/widgets/dialogs/cita_dialog.dart';
 import 'package:salud_app_mobile/theme/app_colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -159,7 +160,9 @@ class _CitasScreenState extends State<CitasScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showCitaDialog(context);
+                  },
                   child: const Text(
                     "Agendar nueva cita",
                     style: TextStyle(color: AppColors.secondary),
