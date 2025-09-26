@@ -1,21 +1,26 @@
-import {  InputLabel, MenuItem, TextField, Grid, FormControl } from '@mui/material';
+import { TextField, Grid } from '@mui/material';
 import { useState } from 'react';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import MenuGenero from './MenuSelects/MenuGenero';
+import MenuEspecialidades from './MenuSelects/MenuEspecialidades';
+import MenuDepartamento from './MenuSelects/MenuDepartamento';
+import MenuMunicipios from './MenuSelects/MenuMunicipios';
 
 export default function Textfields() {
-  // estado para la entrada del DateTextField
+   // guardamos el IdGenero como number o vacío
+  const [genero, setGenero] = useState<number | ''>('');
 
-    // estado para la entrada de especialidades
-  const [Especialidades, setEspecialidad] = useState('');
+  // estado para la entrada de especialidades, guardamos el IdEspecialidad como number o vacio
+  const [Especialidades, setEspecialidad] = useState<number | ''>('');
 
+  // estado para la entrada de departamentos, guardamos el IdDepartamento como number o vacio
+  const [departamentos, setDepartamentos] = useState<number | ''>('');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setEspecialidad(event.target.value as string);
-  };
+  // estado para la entrada de Municipios, dependiente del departamento seleccionado el cual guardamos el IdMunicipio como number o vacio
+  const [municipio, setMunicipio] = useState<number | ''>('');
 
   return (
     <>
@@ -51,11 +56,10 @@ export default function Textfields() {
             label="Cédula" 
             fullWidth />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField 
-            label="Género" 
-            fullWidth />
-        </Grid>
+
+        <MenuGenero 
+          genero={genero} 
+          setGenero={setGenero}/>
 
         {/* fecha de nacimiento */}
         <Grid size={{ xs: 12, sm: 6 }}>
@@ -81,22 +85,20 @@ export default function Textfields() {
             fullWidth />
         </Grid>
 
-        {/* barrio y municipio*/}
-        <Grid size={{ xs: 12, sm: 6 }}>
+        {/* departamento */}
+        <MenuDepartamento 
+          departamentos={departamentos} 
+          setDepartamentos={setDepartamentos}/>
+
+        {/* municipio y barrios */}
+         <MenuMunicipios 
+            departamentoId={departamentos === '' ? null : departamentos} 
+            municipio={municipio} 
+            setMunicipio={setMunicipio} 
+          />
+          <Grid size={{ xs: 12, sm: 6 }}>
           <TextField 
             label="Barrio" 
-            fullWidth />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField 
-            label="Municipio" 
-            fullWidth />
-        </Grid>
-
-        {/* departamento */}
-        <Grid size={12}>
-          <TextField 
-            label="Departamento" 
             fullWidth />
         </Grid>
 
@@ -160,25 +162,9 @@ export default function Textfields() {
           />
         </Grid>
         {/* Especialidad con Select */}
-        <Grid size={13}>
-          <FormControl fullWidth>
-            <InputLabel id="Especialidad-label">Especialidades</InputLabel>
-            <Select
-              labelId="Especialidad-label"
-              id="demo-simple-select"
-              value={Especialidades}
-              label="Especialidades"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>Seleccione una especialidad</em>
-              </MenuItem>
-              <MenuItem value="medicina_general">Medicina General</MenuItem>
-              <MenuItem value="pediatria">Pediatría</MenuItem>
-              <MenuItem value="ginecologia">Ginecología</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+        <MenuEspecialidades 
+          especialidad={Especialidades} 
+          setEspecialidad={setEspecialidad}/>        
       </Grid>
       </>
     )
