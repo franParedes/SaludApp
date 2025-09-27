@@ -44,6 +44,7 @@ class GeneralInfo {
   String primerApellido;
   String segundoApellido;
   String correo;
+  String contrasenya;
   int genero;
   String fechaNacimiento;
   int tipoUsuario;
@@ -55,6 +56,7 @@ class GeneralInfo {
     required this.primerApellido,
     required this.segundoApellido,
     required this.correo,
+    required this.contrasenya,
     required this.genero,
     required this.fechaNacimiento,
     required this.tipoUsuario,
@@ -67,6 +69,7 @@ class GeneralInfo {
     "PrimerApellido": primerApellido,
     "SegundoApellido": segundoApellido,
     "Correo": correo,
+    "Contrasenya": contrasenya,
     "Genero": genero,
     "FechaNacimiento": fechaNacimiento,
     "TipoUsuario": tipoUsuario,
