@@ -5,6 +5,7 @@ using SaludAppBackend.Data.Repositories.Archivos;
 using SaludAppBackend.Data.Repositories.Citas;
 using SaludAppBackend.Data.Repositories.Medicos;
 using SaludAppBackend.Data.Repositories.Pacientes;
+using SaludAppBackend.Data.Repositories.Passwd;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Data.Repositories.Utilities;
 using System;
@@ -34,6 +35,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         private IUtilitiesRepository? _utilities;
         private ICitasRepository? _citas;
         private IArchivoRepository? _archivos;
+        private IPasswdRepository? _passwd;
 
         // Inyectamos el DbContext y el IServiceProvider
         public UnitOfWork(AppDbContext context, IServiceProvider serviceProvider, ILogger<UnitOfWork> logger)
@@ -59,6 +61,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         public IUtilitiesRepository Utilities => _utilities ??= _serviceProvider.GetRequiredService<IUtilitiesRepository>();
         public ICitasRepository Citas => _citas ??= _serviceProvider.GetRequiredService<ICitasRepository>();
         public IArchivoRepository Archivos => _archivos ??= _serviceProvider.GetRequiredService<IArchivoRepository>();
+        public IPasswdRepository Passwd => _passwd ??= _serviceProvider.GetRequiredService<IPasswdRepository>();
 
         public async Task<int> CompleteAsync()
         {

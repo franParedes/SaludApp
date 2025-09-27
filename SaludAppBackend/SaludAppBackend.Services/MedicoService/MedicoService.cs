@@ -46,6 +46,13 @@ namespace SaludAppBackend.Services.MedicoService
                 Activo             = true
             };
 
+            string passwrodHsh = BCrypt.Net.BCrypt.HashPassword(medico.GeneralInfo.Contrasenya);
+            var nuevaContrasenya = new TbPasswd
+            {
+                HashPasswd = passwrodHsh,
+                IdUsuarioNavigation = nuevoUsuario
+            };
+
             var nuevoMedico = new TbMedico
             {
                 IdUsuarioNavigation = nuevoUsuario,
@@ -67,6 +74,7 @@ namespace SaludAppBackend.Services.MedicoService
             }
 
             await _unitOfWork.Usuarios.AddUsuarioAsync( nuevoUsuario );
+            await _unitOfWork.Passwd.AddPasswdAsync(nuevaContrasenya);
             await _unitOfWork.Medicos.AddMedicoAsync( nuevoMedico );
 
             await _unitOfWork.CompleteAsync();

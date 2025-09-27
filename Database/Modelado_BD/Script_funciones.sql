@@ -63,3 +63,23 @@ BEGIN
 	RETURN _medicoId;
 END //
 DELIMITER ;
+
+DROP FUNCTION IF EXISTS fn_obtener_has_password;
+DELIMITER //
+CREATE FUNCTION fn_obtener_has_password(iNCorreo VARCHAR(50))
+RETURNS TEXT
+READS SQL DATA
+BEGIN
+	DECLARE _hash TEXT;
+    DECLARE _idUsuario INT;
+    
+    SELECT Id_usuario INTO _idUsuario FROM tb_usuarios WHERE Correo = iNCorreo;
+    IF _idUsuario IS NOT NULL THEN
+		SELECT hash_passwd INTO _hash FROM tb_passwd WHERE Id_usuario = _idUsuario;
+    END IF;
+    
+    RETURN _hash;
+END //
+DELIMITER ;
+
+SELECT * FROM tb_usuarios;
