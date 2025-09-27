@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
 
               const SizedBox(height: 5),
 
-              LoginButton(email: email.text, password: password.text),
+              LoginButton(email: email, password: password),
 
               const SizedBox(height: 1),
 
