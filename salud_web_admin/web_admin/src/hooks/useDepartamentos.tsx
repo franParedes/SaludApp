@@ -10,7 +10,7 @@ export default function useDepartamentos() {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      const fetchGeneros = async () => {
+      const fetchDepartamento = async () => {
         try {
           const respuesta = await fetch(
             "https://localhost:7239/api/Utilities/ObtenerDepartamentos"
@@ -24,7 +24,7 @@ export default function useDepartamentos() {
         }
       };
   
-      fetchGeneros();
+      fetchDepartamento();
     }, []);
   
     return { Departamento, loading };

@@ -18,12 +18,13 @@ export default function MenuDepartamento({departamentos, setDepartamentos} : Dep
         <FormControl fullWidth>
             <InputLabel id="Departamento-label">Departamento</InputLabel>
             <Select
-            labelId="Departamento-label"
-            id="Departamento-select"
-            // convierte number a string para el Select
-            value={departamentos === '' ? '' : departamentos.toString()}
-            label="Departamento"
-            onChange={handleChange}
+                required
+                labelId="Departamento-label"
+                id="Departamento-select"
+                // convierte number a string para el Select
+                value={departamentos === '' ? '' : departamentos.toString()}
+                label="Departamento"
+                onChange={handleChange}
             >
             {loading ? (
                 <MenuItem disabled>Cargando...</MenuItem>

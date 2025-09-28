@@ -2,39 +2,43 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, type SelectChangeEvent
 import useMunicipios, { type Municipio } from "../../../../hooks/useMunicipios";
 
 type MunicipioSelectProps = {
-  departamentoId: number | null;
-  municipio: number | '';
-  setMunicipio: (value: number | '') => void;
+    departamentoId: number | null;
+    municipio: number | '';
+    setMunicipio: (value: number | '') => void;
+    disabled?: boolean;
 };
 
-export default function MenuMunicipios({ departamentoId, municipio, setMunicipio }: MunicipioSelectProps) {
-  const { municipios, loading } = useMunicipios(departamentoId);
+export default function MenuMunicipios({ departamentoId, municipio, setMunicipio,  disabled = false }: MunicipioSelectProps) {
+    const { municipios, loading } = useMunicipios(departamentoId);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setMunicipio(Number(event.target.value));
-  };
+    const handleChange = (event: SelectChangeEvent) => {
+        setMunicipio(Number(event.target.value));
+    };
 
-  return (
-    <Grid size={{ xs: 12, sm: 6 }}>
-      <FormControl fullWidth>
-        <InputLabel id="Municipio-label">Municipio</InputLabel>
-        <Select
-          labelId="Municipio-label"
-          id="Municipio-select"
-          value={municipio === '' ? '' : municipio.toString()}
-          onChange={handleChange}
-        >
-          {loading ? (
-            <MenuItem disabled>Cargando...</MenuItem>
-          ) : (
-            municipios.map((m: Municipio) => (
-              <MenuItem key={m.IdMunicipio} value={m.IdMunicipio.toString()}>
-                {m.Municipio}
-              </MenuItem>
-            ))
-          )}
-        </Select>
-      </FormControl>
-    </Grid>
-  );
+    return (
+        <Grid size={{ xs: 12, sm: 6 }}>
+        <FormControl fullWidth>
+            <InputLabel id="Municipio-label">Municipio</InputLabel>
+            <Select
+                required
+                labelId="Municipio-label"
+                id="Municipio-select"
+                value={municipio === '' ? '' : municipio.toString()}
+                label="Municipio"
+                onChange={handleChange}
+                disabled={disabled}
+            >
+            {loading ? (
+                <MenuItem disabled>Cargando...</MenuItem>
+            ) : (
+                municipios.map((m: Municipio) => (
+                <MenuItem key={m.IdMunicipio} value={m.IdMunicipio.toString()}>
+                    {m.Municipio}
+                </MenuItem>
+                ))
+            )}
+            </Select>
+        </FormControl>
+        </Grid>
+    );
 }

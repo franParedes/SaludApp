@@ -10,7 +10,7 @@ export default function useEspecialidades() {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      const fetchGeneros = async () => {
+      const fetchEspecialidades = async () => {
         try {
           const respuesta = await fetch(
             "https://localhost:7239/api/Utilities/ObtenerEspecialidadesMedicas"
@@ -24,7 +24,7 @@ export default function useEspecialidades() {
         }
       };
   
-      fetchGeneros();
+      fetchEspecialidades();
     }, []);
   
     return { Especialidades, loading };

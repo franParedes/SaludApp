@@ -2,11 +2,11 @@ import { FormControl, Grid, InputLabel, MenuItem, Select, type SelectChangeEvent
 import useEspecialidades from "../../../../hooks/useEspecialidades";
 
 type EspecialidadSelectProps = {
-  especialidad: number | '';
+  Especialidad: number | '';
   setEspecialidad: (value: number | '') => void;
 };
 
-export default function MenuEspecialidades({ especialidad, setEspecialidad }: EspecialidadSelectProps) {
+export default function MenuEspecialidades({ Especialidad, setEspecialidad }: EspecialidadSelectProps) {
     const { Especialidades, loading } = useEspecialidades();
     
     const handleChange = (event: SelectChangeEvent) => {
@@ -18,10 +18,11 @@ export default function MenuEspecialidades({ especialidad, setEspecialidad }: Es
             <FormControl fullWidth>
             <InputLabel id="Especialidad-label">Especialidades</InputLabel>
             <Select
+                required
                 labelId="Especialidad-label"
                 id="demo-simple-select"
                 // convierte number a string para el Select
-                value={especialidad === '' ? '' : especialidad.toString()}
+                value={Especialidad === '' ? '' : Especialidad.toString()}
                 label="Especialidades"
                 onChange={handleChange}
             >

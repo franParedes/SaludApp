@@ -8,79 +8,68 @@ Consume **APIs desarrolladas en C# con Swagger**, lo que permite una integració
 ## Tecnologías
 - **Frontend:** React, TypeScript, Vite, Tailwind CSS, Material UI (MUI)  
 - **Backend:** C# ASP.NET Core Web API, Swagger  
-- **Comunicación:** Axios o Fetch para consumir APIs
+- **Comunicación:** Fetch para consumir API's
+- **Sistema Gestor de Base de datos:** MySQL WorkBench
 
 ## Instalación
 1. Clonar el repositorio:
-   ```bash
 
+  git clone https://github.com/franParedes/SaludApp.git
+  cd SaludApp 
 
-# React + TypeScript + Vite
+## Configurar la base de datos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. Abre tu gestor de base de datos preferido (por ejemplo, MySQL Workbench).
 
-Currently, two official plugins are available:
+2. Dirígete a la carpeta:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  /Database/Modelado_BD
 
-## Expanding the ESLint configuration
+3. Ejecuta los scripts allí presentes para construir la base de datos y sus procedimientos necesarios.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Configurar Swagger para Visual Studio .NET
+1. Tienes que abrir el proyecto de SaludAppBackend.sln en visual studio (puede ser el 2019 o 2022), navega a la carpeta para encontrarlo
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
+  cd SaludApp/SaludAppBackend
+
+2. Abres el proyecto y luego configuras la cadena de conexion a MySQL en appsettings.json
+
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
+    "ConnectionStrings": {
+      "DefaultConnection": "Server=localhost;Port=3306;Database=db_saludapp;Uid=root;Pwd=[TuContraseña]"
     },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+      }
     },
-  },
-])
-```
+    "AllowedHosts": "*",
+    "LogPath": "C:\\LogsSaludApp\\LogSaludApp.log",
+    "LogLevelMin": "Information"
+  }
+
+Y por ultimo ejecutas el programa con f5
+
+## Uso
+1. Ejecuta el backend (SaludAppBackend) desde Visual Studio.
+
+2. luego Abre tu enditor de codigo libre, en este caso visual studio code, luego dentro del editor abres la carpeta que esta en la ruta:
+
+  SaludApp/salud_web_admin/web_admin
+
+3. Instala las dependencias, en este caso utilizas el siguiente comando dentro de la terminal:
+
+  npm install
+
+4. Ahora solo corres el servidor local utilizando el comando:
+
+  npm run dev
+
+5. Por ultimo accede a la aplicacion en:
+
+  http://localhost:5173
+
+## Licencia
+
+**Este proyecto está bajo la Licencia MIT © 2025**

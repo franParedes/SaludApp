@@ -17,14 +17,15 @@ export default function MenuGenero({ genero, setGenero }: GeneroSelectProps) {
     <Grid size={{ xs: 12, sm: 6 }}>
       <FormControl fullWidth>
         <InputLabel id="Genero-label">Género</InputLabel>
-        <Select
-          labelId="Genero-label"
-          id="genero-select"
-          // convierte number a string para el Select
-          value={genero === '' ? '' : genero.toString()}
-          label="Género"
-          onChange={handleChange}
-        >
+          <Select
+            required
+            labelId="Genero-label"
+            id="genero-select"
+            // convierte number a string para el Select
+            value={genero === '' ? '' : genero.toString()}
+            label="Género"
+            onChange={handleChange}
+          >
           {loading ? (
             <MenuItem disabled>Cargando...</MenuItem>
           ) : (
