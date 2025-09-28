@@ -14,6 +14,7 @@ namespace SaludAppBackend.Models.Usuarios
         public string PrimerApellido { get; set; } = null!;
         public string? SegundoApellido { get; set; }
         public string Correo { get; set; } = null!;
+        public string Contrasenya { get; set; } = null!;
         public int Genero { get; set; }
         public DateOnly FechaNacimiento { get; set; }
         public int TipoUsuario { get; set; }

@@ -15,6 +15,7 @@ import '../../../domain/repositories/municipio_repository.dart';
 import '../../../domain/repositories/ocupacion_repository.dart';
 import '../../../domain/repositories/paciente_repository.dart';
 import '../../../domain/repositories/religion_repository.dart';
+import '../dialogs/dialog.dart';
 import 'register_form/barrio_municipio_field.dart';
 import 'register_form/cantidadhermanos_inss_field.dart';
 import 'register_form/cedula_genero_field.dart';
@@ -316,8 +317,21 @@ class _RegisterFormState extends State<RegisterForm> {
           // Botón
           RegisterButton(
             onPressed: () async {
-              // Enviar datos a la API
-              sendPacienteToApi();
+              final exito = await sendPacienteToApi();
+
+              await showMessageDialog(
+                context,
+                title: exito ? "Éxito" : "Error",
+                message: exito
+                    ? "Usuario creado correctamente"
+                    : "Hubo un error al crear el usuario. Intenta de nuevo.",
+              );
+
+              if (exito) {
+                Navigator.of(
+                  context,
+                ).pop(); // 🔹 Solo vuelves atrás si se creó bien
+              }
             },
           ),
         ],
@@ -337,7 +351,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   // FUNCION PARA ENVIAR DATOS A LA API
-  void sendPacienteToApi() async {
+  Future<bool> sendPacienteToApi() async {
     final paciente = Paciente(
       generalInfo: GeneralInfo(
         cedula: cedulaController.text,
@@ -346,6 +360,7 @@ class _RegisterFormState extends State<RegisterForm> {
         primerApellido: primerApellidoController.text,
         segundoApellido: segundoApellidoController.text,
         correo: correoController.text,
+        contrasenya: passwordController.text,
         genero: genero,
         fechaNacimiento: DateFormat("yyyy-MM-dd").format(fechaNacimientoDate),
         tipoUsuario: tipoUsuario,
@@ -381,5 +396,7 @@ class _RegisterFormState extends State<RegisterForm> {
     } else {
       debugPrint("❌ Error al crear el paciente");
     }
+
+    return exito;
   }
 }

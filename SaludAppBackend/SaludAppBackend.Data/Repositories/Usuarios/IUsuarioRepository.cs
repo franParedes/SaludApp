@@ -9,5 +9,6 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
         Task<TbUsuario?> GetUsuarioByIdSPAsync(int idUsuario);
         Task<int> BuscarUsuarioPorCorreo(string email);
         Task AddUsuarioAsync(TbUsuario usuario);
+        Task<string> GetPasswordHashPorCorreo(string correo);
     }
 }

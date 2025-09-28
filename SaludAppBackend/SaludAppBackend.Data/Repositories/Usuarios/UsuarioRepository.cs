@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
 using System;
@@ -53,12 +54,28 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             }
         }
 
+        public async Task<string> GetPasswordHashPorCorreo(string correo)
+        {
+            try
+            {
+                string? hash = "";
+                hash = await ExecuteScalarAsync<string>("SELECT fn_obtener_has_password(@Correo)", 
+                    new { Correo = correo });
+
+                return hash!;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el hash de la contraseña");
+                throw;
+            }
+        }
+
         public async Task<TbUsuario?> GetUsuarioByIdSPAsync(int idUsuario)
         {
             try
             {
-                var usuario =
-                    await QuerySingleSPAsync<TbUsuario>("sp_GetUsuarioPorId", new { IdUsuario = idUsuario });
+                var usuario = await _appDbContext.TbUsuarios
+                                .FirstOrDefaultAsync(u => u.IdUsuario == idUsuario);
 
                 if (usuario == null)
                 {
@@ -68,10 +85,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             }
             catch (Exception ex)
             {
-                // Aquí está la magia del logging de errores
                 _logger.LogError(ex.Message, $"Error en la base de datos al intentar obtener el usuario con ID {idUsuario}");
-
-                // Relanzamos la excepción para que la capa superior (servicio/controlador) sepa que algo falló.
                 throw;
             }
 
