@@ -3,8 +3,8 @@ import 'dart:io';
 
 class ApiService {
   // para emulador
-  static const String baseUrl = "https://10.0.2.2:7239/api/Utilities";
-
+  // static const String baseUrl = "https://10.0.2.2:7239/api/Utilities";
+ static const String baseUrl = "https://192.168.12.31:7239/api/Auth";
   // para dispositivo fisico
   //static const String baseUrl = "https://192.168.0.12:7239/api/Utilities";
 
