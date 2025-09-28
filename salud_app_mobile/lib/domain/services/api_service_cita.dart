@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class ApiServiceCita {
   // para emulador
-  static const String baseUrl = "https://10.0.2.2:7239/api";
-
+  // static const String baseUrl = "https://10.0.2.2:7239/api";
+  static const String baseUrl = "https://https://192.168.12.31/api";
   // para dispositivo físico
   // static const String baseUrl = "https://192.168.0.12:7239/api";
 
