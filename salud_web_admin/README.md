@@ -56,7 +56,7 @@ Consume **APIs desarrolladas en C# con Swagger**, lo que permite una integració
 
 2. luego Abre tu enditor de codigo libre, en este caso visual studio code, luego dentro del editor abres la carpeta que esta en la ruta:
 ```bash
-  SaludApp/salud_web_admin/web_admin
+  SaludApp/salud_web_admin
 ```
 3. Instala las dependencias, en este caso utilizas el siguiente comando dentro de la terminal:
 ```bash
