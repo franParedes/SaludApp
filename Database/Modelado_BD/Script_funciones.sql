@@ -81,5 +81,3 @@ BEGIN
     RETURN _hash;
 END //
 DELIMITER ;
-
-SELECT * FROM tb_usuarios;
