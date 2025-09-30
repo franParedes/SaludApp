@@ -17,13 +17,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    _HomeContent(),
+  // Declaramos late final para inicializar en initState.
+  late final List<Widget> _screens;
 
-    const CitasScreen(),
-    const Center(child: Text("Historial")),
-    const Center(child: Text("Perfil")),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Aquí pasamos el callback _onItemTapped al HomeContent
+    _screens = [
+      _HomeContent(onItemTapped: _onItemTapped),
+      const CitasScreen(),
+      const Center(child: Text("Historial")),
+      const Center(child: Text("Perfil")),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,6 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _HomeContent extends StatelessWidget {
+  // Usamos ValueChanged<int> (void Function(int))
+  final ValueChanged<int> onItemTapped;
+
+  const _HomeContent({required this.onItemTapped});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,30 +98,32 @@ class _HomeContent extends StatelessWidget {
                   HomeImageCard(
                     image: "assets/image/medicamentos.png",
                     title: "Historial médico",
-                    onTap: () {},
+                    onTap: () => onItemTapped(0),
                   ),
                   HomeImageCard(
                     image: "assets/image/seguimiento.png",
                     title: "Filas virtuales",
-                    onTap: () {},
+                    onTap: () => onItemTapped(0),
                   ),
                   HomeImageCard(
                     image: "assets/image/metricas.png",
                     title: "Recordatorios de medicamentos",
-                    onTap: () {},
+                    onTap: () => onItemTapped(0),
                   ),
                   HomeImageCard(
                     image: "assets/image/citas.png",
                     title: "Seguimiento de pacientes",
+                    onTap: () => onItemTapped(1),
                   ),
                   HomeImageCard(
                     image: "assets/image/historialmedico.png",
                     title: "Recordatorios de medicamentos",
-                    onTap: () {},
+                    onTap: () => onItemTapped(2),
                   ),
                   HomeImageCard(
                     image: "assets/image/filasv.png",
                     title: "Seguimiento de pacientes",
+                    onTap: () => onItemTapped(0),
                   ),
                 ],
               ),
