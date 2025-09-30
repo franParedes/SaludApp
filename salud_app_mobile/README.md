@@ -74,7 +74,9 @@ Activar las opciones de desarrollador en windowns:
 -
 Ir a la cpnfiguración -> Sistema -> Para Programadores y habilitar la opción modo para desarrolladores
 
-<image src="/images/desarrollador.jpeg" alt="Opciones de desarrollador">
+![Descripción de la imagen](https://github.com/franParedes/SaludApp/blob/main/salud_app_mobile/images/desarrollador.jpeg?raw=true)
+
+
 
 y luego en la terminal ejecutar:
 
