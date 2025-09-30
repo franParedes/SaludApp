@@ -6,7 +6,7 @@ Esta app consume una API elaborada en .NET que cuenta con acceso a MySQL.
 ## Rquisitos previos
 
 Antes de comenzar asegurate de tener instalados los siguientes programas:
-- [Flutter](https://docs.flutter.dev/get-started/install)  
+- [Flutter](https://docs.flutter.dev/get-started/install)  Última versión
 - [Android Studio](https://developer.android.com/studio) (con un emulador configurado)  
 - [Visual Studio Code](https://code.visualstudio.com/)  
 - [Visual Studio](https://visualstudio.microsoft.com/) (con soporte para **ASP.NET Core**)  
@@ -64,7 +64,26 @@ Se deben seguir los siguientes pasos:
 
 - Ejecutar el emulador de android 
 - Abrir la carpeta del proyecto en vscode
-- Abrir una terminal en la carpeta del proyecto y ejecutar: flutter pub get
+- Abrir una terminal en la carpeta del proyecto de flutter y ejecutar:
+
+```bash
+flutter pub get
+
+```
+Activar las opciones de desarrollador en windowns:
+-
+Ir a la cpnfiguración -> Sistema -> Para Programadores y habilitar la opción modo para desarrolladores
+
+<image src="/images/desarrollador.jpeg" alt="Opciones de desarrollador">
+
+y luego en la terminal ejecutar:
+
+```bash
+start ms-settings:developers
+
+```
+
+
 - Seleccionar el dispositivo emulado
 - Ejecutar el proyecto con CTRL+F5
 
