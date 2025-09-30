@@ -10,6 +10,32 @@ Consume **APIs desarrolladas en C# con Swagger**, lo que permite una integració
 - **Backend:** C# ASP.NET Core Web API, Swagger  
 - **Comunicación:** Fetch para consumir API's
 - **Sistema Gestor de Base de datos:** MySQL WorkBench
+   
+# Guía de Instalación de Node.js
+
+## Requisitos
+- Sistema operativo: Windows, macOS o Linux
+- Acceso a internet para descargar el instalador
+
+---
+
+## Instalación en Windows y macOS
+
+1. Ve al sitio oficial de Node.js:  
+     [https://nodejs.org](https://nodejs.org)
+
+2. Descarga la **versión LTS (Long Term Support)**, recomendada para la mayoría de usuarios.
+
+3. Ejecuta el instalador y sigue los pasos:
+   - Acepta la licencia.
+   - Selecciona la carpeta de instalación.
+   - Marca la opción de instalar **npm** (gestor de paquetes de Node.js).
+   - Finaliza la instalación.
+
+4. Verifica la instalación:
+   ```bash
+   node -v
+   npm -v
 
 ## Instalación
 1. Clonar el repositorio:
