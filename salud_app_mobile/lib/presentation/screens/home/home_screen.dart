@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salud_app_mobile/presentation/screens/citas/citas_screen.dart';
 import 'package:salud_app_mobile/presentation/widgets/home/home_image_card.dart';
-import '../../screens/welcome/welcome.dart';
 import '../../widgets/home/home_next_appoitment.dart';
 import '../../widgets/home/home_search.dart';
 import '../../widgets/home/home_header.dart';
@@ -87,14 +86,7 @@ class _HomeContent extends StatelessWidget {
                   HomeImageCard(
                     image: "assets/image/medicamentos.png",
                     title: "Historial médico",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const WelcomeScreen(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                   ),
                   HomeImageCard(
                     image: "assets/image/seguimiento.png",
