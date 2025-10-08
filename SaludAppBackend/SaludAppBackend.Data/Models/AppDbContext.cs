@@ -53,7 +53,11 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbEsFumador> TbEsFumadors { get; set; }
 
+    public virtual DbSet<TbEscolaridad> TbEscolaridads { get; set; }
+
     public virtual DbSet<TbEspecialidade> TbEspecialidades { get; set; }
+
+    public virtual DbSet<TbEstadoCivil> TbEstadoCivils { get; set; }
 
     public virtual DbSet<TbExamenesDisponiblesLab> TbExamenesDisponiblesLabs { get; set; }
 
@@ -83,9 +87,13 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbResumenCitaMedica> TbResumenCitaMedicas { get; set; }
 
+    public virtual DbSet<TbStado> TbStados { get; set; }
+
     public virtual DbSet<TbTelefono> TbTelefonos { get; set; }
 
     public virtual DbSet<TbTipoActFisica> TbTipoActFisicas { get; set; }
+
+    public virtual DbSet<TbTipoEstado> TbTipoEstados { get; set; }
 
     public virtual DbSet<TbTipoTabaco> TbTipoTabacos { get; set; }
 
@@ -512,6 +520,16 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Tipo).HasMaxLength(100);
         });
 
+        modelBuilder.Entity<TbEscolaridad>(entity =>
+        {
+            entity.HasKey(e => e.IdEscolaridad).HasName("PRIMARY");
+
+            entity.ToTable("tb_escolaridad");
+
+            entity.Property(e => e.IdEscolaridad).HasColumnName("Id_escolaridad");
+            entity.Property(e => e.Escolaridad).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<TbEspecialidade>(entity =>
         {
             entity.HasKey(e => e.IdEspecialidad).HasName("PRIMARY");
@@ -520,6 +538,18 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.IdEspecialidad).HasColumnName("Id_especialidad");
             entity.Property(e => e.Especialidad).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TbEstadoCivil>(entity =>
+        {
+            entity.HasKey(e => e.IdEstadoCivil).HasName("PRIMARY");
+
+            entity.ToTable("tb_estado_civil");
+
+            entity.Property(e => e.IdEstadoCivil).HasColumnName("Id_estado_civil");
+            entity.Property(e => e.EstadoCivil)
+                .HasMaxLength(50)
+                .HasColumnName("Estado_civil");
         });
 
         modelBuilder.Entity<TbExamenesDisponiblesLab>(entity =>
@@ -876,6 +906,24 @@ public partial class AppDbContext : DbContext
                 .HasConstraintName("tb_resumen_cita_medica_ibfk_1");
         });
 
+        modelBuilder.Entity<TbStado>(entity =>
+        {
+            entity.HasKey(e => e.IdEstado).HasName("PRIMARY");
+
+            entity.ToTable("tb_stados");
+
+            entity.HasIndex(e => e.TipoEstado, "Tipo_estado");
+
+            entity.Property(e => e.IdEstado).HasColumnName("Id_estado");
+            entity.Property(e => e.Estado).HasMaxLength(50);
+            entity.Property(e => e.TipoEstado).HasColumnName("Tipo_estado");
+
+            entity.HasOne(d => d.TipoEstadoNavigation).WithMany(p => p.TbStados)
+                .HasForeignKey(d => d.TipoEstado)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_stados_ibfk_1");
+        });
+
         modelBuilder.Entity<TbTelefono>(entity =>
         {
             entity.HasKey(e => e.IdTelefono).HasName("PRIMARY");
@@ -910,6 +958,16 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.IdTipAct).HasColumnName("Id_tip_act");
             entity.Property(e => e.Actividad).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TbTipoEstado>(entity =>
+        {
+            entity.HasKey(e => e.IdTipo).HasName("PRIMARY");
+
+            entity.ToTable("tb_tipo_estado");
+
+            entity.Property(e => e.IdTipo).HasColumnName("Id_tipo");
+            entity.Property(e => e.Tipo).HasMaxLength(50);
         });
 
         modelBuilder.Entity<TbTipoTabaco>(entity =>

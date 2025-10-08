@@ -11,8 +11,8 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         Task<IEnumerable<TbGenero>> GetGenerosAsync();
         Task<IEnumerable<TbProvTelefonico>> GetProveedoresTelefonicoAsync();
         Task<IEnumerable<TbDepartamento>> GetDepartamentosAsync();
-        Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento);
-        Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio);
+        Task<IEnumerable<TbMunicipio>> GetMunicipiosPorDepartamentoAsync(int departamento);
+        Task<IEnumerable<TbBarrio>> GetBarriosPorMunicipioAsync(int municipio);
         Task<IEnumerable<TbReligione>> GetReligionesAsync();
         Task<IEnumerable<TbOcupacione>> GetOcupacionesPacientesAsync();
 

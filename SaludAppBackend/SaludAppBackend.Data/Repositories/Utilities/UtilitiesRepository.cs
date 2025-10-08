@@ -14,8 +14,8 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         public async Task<IEnumerable<TbAreasMedica>> GetAreasMedicasAsync() 
             => await GetAllAsync<TbAreasMedica>();
 
-        public async Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio) 
-            => await QuerySPAsync<BarriosDTO>("sp_devolver_barrios_por_municipio", new
+        public async Task<IEnumerable<TbBarrio>> GetBarriosPorMunicipioAsync(int municipio) 
+            => await QuerySPAsync<TbBarrio>("sp_devolver_barrios_por_municipio", new
             {
                 iNId_municipio = municipio
             });
@@ -32,8 +32,8 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         public async Task<IEnumerable<TbGenero>> GetGenerosAsync()
             => await GetAllAsync<TbGenero>();
 
-        public async Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento)
-            => await QuerySPAsync<MunicipiosDTO>("sp_devolver_municipios_por_departamento", new {
+        public async Task<IEnumerable<TbMunicipio>> GetMunicipiosPorDepartamentoAsync(int departamento)
+            => await QuerySPAsync<TbMunicipio>("sp_devolver_municipios_por_departamento", new {
                 iNId_departamento = departamento
             });
 

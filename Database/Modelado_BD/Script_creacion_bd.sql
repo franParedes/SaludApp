@@ -5,6 +5,18 @@ DROP DATABASE IF EXISTS db_saludapp;
 CREATE DATABASE db_saludapp CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 USE db_saludapp;
 
+CREATE TABLE tb_tipo_estado (
+	Id_tipo INT PRIMARY KEY AUTO_INCREMENT,
+    Tipo VARCHAR(50)
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_stados (
+	Id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    Estado VARCHAR(50) NOT NULL,
+    Tipo_estado INT,
+    
+    FOREIGN KEY (Tipo_estado) REFERENCES tb_tipo_estado(Id_tipo) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
 /****************** MANEJO GENERAL DE USUARIOS ******************/
 -- tabla para saber si es: paciente, médico
 CREATE TABLE tb_tipo_usuarios (
@@ -118,6 +130,15 @@ CREATE TABLE tb_ocupaciones (
     Ocupacion VARCHAR(100)
 ) ENGINE = InnoDB;
 
+CREATE TABLE tb_escolaridad (
+	Id_escolaridad INT PRIMARY KEY AUTO_INCREMENT,
+    Escolaridad VARCHAR(50) NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE tb_estado_civil (
+	Id_estado_civil INT PRIMARY KEY AUTO_INCREMENT,
+    Estado_civil VARCHAR(50) NOT NULL
+) ENGINE = InnoDB;
 
 -- Pacientes 
 CREATE TABLE tb_pacientes (
@@ -125,15 +146,17 @@ CREATE TABLE tb_pacientes (
     Id_usuario INT NOT NULL UNIQUE,
     Numero_inss CHAR(9) UNIQUE,
     Ocupacion INT,
-    Escolaridad ENUM('NO TIENE', 'PRIMARIA', 'SECUNDARIA', 'UNIVERSIDAD') NOT NULL,
+    Escolaridad INT, -- ENUM('NO TIENE', 'PRIMARIA', 'SECUNDARIA', 'UNIVERSIDAD') NOT NULL,
     Religion INT,
     Edad INT NOT NULL,
-    Estado_civil ENUM('SOLTER@', 'CASAD@', 'DIVORCIAD@', 'VIUD@', 'UNION LIBRE') NOT NULL,
+    Estado_civil INT, -- ENUM('SOLTER@', 'CASAD@', 'DIVORCIAD@', 'VIUD@', 'UNION LIBRE') NOT NULL,
     Cantidad_hermanos INT NOT NULL,
     
     FOREIGN KEY (Id_usuario) REFERENCES tb_usuarios(Id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (Ocupacion) REFERENCES tb_ocupaciones(Id_ocupacion) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (Religion) REFERENCES tb_religiones(Id_religion) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (Religion) REFERENCES tb_religiones(Id_religion) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Escolaridad) REFERENCES tb_escolaridad(Id_escolaridad) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Estado_civil) REFERENCES tb_estado_civil(Id_estado_civil) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE = InnoDB;
 
 /****************** MANEJO DE MEDICOS ******************/
@@ -205,14 +228,15 @@ CREATE TABLE tb_citas(
     Lugar INT,
     Fecha_solicitud DATETIME NOT NULL,
     Fecha_cita DATETIME,
-    Estado ENUM("pendiente", "aprobada", "rechazada", "reprogramada", "cancelada") DEFAULT "pendiente" NOT NULL,
+    Estado INT, -- ENUM("pendiente", "aprobada", "rechazada", "reprogramada", "cancelada") DEFAULT "pendiente" NOT NULL,
     Motivo_cita TEXT,
     Motivo_rechazo TEXT,
     Tipo_cita INT,
     
     FOREIGN KEY (Paciente_id) REFERENCES tb_pacientes(Id_paciente) ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY (Tipo_cita) REFERENCES tb_tipos_citas(Id_tipo_cita) ON UPDATE RESTRICT ON DELETE RESTRICT,
-    FOREIGN KEY (Lugar) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (Lugar) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Estado) REFERENCES tb_stados(Id_estado) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE = InnoDB;
 
 CREATE TABLE tb_citas_medicas (

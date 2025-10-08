@@ -1,4 +1,13 @@
--- SELECT * FROM db_saludapp.tb_prov_telefonicos;
+SELECT * FROM db_saludapp.tb_stados;
+
+INSERT INTO `db_saludapp`.`tb_tipo_estado` (`Tipo`) VALUES ('Usuario');
+INSERT INTO `db_saludapp`.`tb_tipo_estado` (`Tipo`) VALUES ('Cita');
+
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('PENDIENTE', '2');
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('APROBADA', '2');
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('RECHAZADA', '2');
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('REPROGRAMADA', '2');
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('CANCELADA', '2');
 
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Tigo');
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Claro');
@@ -32,6 +41,17 @@ INSERT INTO `db_saludapp`.`tb_barrios` (`Barrio`, `Municipio_al_que_pertenece`) 
 INSERT INTO `db_saludapp`.`tb_religiones` (`Religion`) VALUES ("Catolica"), ("Evangelica"), ("Mormona"), ("Otras");
 
 INSERT INTO `db_saludapp`.`tb_ocupaciones` (`Ocupacion`) VALUES ('Estudiante');
+
+INSERT INTO `db_saludapp`.`tb_escolaridad` (`Escolaridad`) VALUES ('NO TIENE');
+INSERT INTO `db_saludapp`.`tb_escolaridad` (`Escolaridad`) VALUES ('PRIMARIA');
+INSERT INTO `db_saludapp`.`tb_escolaridad` (`Escolaridad`) VALUES ('SECUNDARIA');
+INSERT INTO `db_saludapp`.`tb_escolaridad` (`Escolaridad`) VALUES ('UNIVERSIDAD');
+
+INSERT INTO `db_saludapp`.`tb_estado_civil` (`Estado_civil`) VALUES ('SOLTERO/A');
+INSERT INTO `db_saludapp`.`tb_estado_civil` (`Estado_civil`) VALUES ('CASADO/A');
+INSERT INTO `db_saludapp`.`tb_estado_civil` (`Estado_civil`) VALUES ('DIVORCIADO/A');
+INSERT INTO `db_saludapp`.`tb_estado_civil` (`Estado_civil`) VALUES ('VIUDO/A');
+INSERT INTO `db_saludapp`.`tb_estado_civil` (`Estado_civil`) VALUES ('UNION LIBRE');
 
 INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('General');
 INSERT INTO `db_saludapp`.`tb_especialidades` (`Especialidad`) VALUES ('Ortopedia');

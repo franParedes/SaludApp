@@ -1,34 +1,28 @@
-﻿using SaludAppBackend.Data.Models;
-using SaludAppBackend.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SaludAppBackend.Services.DTOs.UtilitiesDTO;
 
 namespace SaludAppBackend.Services.UtilitiesService
 {
     public interface IUtilitiesService
     {
-        Task<IEnumerable<TbTipoUsuario>> GetTiposDeUsuario();
+        Task<IEnumerable<TiposUsuarioDTO>> GetTiposDeUsuario();
         
         //Métodos de pacientes
-        Task<IEnumerable<TbGenero>> GetGenerosAsync();
-        Task<IEnumerable<TbProvTelefonico>> GetProveedoresTelefonicoAsync();
-        Task<IEnumerable<TbDepartamento>> GetDepartamentosAsync();
+        Task<IEnumerable<GenerosDTO>> GetGenerosAsync();
+        Task<IEnumerable<ProvTelefonicosDTO>> GetProveedoresTelefonicoAsync();
+        Task<IEnumerable<DepartamentosDTO>> GetDepartamentosAsync();
         Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento);
         Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio);
-        Task<IEnumerable<TbReligione>> GetReligionesAsync();
-        Task<IEnumerable<TbOcupacione>> GetOcupacionesPacientesAsync();
+        Task<IEnumerable<ReligionesDTO>> GetReligionesAsync();
+        Task<IEnumerable<OcupacionesDTO>> GetOcupacionesPacientesAsync();
 
         //Métodos de médicos
-        Task<IEnumerable<TbEspecialidade>> GetEspecialidadesMedicasAsync();
-        Task<IEnumerable<TbUniversidade>> GetUniversidadesAsync();
-        Task<IEnumerable<TbAreasMedica>> GetAreasMedicasAsync();
-        Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosAsync();
-        Task<IEnumerable<TbTurnosMedico>> GetTurnosMedicosAsync();
+        Task<IEnumerable<EspecialidadesDTO>> GetEspecialidadesMedicasAsync();
+        Task<IEnumerable<UniversidadesDTO>> GetUniversidadesAsync();
+        Task<IEnumerable<AreasMedicasDTO>> GetAreasMedicasAsync();
+        Task<IEnumerable<CentrosMedicosDTO>> GetCentrosMedicosAsync();
+        Task<IEnumerable<TurnosMedicosDTO>> GetTurnosMedicosAsync();
 
         //Métodos para citas
-        Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync();
+        Task<IEnumerable<TiposCitasDTO>> GetTipoDeCitasAsync();
     }
 }

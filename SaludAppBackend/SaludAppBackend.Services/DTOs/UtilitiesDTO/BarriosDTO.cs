@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SaludAppBackend.Models.DTOs
+namespace SaludAppBackend.Services.DTOs.UtilitiesDTO
 {
     public class BarriosDTO
     {
