@@ -3,6 +3,7 @@ using SaludAppBackend.Data.Repositories.Citas;
 using SaludAppBackend.Data.Repositories.Medicos;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Passwd;
+using SaludAppBackend.Data.Repositories.Recepcionista;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Data.Repositories.Utilities;
 
@@ -13,6 +14,7 @@ namespace SaludAppBackend.Data.UnitOfWork
         IUsuarioRepository Usuarios { get; }
         IPacienteRepository Pacientes { get; }
         IMedicoRepository Medicos { get; }
+        IRecepcionistaRepository Recepcionistas { get; }
         IUtilitiesRepository Utilities { get; }
         ICitasRepository Citas { get; }
         IArchivoRepository Archivos { get; }

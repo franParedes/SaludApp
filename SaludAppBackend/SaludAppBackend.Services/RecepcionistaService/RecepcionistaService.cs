@@ -37,6 +37,7 @@ namespace SaludAppBackend.Services.RecepcionistaService
 
                 await _unitOfWork.Usuarios.AddUsuarioAsync(nuevoUsuario);
                 await _unitOfWork.Passwd.AddPasswdAsync(nuevaContrasenya);
+                await _unitOfWork.Recepcionistas.AddRecepcionistaAsync(nuevoRecepcionista);
 
                 await _unitOfWork.CompleteAsync();
 

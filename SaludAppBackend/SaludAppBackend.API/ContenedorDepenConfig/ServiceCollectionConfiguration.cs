@@ -17,6 +17,8 @@ using SaludAppBackend.Data.Repositories.Archivos;
 using SaludAppBackend.Services.ArchivoService;
 using SaludAppBackend.Services.Autenticacion;
 using SaludAppBackend.Data.Repositories.Passwd;
+using SaludAppBackend.Data.Repositories.Recepcionista;
+using SaludAppBackend.Services.RecepcionistaService;
 
 namespace SaludAppBackend.API.ContenedorDepenConfig
 {
@@ -56,6 +58,7 @@ namespace SaludAppBackend.API.ContenedorDepenConfig
                 services.AddScoped<IUsuarioRepository, UsuarioRepository>();
                 services.AddScoped<IPacienteRepository, PacienteRepository>();
                 services.AddScoped<IMedicoRepository, MedicoRepository>();
+                services.AddScoped<IRecepcionistaRepository, RecepcionistaRepository>();
                 services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
                 services.AddScoped<ICitasRepository, CitasRepository>();
                 services.AddScoped<IArchivoRepository, ArchivoRepository>();
@@ -65,6 +68,7 @@ namespace SaludAppBackend.API.ContenedorDepenConfig
                 services.AddScoped<IUsuarioService, UsuarioService>();
                 services.AddScoped<IPacienteService, PacienteService>();
                 services.AddScoped<IMedicoService, MedicoService>();
+                services.AddScoped<IRecepcionistaService, RecepcionistaService>();
                 services.AddScoped<IUtilitiesService, UtilitiesService>();
                 services.AddScoped<ICitaService, CitaService>();
                 services.AddScoped<IArchivoService, ArchivoService>();
