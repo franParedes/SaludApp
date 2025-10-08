@@ -13,15 +13,19 @@ public partial class TbPaciente
 
     public int? Ocupacion { get; set; }
 
-    public string Escolaridad { get; set; } = null!;
+    public int? Escolaridad { get; set; }
 
     public int? Religion { get; set; }
 
     public int Edad { get; set; }
 
-    public string EstadoCivil { get; set; } = null!;
+    public int? EstadoCivil { get; set; }
 
     public int CantidadHermanos { get; set; }
+
+    public virtual TbEscolaridad? EscolaridadNavigation { get; set; }
+
+    public virtual TbEstadoCivil? EstadoCivilNavigation { get; set; }
 
     public virtual TbUsuario IdUsuarioNavigation { get; set; } = null!;
 

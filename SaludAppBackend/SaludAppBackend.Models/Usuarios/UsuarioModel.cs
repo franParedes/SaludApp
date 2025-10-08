@@ -8,6 +8,12 @@ namespace SaludAppBackend.Models.Usuarios
 {
     public class UsuarioModel
     {
+        public UsuarioModel() 
+        {
+            Telefonos = [];
+            Direcciones = [];
+        }
+
         public string Cedula { get; set; } = null!;
         public string? PrimerNombre { get; set; }
         public string? SegundoNombre { get; set; }
@@ -18,5 +24,9 @@ namespace SaludAppBackend.Models.Usuarios
         public int Genero { get; set; }
         public DateOnly FechaNacimiento { get; set; }
         public int TipoUsuario { get; set; }
+
+        public List<TelefonoModel> Telefonos { get; set; }
+
+        public List<DireccionesModel> Direcciones { get; set; }
     }
 }

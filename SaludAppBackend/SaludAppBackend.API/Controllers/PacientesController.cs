@@ -23,7 +23,7 @@ namespace SaludAppBackend.API.Controllers
         {
             try
             {
-                _logger.LogInformation($"Recibida petición para crear nuevo paciente con cédula {paciente.GeneralInfo.Cedula}");
+                _logger.LogInformation($"Recibida petición para crear nuevo paciente con cédula {paciente.Cedula}");
 
                 var nuevoPaciente = await _pacienteService.CrearNuevoPacienteAsync(paciente);
 
@@ -38,7 +38,7 @@ namespace SaludAppBackend.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error inesperado al crear el paciente con cédula {Cedula}", paciente.GeneralInfo.Cedula);
+                _logger.LogError(ex.Message, "Error inesperado al crear el paciente con cédula {Cedula}", paciente.Cedula);
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }

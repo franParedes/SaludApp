@@ -45,10 +45,11 @@ CREATE TABLE tb_usuarios (
     Tipo_usuario INT,
     Fecha_creacion DATE NOT NULL,
     Fecha_actualizacion DATE NOT NULL,
-    activo BOOLEAN,
+    Activo INT,
     
     FOREIGN KEY (Genero) REFERENCES tb_generos(id_genero) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (Tipo_usuario) REFERENCES tb_tipo_usuarios(id_tipo_usuario) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (Tipo_usuario) REFERENCES tb_tipo_usuarios(id_tipo_usuario) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Activo) REFERENCES tb_stados(Id_estado) ON UPDATE CASCADE ON DELETE SET NULL
     
 ) ENGINE = InnoDB;
 
@@ -193,6 +194,40 @@ CREATE TABLE tb_centros_medicos (
 CREATE TABLE tb_turnos_medicos (
 	Id_turno INT PRIMARY KEY AUTO_INCREMENT,
     Turno VARCHAR(50)
+) ENGINE = InnoDB;
+
+-- Recepcionista
+CREATE TABLE tb_recepcionistas (
+	Id_recep INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Centro_actual INT,
+    Turno_actual INT,
+    
+    FOREIGN KEY (Id_usuario) REFERENCES tb_usuarios(Id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	FOREIGN KEY (Centro_actual) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Turno_actual) REFERENCES tb_turnos_medicos(Id_turno) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
+
+-- Usuario Registro
+CREATE TABLE tb_usuario_registro (
+	Id_registro INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Centro_actual INT,
+    Turno_actual INT,
+    
+    FOREIGN KEY (Id_usuario) REFERENCES tb_usuarios(Id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	FOREIGN KEY (Centro_actual) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Turno_actual) REFERENCES tb_turnos_medicos(Id_turno) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE = InnoDB;
+
+-- Administrador
+CREATE TABLE tb_administrador (
+	Id_admin INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Centro_actual INT,
+    
+    FOREIGN KEY (Id_usuario) REFERENCES tb_usuarios(Id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT,
+	FOREIGN KEY (Centro_actual) REFERENCES tb_centros_medicos(Id_centro) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE = InnoDB;
 
 -- Médicos

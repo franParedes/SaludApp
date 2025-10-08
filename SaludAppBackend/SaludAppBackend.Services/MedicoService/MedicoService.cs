@@ -2,6 +2,7 @@
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.UnitOfWork;
 using SaludAppBackend.Models.Usuarios;
+using SaludAppBackend.Services.UsuarioService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,44 +15,21 @@ namespace SaludAppBackend.Services.MedicoService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MedicoService> _logger;
+        private readonly IUsuarioService _usuarioService;
 
-        public MedicoService(IUnitOfWork unitOfWork, ILogger<MedicoService> logger)
+        public MedicoService(IUnitOfWork unitOfWork, ILogger<MedicoService> logger, IUsuarioService usuarioService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _usuarioService = usuarioService;
         }
 
         public async Task<int> CrearNuevoMedicoAsync(MedicoModel medico)
         {
             _logger.LogInformation("Intentando agregar nuevo médico");
-            var usuarioExiste = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(medico.GeneralInfo.Correo);
-            if (usuarioExiste > 0)
-                throw new InvalidOperationException($"El médico con correo {medico.GeneralInfo.Correo} ya existe");
 
-            string userName = $"@{medico.GeneralInfo.PrimerNombre!.Substring(0, 1)}{medico.GeneralInfo.PrimerApellido}";
-            var nuevoUsuario = new TbUsuario
-            {
-                Username           = userName,
-                Cedula             = medico.GeneralInfo.Cedula,
-                PrimerNombre       = medico.GeneralInfo.PrimerNombre,
-                SegundoNombre      = medico.GeneralInfo.SegundoNombre,
-                PrimerApellido     = medico.GeneralInfo.PrimerApellido,
-                SegundoApellido    = medico.GeneralInfo.SegundoApellido,
-                Correo             = medico.GeneralInfo.Correo,
-                Genero             = medico.GeneralInfo.Genero,
-                FechaNacimiento    = medico.GeneralInfo.FechaNacimiento,
-                TipoUsuario        = medico.GeneralInfo.TipoUsuario,
-                FechaCreacion      = DateOnly.FromDateTime(DateTime.Now),
-                FechaActualizacion = DateOnly.FromDateTime(DateTime.Now),
-                Activo             = true
-            };
-
-            string passwrodHsh = BCrypt.Net.BCrypt.HashPassword(medico.GeneralInfo.Contrasenya);
-            var nuevaContrasenya = new TbPasswd
-            {
-                HashPasswd = passwrodHsh,
-                IdUsuarioNavigation = nuevoUsuario
-            };
+            var nuevoUsuario = await _usuarioService.CrearUsuario(medico);
+            var nuevaContrasenya = await _usuarioService.CrearPasswd(medico.Contrasenya, nuevoUsuario);
 
             var nuevoMedico = new TbMedico
             {
@@ -65,13 +43,6 @@ namespace SaludAppBackend.Services.MedicoService
                 CentroActual        = medico.Centro_actual,
                 TurnoActual         = medico.Turno_actual,
             };
-
-            foreach (var tel in medico.Telefonos)
-            {
-                nuevoUsuario.TbTelefonos.Add(
-                    new TbTelefono { Telefono = tel.Telefono, Compania = tel.Compania }
-                );
-            }
 
             await _unitOfWork.Usuarios.AddUsuarioAsync( nuevoUsuario );
             await _unitOfWork.Passwd.AddPasswdAsync(nuevaContrasenya);

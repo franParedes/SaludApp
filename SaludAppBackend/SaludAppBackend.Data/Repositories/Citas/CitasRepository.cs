@@ -42,7 +42,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
              */
             _appDbContext.TbCitas.Attach(cita);
 
-            cita.Estado = "aprobada";
+            cita.Estado = 1;
             cita.FechaCita = fechaCita;
 
             /*
@@ -52,7 +52,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
             _appDbContext.Entry(cita).Property(x => x.FechaCita).IsModified = true;
         }
 
-        public void CambiarEstadoCita(string Estado, int idCita)
+        public void CambiarEstadoCita(int Estado, int idCita)
         {
             var cita = new TbCita { IdCita = idCita };
 
@@ -78,7 +78,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
         {
             var cita = new TbCita { IdCita= idCita };
             _appDbContext.TbCitas.Attach(cita);
-            cita.Estado = "rechazada";
+            cita.Estado = 3;
             cita.MotivoRechazo = motivoRechazo;
 
             _appDbContext.Entry(cita).Property(x => x.Estado).IsModified = true;

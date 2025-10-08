@@ -15,13 +15,15 @@ public partial class TbCita
 
     public DateTime? FechaCita { get; set; }
 
-    public string Estado { get; set; } = null!;
+    public int? Estado { get; set; }
 
     public string? MotivoCita { get; set; }
 
     public string? MotivoRechazo { get; set; }
 
     public int? TipoCita { get; set; }
+
+    public virtual TbStado? EstadoNavigation { get; set; }
 
     public virtual TbCentrosMedico? LugarNavigation { get; set; }
 

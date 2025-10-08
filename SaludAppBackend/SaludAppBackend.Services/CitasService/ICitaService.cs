@@ -11,7 +11,7 @@ namespace SaludAppBackend.Services.CitasService
     {
         Task<int> CrearNuevaCitaMedicaAsync(CitaMedicaModel citaMedica);
         Task<int> CrearNuevaCitaDeLaboratorioAsync(CitaLaboratorioModel citaLaboratorio);
-        Task<bool> CambiarEstadoCita(string Estado, int idCita);
+        Task<bool> CambiarEstadoCita(int Estado, int idCita);
         Task<bool> AprobarCita(int idCita, DateTime fechaCita);
         Task<bool> RechazarCita(int idCita, string motivoRechazo);
         Task<bool> EliminarCitaMedica(int idCitaMedica);

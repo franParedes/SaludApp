@@ -31,9 +31,13 @@ public partial class TbUsuario
 
     public DateOnly FechaActualizacion { get; set; }
 
-    public bool? Activo { get; set; }
+    public int? Activo { get; set; }
+
+    public virtual TbStado? ActivoNavigation { get; set; }
 
     public virtual TbGenero? GeneroNavigation { get; set; }
+
+    public virtual ICollection<TbAdministrador> TbAdministradors { get; set; } = new List<TbAdministrador>();
 
     public virtual ICollection<TbDireccione> TbDirecciones { get; set; } = new List<TbDireccione>();
 
@@ -43,7 +47,11 @@ public partial class TbUsuario
 
     public virtual TbPasswd? TbPasswd { get; set; }
 
+    public virtual ICollection<TbRecepcionista> TbRecepcionista { get; set; } = new List<TbRecepcionista>();
+
     public virtual ICollection<TbTelefono> TbTelefonos { get; set; } = new List<TbTelefono>();
+
+    public virtual ICollection<TbUsuarioRegistro> TbUsuarioRegistros { get; set; } = new List<TbUsuarioRegistro>();
 
     public virtual TbTipoUsuario? TipoUsuarioNavigation { get; set; }
 }

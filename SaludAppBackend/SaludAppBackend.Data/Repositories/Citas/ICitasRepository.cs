@@ -7,7 +7,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
         Task AddCita(TbCita cita);
         Task AddCitaMedica(TbCitasMedica citaMedica);
         Task AddCitaLaboratorio(TbCitasLaboratorio citaLab);
-        void CambiarEstadoCita(string Estado, int idCita);
+        void CambiarEstadoCita(int Estado, int idCita);
         void AprobarCita(int idCita, DateTime fechaCita);
         void RechazarCita(int idCita, string motivoRechazo);
         void EliminarCitaMedica(int idCitaMedica);

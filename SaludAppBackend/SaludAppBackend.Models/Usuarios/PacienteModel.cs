@@ -6,24 +6,16 @@ using System.Threading.Tasks;
 
 namespace SaludAppBackend.Models.Usuarios
 {
-    public class PacienteModel
+    public class PacienteModel : UsuarioModel
     {
-        public PacienteModel()
-        {
-            Telefonos = [];
-            Direcciones = [];
-        }
-
-        public UsuarioModel GeneralInfo { get; set; } = null!;
+        //public UsuarioModel GeneralInfo { get; set; } = null!;
         public string? NumeroInss { get; set; }
         public int Ocupacion { get; set; }
-        public string Escolaridad { get; set; } = null!;
+        public int Escolaridad { get; set; }
         public int Religion { get; set; }
         public int Edad { get; set; }
-        public string EstadoCivil { get; set; } = null!;
+        public int EstadoCivil { get; set; }
         public int CantidadHermanos { get; set; }
-        public List<TelefonoModel> Telefonos { get; set; }
-        public List<DireccionesModel> Direcciones { get; set; }
     }
 
     public class TelefonoModel

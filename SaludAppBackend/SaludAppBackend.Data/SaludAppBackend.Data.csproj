@@ -20,4 +20,8 @@
     <ProjectReference Include="..\SaludAppBackend.Models\SaludAppBackend.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Recepcionista\" />
+  </ItemGroup>
+
 </Project>

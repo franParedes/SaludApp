@@ -11,6 +11,8 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public virtual DbSet<TbAdministrador> TbAdministradors { get; set; }
+
     public virtual DbSet<TbAntecedentesFamiliaresPatologico> TbAntecedentesFamiliaresPatologicos { get; set; }
 
     public virtual DbSet<TbAntecedentesPersonalesNoPatologico> TbAntecedentesPersonalesNoPatologicos { get; set; }
@@ -83,6 +85,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbProvTelefonico> TbProvTelefonicos { get; set; }
 
+    public virtual DbSet<TbRecepcionista> TbRecepcionistas { get; set; }
+
     public virtual DbSet<TbReligione> TbReligiones { get; set; }
 
     public virtual DbSet<TbResumenCitaMedica> TbResumenCitaMedicas { get; set; }
@@ -107,6 +111,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TbUsuario> TbUsuarios { get; set; }
 
+    public virtual DbSet<TbUsuarioRegistro> TbUsuarioRegistros { get; set; }
+
     public virtual DbSet<TbViasAdminitracion> TbViasAdminitracions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -114,6 +120,31 @@ public partial class AppDbContext : DbContext
         modelBuilder
             .UseCollation("utf8mb4_spanish_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<TbAdministrador>(entity =>
+        {
+            entity.HasKey(e => e.IdAdmin).HasName("PRIMARY");
+
+            entity.ToTable("tb_administrador");
+
+            entity.HasIndex(e => e.CentroActual, "Centro_actual");
+
+            entity.HasIndex(e => e.IdUsuario, "Id_usuario");
+
+            entity.Property(e => e.IdAdmin).HasColumnName("Id_admin");
+            entity.Property(e => e.CentroActual).HasColumnName("Centro_actual");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
+
+            entity.HasOne(d => d.CentroActualNavigation).WithMany(p => p.TbAdministradors)
+                .HasForeignKey(d => d.CentroActual)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_administrador_ibfk_2");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.TbAdministradors)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_administrador_ibfk_1");
+        });
 
         modelBuilder.Entity<TbAntecedentesFamiliaresPatologico>(entity =>
         {
@@ -307,6 +338,8 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tb_citas");
 
+            entity.HasIndex(e => e.Estado, "Estado");
+
             entity.HasIndex(e => e.Lugar, "Lugar");
 
             entity.HasIndex(e => e.PacienteId, "Paciente_id");
@@ -314,9 +347,6 @@ public partial class AppDbContext : DbContext
             entity.HasIndex(e => e.TipoCita, "Tipo_cita");
 
             entity.Property(e => e.IdCita).HasColumnName("Id_cita");
-            entity.Property(e => e.Estado)
-                .HasDefaultValueSql("'pendiente'")
-                .HasColumnType("enum('pendiente','aprobada','rechazada','reprogramada','cancelada')");
             entity.Property(e => e.FechaCita)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_cita");
@@ -331,6 +361,11 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("Motivo_rechazo");
             entity.Property(e => e.PacienteId).HasColumnName("Paciente_id");
             entity.Property(e => e.TipoCita).HasColumnName("Tipo_cita");
+
+            entity.HasOne(d => d.EstadoNavigation).WithMany(p => p.TbCita)
+                .HasForeignKey(d => d.Estado)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_citas_ibfk_4");
 
             entity.HasOne(d => d.LugarNavigation).WithMany(p => p.TbCita)
                 .HasForeignKey(d => d.Lugar)
@@ -806,6 +841,10 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tb_pacientes");
 
+            entity.HasIndex(e => e.Escolaridad, "Escolaridad");
+
+            entity.HasIndex(e => e.EstadoCivil, "Estado_civil");
+
             entity.HasIndex(e => e.IdUsuario, "Id_usuario").IsUnique();
 
             entity.HasIndex(e => e.NumeroInss, "Numero_inss").IsUnique();
@@ -816,15 +855,22 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.IdPaciente).HasColumnName("Id_paciente");
             entity.Property(e => e.CantidadHermanos).HasColumnName("Cantidad_hermanos");
-            entity.Property(e => e.Escolaridad).HasColumnType("enum('NO TIENE','PRIMARIA','SECUNDARIA','UNIVERSIDAD')");
-            entity.Property(e => e.EstadoCivil)
-                .HasColumnType("enum('SOLTER@','CASAD@','DIVORCIAD@','VIUD@','UNION LIBRE')")
-                .HasColumnName("Estado_civil");
+            entity.Property(e => e.EstadoCivil).HasColumnName("Estado_civil");
             entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
             entity.Property(e => e.NumeroInss)
                 .HasMaxLength(9)
                 .IsFixedLength()
                 .HasColumnName("Numero_inss");
+
+            entity.HasOne(d => d.EscolaridadNavigation).WithMany(p => p.TbPacientes)
+                .HasForeignKey(d => d.Escolaridad)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_pacientes_ibfk_4");
+
+            entity.HasOne(d => d.EstadoCivilNavigation).WithMany(p => p.TbPacientes)
+                .HasForeignKey(d => d.EstadoCivil)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_pacientes_ibfk_5");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithOne(p => p.TbPaciente)
                 .HasForeignKey<TbPaciente>(d => d.IdUsuario)
@@ -870,6 +916,39 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.IdProvTel).HasColumnName("Id_prov_tel");
             entity.Property(e => e.Proveedor).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TbRecepcionista>(entity =>
+        {
+            entity.HasKey(e => e.IdRecep).HasName("PRIMARY");
+
+            entity.ToTable("tb_recepcionistas");
+
+            entity.HasIndex(e => e.CentroActual, "Centro_actual");
+
+            entity.HasIndex(e => e.IdUsuario, "Id_usuario");
+
+            entity.HasIndex(e => e.TurnoActual, "Turno_actual");
+
+            entity.Property(e => e.IdRecep).HasColumnName("Id_recep");
+            entity.Property(e => e.CentroActual).HasColumnName("Centro_actual");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
+            entity.Property(e => e.TurnoActual).HasColumnName("Turno_actual");
+
+            entity.HasOne(d => d.CentroActualNavigation).WithMany(p => p.TbRecepcionista)
+                .HasForeignKey(d => d.CentroActual)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_recepcionistas_ibfk_2");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.TbRecepcionista)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_recepcionistas_ibfk_1");
+
+            entity.HasOne(d => d.TurnoActualNavigation).WithMany(p => p.TbRecepcionista)
+                .HasForeignKey(d => d.TurnoActual)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_recepcionistas_ibfk_3");
         });
 
         modelBuilder.Entity<TbReligione>(entity =>
@@ -1028,6 +1107,8 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tb_usuarios");
 
+            entity.HasIndex(e => e.Activo, "Activo");
+
             entity.HasIndex(e => e.Cedula, "Cedula").IsUnique();
 
             entity.HasIndex(e => e.Correo, "Correo").IsUnique();
@@ -1037,7 +1118,6 @@ public partial class AppDbContext : DbContext
             entity.HasIndex(e => e.TipoUsuario, "Tipo_usuario");
 
             entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
-            entity.Property(e => e.Activo).HasColumnName("activo");
             entity.Property(e => e.Cedula)
                 .HasMaxLength(16)
                 .IsFixedLength();
@@ -1060,6 +1140,11 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TipoUsuario).HasColumnName("Tipo_usuario");
             entity.Property(e => e.Username).HasMaxLength(50);
 
+            entity.HasOne(d => d.ActivoNavigation).WithMany(p => p.TbUsuarios)
+                .HasForeignKey(d => d.Activo)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_usuarios_ibfk_3");
+
             entity.HasOne(d => d.GeneroNavigation).WithMany(p => p.TbUsuarios)
                 .HasForeignKey(d => d.Genero)
                 .OnDelete(DeleteBehavior.SetNull)
@@ -1069,6 +1154,39 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.TipoUsuario)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tb_usuarios_ibfk_2");
+        });
+
+        modelBuilder.Entity<TbUsuarioRegistro>(entity =>
+        {
+            entity.HasKey(e => e.IdRegistro).HasName("PRIMARY");
+
+            entity.ToTable("tb_usuario_registro");
+
+            entity.HasIndex(e => e.CentroActual, "Centro_actual");
+
+            entity.HasIndex(e => e.IdUsuario, "Id_usuario");
+
+            entity.HasIndex(e => e.TurnoActual, "Turno_actual");
+
+            entity.Property(e => e.IdRegistro).HasColumnName("Id_registro");
+            entity.Property(e => e.CentroActual).HasColumnName("Centro_actual");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_usuario");
+            entity.Property(e => e.TurnoActual).HasColumnName("Turno_actual");
+
+            entity.HasOne(d => d.CentroActualNavigation).WithMany(p => p.TbUsuarioRegistros)
+                .HasForeignKey(d => d.CentroActual)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_usuario_registro_ibfk_2");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.TbUsuarioRegistros)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("tb_usuario_registro_ibfk_1");
+
+            entity.HasOne(d => d.TurnoActualNavigation).WithMany(p => p.TbUsuarioRegistros)
+                .HasForeignKey(d => d.TurnoActual)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tb_usuario_registro_ibfk_3");
         });
 
         modelBuilder.Entity<TbViasAdminitracion>(entity =>

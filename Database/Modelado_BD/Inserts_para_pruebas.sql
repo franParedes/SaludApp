@@ -9,6 +9,9 @@ INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('RECHAZA
 INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('REPROGRAMADA', '2');
 INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('CANCELADA', '2');
 
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('ACTIVO', '1');
+INSERT INTO `db_saludapp`.`tb_stados` (`Estado`, `Tipo_estado`) VALUES ('INACTIVO', '1');
+
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Tigo');
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Claro');
 INSERT INTO `db_saludapp`.`tb_prov_telefonicos` (`Proveedor`) VALUES ('Cootel');

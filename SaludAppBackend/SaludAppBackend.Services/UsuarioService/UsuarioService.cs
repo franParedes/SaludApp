@@ -29,57 +29,64 @@ namespace SaludAppBackend.Services.UsuarioService
             return usuarioExiste;
         }
 
-        //public async Task<bool> RegistrarUsuarioAsync(UsuarioModel usuario)
-        //{
-        //    _logger.LogInformation("Intentando agregar nuevo paciente");
-        //    var usuarioExiste = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(usuario.Correo);
+        public async Task<TbPasswd> CrearPasswd(string passwd, TbUsuario usuario)
+        {
+            string passwrodHsh = BCrypt.Net.BCrypt.HashPassword(passwd);
+            var nuevaContrasenya = new TbPasswd
+            {
+                HashPasswd = passwrodHsh,
+                IdUsuarioNavigation = usuario
+            };
 
-        //    if (usuarioExiste > 0)
-        //    {
-        //        throw new InvalidOperationException($"El paciente con correo {usuario.Correo} ya existe");
-        //    }
+            return await Task.FromResult(nuevaContrasenya);
+        }
 
-        //    string userName = $"@{usuario.PrimerNombre.Substring(0, 1)}{usuario.PrimerApellido}";
-        //    var nuevoUsuario = new TbUsuario
-        //    {
-        //        Username = userName,
-        //        Cedula = usuario.Cedula,
-        //        PrimerNombre = usuario.PrimerNombre,
-        //        SegundoNombre = usuario.SegundoNombre,
-        //        PrimerApellido = usuario.PrimerApellido,
-        //        SegundoApellido = usuario.SegundoApellido,
-        //        Correo = usuario.Correo,
-        //        Genero = usuario.Genero,
-        //        FechaNacimiento = usuario.FechaNacimiento,
-        //        TipoUsuario = usuario.TipoUsuario,
-        //        FechaCreacion = DateOnly.FromDateTime(DateTime.Now),
-        //        FechaActualizacion = DateOnly.FromDateTime(DateTime.Now),
-        //        Activo = true
-        //    };
+        public async Task<TbUsuario> CrearUsuario(UsuarioModel usuario)
+        {
+            var usuarioExiste = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(usuario.Correo);
 
-        //    await _unitOfWork.Usuarios.AddUsuarioAsync(nuevoUsuario);
-        //    await _unitOfWork.CompleteAsync();
+            if (usuarioExiste > 0)
+                throw new InvalidOperationException($"Ya existe un usuario asociado al correo {usuario.Correo}");
 
-        //    _logger.LogInformation("Usuario creado");
+            string userName = $"@{usuario.PrimerNombre!.Substring(0, 1)}{usuario.PrimerApellido}";
+            var nuevoUsuario = new TbUsuario
+            {
+                Username = userName,
+                Cedula = usuario.Cedula,
+                PrimerNombre = usuario.PrimerNombre,
+                SegundoNombre = usuario.SegundoNombre,
+                PrimerApellido = usuario.PrimerApellido,
+                SegundoApellido = usuario.SegundoApellido,
+                Correo = usuario.Correo,
+                Genero = usuario.Genero,
+                FechaNacimiento = usuario.FechaNacimiento,
+                TipoUsuario = usuario.TipoUsuario,
+                FechaCreacion = DateOnly.FromDateTime(DateTime.Now),
+                FechaActualizacion = DateOnly.FromDateTime(DateTime.Now),
+                Activo = 7 //Esto es que está activo
+            };
 
-        //    //var idUsuario = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(usuario.Correo);
+            foreach (var tel in usuario.Telefonos)
+            {
+                nuevoUsuario.TbTelefonos.Add(
+                    new TbTelefono { Telefono = tel.Telefono, Compania = tel.Compania }
+                );
+            }
 
-        //    //var nuevoPaciente = new TbPaciente
-        //    //{
-        //    //    IdUsuario = idUsuario,
-        //    //    NumeroInss = paciente.NumeroInss,
-        //    //    Ocupacion = paciente.Ocupacion,
-        //    //    Escolaridad = paciente.Escolaridad,
-        //    //    Religion = paciente.Religion,
-        //    //    Edad = paciente.Edad,
-        //    //    EstadoCivil = paciente.EstadoCivil,
-        //    //    CantidadHermanos = paciente.CantidadHermanos
-        //    //};
+            foreach (var dir in usuario.Direcciones)
+            {
+                nuevoUsuario.TbDirecciones.Add(
+                    new TbDireccione
+                    {
+                        Departamento = dir.Departamento,
+                        Municipio = dir.Municipio,
+                        Barrio = dir.Barrio,
+                        Direccion = dir.Direccion
+                    }
+                );
+            }
 
-        //    //await _unitOfWork.Usuarios.AddPacienteAsync(nuevoPaciente);
-        //    //await _unitOfWork.CompleteAsync();
-
-        //    return true;
-        //}
+            return nuevoUsuario;
+        }
     }
 }

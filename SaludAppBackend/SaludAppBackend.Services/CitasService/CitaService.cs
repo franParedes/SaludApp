@@ -36,7 +36,7 @@ namespace SaludAppBackend.Services.CitasService
             }
         }
 
-        public async Task<bool> CambiarEstadoCita(string Estado, int idCita)
+        public async Task<bool> CambiarEstadoCita(int Estado, int idCita)
         {
             _logger.LogInformation("Intentando cambiar el estado de la cita con id {idCita}", idCita);
             try
@@ -67,7 +67,7 @@ namespace SaludAppBackend.Services.CitasService
                 PacienteId = citaLaboratorio.PacienteId,
                 Lugar = citaLaboratorio.Lugar,
                 FechaSolicitud = citaLaboratorio.FechaSolicitud,
-                Estado = "pendiente",
+                Estado = 1,
                 MotivoCita = citaLaboratorio.MotivoCita,
                 TipoCita = citaLaboratorio.TipoCita
             };
@@ -123,7 +123,7 @@ namespace SaludAppBackend.Services.CitasService
                 PacienteId = citaMedica.PacienteId,
                 Lugar = citaMedica.Lugar,
                 FechaSolicitud = citaMedica.FechaSolicitud,
-                Estado = "pendiente",
+                Estado = 1,
                 MotivoCita = citaMedica.MotivoCita,
                 TipoCita = citaMedica.TipoCita
             };

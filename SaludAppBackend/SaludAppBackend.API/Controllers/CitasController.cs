@@ -123,7 +123,7 @@ namespace SaludAppBackend.API.Controllers
 
         [HttpPut]
         [Route("CambiarEstadoCita/{idCita}/{estado}")]
-        public async Task<IActionResult> CambiarEstadoCita(int idCita, string estado)
+        public async Task<IActionResult> CambiarEstadoCita(int idCita, int estado)
         {
             try
             {
