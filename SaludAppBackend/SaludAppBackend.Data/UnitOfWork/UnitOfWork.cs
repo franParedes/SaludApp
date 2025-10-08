@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
+using SaludAppBackend.Data.Repositories.Administradores;
 using SaludAppBackend.Data.Repositories.Archivos;
 using SaludAppBackend.Data.Repositories.Citas;
 using SaludAppBackend.Data.Repositories.Medicos;
 using SaludAppBackend.Data.Repositories.Pacientes;
 using SaludAppBackend.Data.Repositories.Passwd;
 using SaludAppBackend.Data.Repositories.Recepcionista;
+using SaludAppBackend.Data.Repositories.UsuarioRegistroRepository;
 using SaludAppBackend.Data.Repositories.Usuarios;
 using SaludAppBackend.Data.Repositories.Utilities;
 using System;
@@ -34,6 +36,8 @@ namespace SaludAppBackend.Data.UnitOfWork
         private IPacienteRepository? _pacientes;
         private IMedicoRepository? _medicos;
         private IRecepcionistaRepository? _recepcionista;
+        private IUsuarioRegistroRepository? _usuarioRegistros;
+        private IAdminRepository? _administradores;
         private IUtilitiesRepository? _utilities;
         private ICitasRepository? _citas;
         private IArchivoRepository? _archivos;
@@ -61,6 +65,8 @@ namespace SaludAppBackend.Data.UnitOfWork
         public IPacienteRepository Pacientes => _pacientes ??= _serviceProvider.GetRequiredService<IPacienteRepository>();
         public IMedicoRepository Medicos => _medicos ??= _serviceProvider.GetRequiredService<IMedicoRepository>();
         public IRecepcionistaRepository Recepcionistas => _recepcionista ??= _serviceProvider.GetRequiredService<IRecepcionistaRepository>();
+        public IUsuarioRegistroRepository UsuarioRegistros => _usuarioRegistros ??= _serviceProvider.GetRequiredService<IUsuarioRegistroRepository>();
+        public IAdminRepository Administradores => _administradores ??= _serviceProvider.GetRequiredService<IAdminRepository>();
         public IUtilitiesRepository Utilities => _utilities ??= _serviceProvider.GetRequiredService<IUtilitiesRepository>();
         public ICitasRepository Citas => _citas ??= _serviceProvider.GetRequiredService<ICitasRepository>();
         public IArchivoRepository Archivos => _archivos ??= _serviceProvider.GetRequiredService<IArchivoRepository>();

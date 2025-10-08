@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SaludAppBackend.Models.Usuarios
 {
-    public class Administrador : UsuarioModel
+    public class AdministradorModel : UsuarioModel
     {
         public int CentroActual { get; set; }
     }
