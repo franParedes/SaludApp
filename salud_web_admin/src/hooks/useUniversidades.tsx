@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+// src/hooks/useUniversidades.ts
 
-export type Universidad = {
-  IdUniversidad: number;
-  Universidad: string;
-};
+import { useEffect, useState } from "react";
+import type { Universidad } from "../types/Universidad"; // Importación de tipo
+import { fetchUniversidades } from "../services/utilitiesServices";
 
 export function useUniversidades() {
   const [universidades, setUniversidades] = useState<Universidad[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUniversidades = async () => {
+    const loadUniversidades = async () => {
       try {
-        const respuesta = await fetch(
-          "https://localhost:7239/api/Utilities/ObtenerUniversidades"
-        );
-        const data = await respuesta.json();
+        // Llama al servicio puro.
+        const data = await fetchUniversidades();
         setUniversidades(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar las universidades:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUniversidades();
-  }, []);
+    loadUniversidades();
+  }, []); // Carga solo al montar.
 
   return { universidades, loading };
 }

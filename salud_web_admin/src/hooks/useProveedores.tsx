@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+// src/hooks/useProveedores.ts
 
-export type Proveedores = {
-  IdProvTel: number;
-  Proveedor: string;
-};
+import { useEffect, useState } from "react";
+import type { Proveedor } from "../types/Proveedor"; // Importación de tipo
+import { fetchProveedores } from "../services/utilitiesServices";
 
 export function useProveedores() {
-  const [proveedores, setProveedores] = useState<Proveedores[]>([]);
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProveedores = async () => {
+    const loadProveedores = async () => {
       try {
-        const respuesta = await fetch(
-          "https://localhost:7239/api/Utilities/ObtenerProveedoresTelefonicos"
-        );
-        const data = await respuesta.json();
+        // Llama al servicio puro.
+        const data = await fetchProveedores();
         setProveedores(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar los proveedores:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProveedores();
-  }, []);
+    loadProveedores();
+  }, []); // Carga solo al montar.
 
   return { proveedores, loading };
 }

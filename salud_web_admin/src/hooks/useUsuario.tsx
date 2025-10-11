@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+// src/hooks/useUsuario.ts
 
-export type TipoUsuario = {
-  IdTipoUsuario: number;
-  TipoUsuario: string;
-};
+import { useEffect, useState } from "react";
+import type { TipoUsuario } from "../types/TipoUsuario"; // Importación de tipo
+import { fetchTiposUsuarios } from "../services/utilitiesServices";
 
 export function useUsuario() {
   const [tipos, setTipos] = useState<TipoUsuario[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTiposUsuarios = async () => {
+    const loadTiposUsuarios = async () => {
       try {
-        const respuesta = await fetch(
-          "https://localhost:7239/api/Utilities/ObtenerTipoDeUsuario"
-        );
-        const data = await respuesta.json();
+        // Llama al servicio puro.
+        const data = await fetchTiposUsuarios();
         setTipos(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar los tipos de usuario:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTiposUsuarios();
-  }, []);
+    loadTiposUsuarios();
+  }, []); // Carga solo al montar.
 
   return { tipos, loading };
 }

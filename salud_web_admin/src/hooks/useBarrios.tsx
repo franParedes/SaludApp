@@ -1,34 +1,37 @@
-import { useEffect, useState } from "react";
+// src/hooks/useBarrios.ts
 
-export type Barrio = {
-  IdBarrio: number;
-  Barrio: string;
-};
+import { useEffect, useState } from "react";
+import type { Barrio } from "../types/Barrios"; // Importación de tipo
+import { fetchBarrios } from "../services/utilitiesServices";
 
 export default function useBarrios(municipioId: number | null) {
   const [barrios, setBarrios] = useState<Barrio[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchBarrios = async () => {
-      if (!municipioId) return; // No hacer fetch si no hay id
+    const loadBarrios = async () => {
+      // 1. Lógica de Salida: Si no hay ID, limpiamos el estado y salimos.
+      if (!municipioId) {
+        setBarrios([]);
+        return;
+      }
+      
+      // 2. Lógica de Carga
       setLoading(true);
       try {
-        const respuesta = await fetch(
-          `https://localhost:7239/api/Utilities/ObtenerBarrios/${municipioId}`
-        );
-        if (!respuesta.ok) throw new Error("Error al obtener municipios");
-        const data = await respuesta.json();
+        // Llama al servicio, el hook solo gestiona el estado
+        const data = await fetchBarrios(municipioId);
         setBarrios(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar los barrios:", err);
+        // Opcional: podrías setBarrios([]) aquí si el fetch falla
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBarrios();
-  }, [municipioId]);
+    loadBarrios();
+  }, [municipioId]); // Dependencia clave: se ejecuta cada vez que cambia municipioId
 
   return { barrios, loading };
 }
