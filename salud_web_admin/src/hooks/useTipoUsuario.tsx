@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { TipoUsuario } from "../types/TipoUsuario"; // Importación de tipo
 import { fetchTiposUsuarios } from "../services/utilitiesServices";
 
-export function useUsuario() {
+export function useTipoUsuario() {
   const [tipos, setTipos] = useState<TipoUsuario[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,5 +1,5 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
-import { useUsuario } from "../../../hooks/useUsuario";
+import { useTipoUsuario } from "../../../hooks/useTipoUsuario";
 
 type TipoSelectProps = {
   tipo: number | '';
@@ -7,7 +7,7 @@ type TipoSelectProps = {
 };
 
 export default function MenuTipoUsuario({ tipo, setTipo }: TipoSelectProps) {
-  const { tipos, loading } = useUsuario();
+  const { tipos, loading } = useTipoUsuario();
 
   const handleChange = (event: SelectChangeEvent) => {
     setTipo(Number(event.target.value));
