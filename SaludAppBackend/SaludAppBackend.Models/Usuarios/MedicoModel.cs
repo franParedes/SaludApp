@@ -8,7 +8,7 @@ namespace SaludAppBackend.Models.Usuarios
 {
     public class MedicoModel : UsuarioModel
     {
-        public UsuarioModel GeneralInfo { get; set; } = null!;
+        //public UsuarioModel GeneralInfo { get; set; } = null!;
         public string Cod_sanitario { get; set; } = null!;
         public int Especialidad { get; set; }
         public int EgresadoDe {  get; set; }
