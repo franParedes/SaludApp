@@ -1,30 +1,26 @@
-import { useEffect, useState } from "react";
+// src/hooks/useGenero.ts (Sin cambios, ya que solo llama al servicio)
 
-export type Genero = {
-  IdGenero: number;
-  Genero: string;
-};
+import { useEffect, useState } from "react";
+import type { Genero } from "../types/Genero"; 
+import { fetchGeneros } from "../services/utilitiesServices";
 
 export function useGenero() {
   const [generos, setGeneros] = useState<Genero[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGeneros = async () => {
+    const loadGeneros = async () => {
       try {
-        const respuesta = await fetch(
-          "https://localhost:7239/api/Utilities/ObtenerGeneros"
-        );
-        const data = await respuesta.json();
+        const data = await fetchGeneros();
         setGeneros(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar los géneros:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGeneros();
+    loadGeneros();
   }, []);
 
   return { generos, loading };

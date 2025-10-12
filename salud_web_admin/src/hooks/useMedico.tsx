@@ -1,31 +1,8 @@
-import { useState } from "react";
+// src/hooks/useCrearMedico.ts
 
-export type Medico = {
-    nombre: string;
-    apellido: string;
-    especialidad: number;
-    telefono: number;
-    GeneralInfo: {
-        Cedula: string;
-        PrimerNombre: string;
-        SegundoNombre: string;
-        PrimerApellido: string;
-        SegundoApellido: string;
-        Correo: string;
-        Genero: number;
-        FechaNacimiento: string; // YYYY-MM-DD
-        TipoUsuario: number;
-    };
-    Cod_sanitario: string;
-    Especialidad: number;
-    EgresadoDe: number;
-    EgresadoEl: string; // YYYY-MM-DD
-    Experiencia_anyos: number;
-    Area_actual: number;
-    Centro_actual: number;
-    Turno_actual: number;
-    Telefonos: { Telefono: number; Compania: number }[];
-};
+import { useState } from "react";
+import type { Medico } from "../types/Medico";
+import { createMedico } from "../services/medicoService";
 
 export function useCrearMedico() {
     const [loading, setLoading] = useState(false);
@@ -35,27 +12,17 @@ export function useCrearMedico() {
     const crearMedico = async (medicoData: Medico) => {
         setLoading(true);
         setError(null);
+        setRespuesta(null);
 
         try {
-        const res = await fetch("https://localhost:7239/api/Medicos/CrearMedico", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(medicoData)
-        });
-
-        if (!res.ok) {
-            throw new Error("Error creando médico");
-        }
-
-        const data = await res.json();
-        setRespuesta(data);
-        return data;
+            const data = await createMedico(medicoData);
+            setRespuesta(data);
+            return data;
         } catch (err: any) {
-        setError(err.message || "Error desconocido");
+            setError(err.message || "Error desconocido en la creación");
+            throw err; // Propaga el error para manejo adicional en el componente
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 

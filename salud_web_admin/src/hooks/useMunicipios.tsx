@@ -1,34 +1,36 @@
-import { useEffect, useState } from "react";
+// src/hooks/useMunicipios.ts
 
-export type Municipio = {
-  IdMunicipio: number;
-  Municipio: string;
-};
+import { useEffect, useState } from "react";
+import type { Municipio } from "../types/Municipio"; // Type import
+import { fetchMunicipios } from "../services/utilitiesServices";
 
 export default function useMunicipios(departamentoId: number | null) {
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchMunicipios = async () => {
-      if (!departamentoId) return; // No hacer fetch si no hay id
+    const loadMunicipios = async () => {
+      // Exit and clear state if the dependency is null
+      if (departamentoId === null) {
+        setMunicipios([]);
+        return;
+      }
+      
       setLoading(true);
       try {
-        const respuesta = await fetch(
-          `https://localhost:7239/api/Utilities/ObtenerMunicipios/${departamentoId}`
-        );
-        if (!respuesta.ok) throw new Error("Error al obtener municipios");
-        const data = await respuesta.json();
+        // Calls the pure service function, decoupling API logic
+        const data = await fetchMunicipios(departamentoId);
         setMunicipios(data);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to load municipalities:", err);
+        // Optionally set an error state here
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMunicipios();
-  }, [departamentoId]);
+    loadMunicipios();
+  }, [departamentoId]); // Dependency array ensures hook re-runs when departmentId changes
 
   return { municipios, loading };
 }

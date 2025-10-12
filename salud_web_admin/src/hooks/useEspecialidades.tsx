@@ -1,31 +1,30 @@
-import { useEffect, useState } from "react";
+// src/hooks/useEspecialidades.ts
 
-export type Especialidad = {
-  IdEspecialidad: number;
-  Especialidad: string;
-};
+import { useEffect, useState } from "react";
+import type { Especialidad } from "../types/Especialidad"; // Importación de tipo
+import { fetchEspecialidades } from "../services/utilitiesServices";
 
 export default function useEspecialidades() {
-  const [Especialidades, setEspecialidad] = useState<Especialidad[]>([]);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchEspecialidades = async () => {
-        try {
-          const respuesta = await fetch(
-            "https://localhost:7239/api/Utilities/ObtenerEspecialidadesMedicas"
-          );
-          const data = await respuesta.json();
-          setEspecialidad(data);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchEspecialidades();
-    }, []);
-  
-    return { Especialidades, loading };
+  // Ajuste: Nombre de la variable de estado a 'especialidades' (minúscula)
+  const [especialidades, setEspecialidades] = useState<Especialidad[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadEspecialidades = async () => {
+      try {
+        // Llama al servicio puro.
+        const data = await fetchEspecialidades();
+        setEspecialidades(data);
+      } catch (err) {
+        console.error("Fallo al cargar las especialidades:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEspecialidades();
+  }, []); // Carga solo al montar.
+
+  // Retornamos la variable con el nombre corregido.
+  return { especialidades, loading };
 }

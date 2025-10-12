@@ -1,31 +1,30 @@
-import { useEffect, useState } from "react";
+// src/hooks/useCentrosMedicos.ts
 
-export type CentroMedico = {
-  IdCentro: number;
-  Centro: string;
-};
+import { useEffect, useState } from "react";
+import type { CentroMedico } from "../types/CentroMedico"; // Importación de tipo
+import { fetchCentrosMedicos } from "../services/utilitiesServices";
 
 export function useCentrosMedicos() {
-  const [centro, setCentro] = useState<CentroMedico[]>([]);
+  const [centros, setCentros] = useState<CentroMedico[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCentroMedico = async () => {
+    const loadCentrosMedicos = async () => {
       try {
-        const respuesta = await fetch(
-          "https://localhost:7239/api/Utilities/ObtenerCentrosMedicos"
-        );
-        const data = await respuesta.json();
-        setCentro(data);
+        // Llama al servicio puro, desacoplando la lógica de red.
+        const data = await fetchCentrosMedicos();
+        setCentros(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fallo al cargar los centros médicos:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCentroMedico();
-  }, []);
+    loadCentrosMedicos();
+  }, []); // El array vacío asegura que se ejecute solo al montar.
 
-  return { centro, loading };
+  // Nota: Cambié el nombre de la variable de retorno de 'centro' a 'centros' 
+  // para reflejar que es una lista (array) y evitar confusión.
+  return { centros, loading };
 }
