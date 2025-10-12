@@ -41,7 +41,7 @@ function LoginView() {
         className="bg-stone-50 md:w-3/5 min-h-full flex flex-col gap-7 justify-center px-4 md:px-[7rem] items-center text-center"
       >
         <h1 className="text-azul-claro font-bold text-4xl md:text-4xl text-center">
-          Iniciar sesión en <span className="block py-5"> PacienteAppp </span>
+          Iniciar sesión en <span className="block py-5"> PacienteApp </span>
         </h1>
 
         {/* Componente de campos de texto refactorizado */}
