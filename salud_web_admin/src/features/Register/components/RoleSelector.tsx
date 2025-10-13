@@ -8,10 +8,10 @@ const PRIMARY_HOVER = '#0066CC'; // Un tono más oscuro para el hover
 
 // Definiciones de IDs de roles
 const ROLES = [
-    { id: 1, label: 'Médico' }, 
-    { id: 2, label: 'Administrador' }, 
+    { id: 2, label: 'Médico' }, 
+    { id: 4, label: 'Administrador' }, 
     { id: 3, label: 'Recepcionista' }, 
-    { id: 4, label: 'Registro' }, // Etiqueta simplificada
+    { id: 5, label: 'Registro' }, // Etiqueta simplificada
 ];
 
 interface RoleSelectorProps {
