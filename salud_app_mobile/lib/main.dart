@@ -14,12 +14,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Salud App',
+      //Estilos globales, tipografía, colores y estilos
       theme: ThemeData(
         fontFamily: 'Kanit',
-        colorScheme: ColorScheme.fromSwatch().copyWith(
+        //Paleta de colores base
+        colorScheme: ColorScheme.fromSwatch().copyWith( 
           primary: AppColors.primary,
           secondary: AppColors.secondary,
         ),
+        //Define los estilos de texto globales
         textTheme: const TextTheme(
           bodySmall: TextStyle(fontSize: 14, color: AppColors.primary),
           bodyLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),

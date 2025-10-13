@@ -46,6 +46,12 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         public async Task<IEnumerable<TbReligione>> GetReligionesAsync()
             => await GetAllAsync<TbReligione>();
 
+        public async Task<IEnumerable<TbEstadoCivil>> GetEstadosCivilesAsync()
+            => await GetAllAsync<TbEstadoCivil>();
+
+        public async Task<IEnumerable<TbEscolaridad>> GetEscolaridadesAsync()
+            => await GetAllAsync<TbEscolaridad>();
+
         public async Task<IEnumerable<TbTipoUsuario>> GetTiposDeUsuarioAsync()
             => await GetAllAsync<TbTipoUsuario>();
 

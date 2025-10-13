@@ -132,6 +132,38 @@ namespace SaludAppBackend.API.Controllers
         }
 
         [HttpGet]
+        [Route("ObtenerEstadosCiviles")]
+        public async Task<IActionResult> GetEstadosCivilesAsync()
+        {
+            try
+            {
+                var tiposUsuario = await _utilitiesService.GetEstadosCivilesAsync();
+                return Ok(tiposUsuario);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error inesperado al obtener las religiones");
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerEscolaridad")]
+        public async Task<IActionResult> GetEscolaridadesAsync()
+        {
+            try
+            {
+                var tiposUsuario = await _utilitiesService.GetEscolaridadesAsync();
+                return Ok(tiposUsuario);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error inesperado al obtener las religiones");
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpGet]
         [Route("ObtenerOcupacionesDePacientes")]
         public async Task<IActionResult> GetOcupacionesPacientesAsync()
         {

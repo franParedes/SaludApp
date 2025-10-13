@@ -77,6 +77,18 @@ namespace SaludAppBackend.Services.UtilitiesService
             return _mapper.ReligionesToReligionesDTO(religionesList);
         }
 
+        public async Task<IEnumerable<EstadoCivilDTO>> GetEstadosCivilesAsync()
+        {
+            var estadosCivilesList = await _unitOfWork.Utilities.GetEstadosCivilesAsync();
+            return _mapper.EstadoCivilToEstadoCivilDTO(estadosCivilesList);
+        }
+
+        public async Task<IEnumerable<EscolaridadDTO>> GetEscolaridadesAsync()
+        {
+            var escolaridadList = await _unitOfWork.Utilities.GetEscolaridadesAsync();
+            return _mapper.EscolaridadToEscolaridadDTO(escolaridadList);
+        }
+
         public async Task<IEnumerable<TiposCitasDTO>> GetTipoDeCitasAsync()
         {
             var tipoCitasList = await _unitOfWork.Utilities.GetTipoDeCitasAsync();

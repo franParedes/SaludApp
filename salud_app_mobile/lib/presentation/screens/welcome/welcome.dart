@@ -12,11 +12,14 @@ class WelcomeScreen extends StatelessWidget {
     return CustomScaffold(
       child: Column(
         children: [
+          //Controla cuanto espacio vertical ocupa (6/7 del alto total)
           Flexible(
             flex: 6,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
               child: Center(
+                //Permite mezclar estilos de textos diferentes en una misma linea
+                //Usando TexxtSpan
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: const TextSpan(

@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:salud_app_mobile/domain/services/api_config.dart';
+
 class ApiService {
   // para emulador
-  static const String baseUrl = "https://10.0.2.2:7239/api/Utilities";
+  static const String baseUrl = "${ApiConfig.currentBase}/Utilities";
  // static const String baseUrl = "https://192.168.12.31:7239/api/Auth";
   // para dispositivo fisico
   //static const String baseUrl = "https://192.168.0.12:7239/api/Utilities";
@@ -18,7 +21,12 @@ class ApiService {
       print("➡️ Haciendo GET a: $url"); // 🔍 log de la URL
 
       var request = await client.getUrl(Uri.parse(url));
-      var response = await request.close();
+      var response = await request.close().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          throw TimeoutException("Tiempo de espera agotado");
+        },
+      );;
 
       print("⬅️ Status code: ${response.statusCode}"); // 🔍 log del status code
 

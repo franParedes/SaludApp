@@ -12,6 +12,7 @@ class CustomScaffold extends StatelessWidget {
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
+      //Stack permite suponer widgets
       body: Stack(
         children: [
           Image.asset(
@@ -20,6 +21,7 @@ class CustomScaffold extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             ),
+           //Asegura que el contenido no se oculte bajo la barra de estado
            SafeArea(
             child: child!,
           ),

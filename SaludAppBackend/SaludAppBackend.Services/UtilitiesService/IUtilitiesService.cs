@@ -13,6 +13,8 @@ namespace SaludAppBackend.Services.UtilitiesService
         Task<IEnumerable<MunicipiosDTO>> GetMunicipiosPorDepartamentoAsync(int departamento);
         Task<IEnumerable<BarriosDTO>> GetBarriosPorMunicipioAsync(int municipio);
         Task<IEnumerable<ReligionesDTO>> GetReligionesAsync();
+        Task<IEnumerable<EstadoCivilDTO>> GetEstadosCivilesAsync();
+        Task<IEnumerable<EscolaridadDTO>> GetEscolaridadesAsync();
         Task<IEnumerable<OcupacionesDTO>> GetOcupacionesPacientesAsync();
 
         //Métodos de médicos

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -28,7 +29,12 @@ class ApiServiceCita {
       request.headers.contentType = ContentType.json;
       request.write(jsonEncode(data));
 
-      var response = await request.close();
+      var response = await request.close().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          throw TimeoutException("Tiempo de espera agotado");
+        },
+      );
       final responseBody = await response.transform(utf8.decoder).join();
 
       print("⬅️ Status code: ${response.statusCode}");
