@@ -2,9 +2,10 @@
 
 import type { Medico } from '../types/Medico';
 
-const BASE_URL = "https://localhost:7239/api/Medicos";
+const BASE_URL = "http://localhost:5005/api/Medicos";
 
 export async function createMedico(medicoData: Medico): Promise<any> {
+    console.log(medicoData)
     try {
         const res = await fetch(`${BASE_URL}/CrearMedico`, {
             method: "POST",
@@ -13,7 +14,7 @@ export async function createMedico(medicoData: Medico): Promise<any> {
             },
             body: JSON.stringify(medicoData)
         });
-
+        console.log(res)
         if (!res.ok) {
             const errorBody = await res.text();
             throw new Error(`Error ${res.status}: ${errorBody || "Error creando médico"}`);
