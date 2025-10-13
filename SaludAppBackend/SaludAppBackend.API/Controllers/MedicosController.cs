@@ -25,7 +25,7 @@ namespace SaludAppBackend.API.Controllers
         {
             try
             {
-                _logger.LogInformation($"Recibida petición para crear nuevo medico con código sanitario {medico.GeneralInfo.Cedula}");
+                _logger.LogInformation($"Recibida petición para crear nuevo medico con código sanitario {medico.Cedula}");
 
                 var nuevoMedico = await _medicoService.CrearNuevoMedicoAsync(medico);
 
@@ -40,7 +40,7 @@ namespace SaludAppBackend.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error inesperado al crear el médico con cédula {Cedula}", medico.GeneralInfo.Cedula);
+                _logger.LogError(ex.Message, "Error inesperado al crear el médico con cédula {Cedula}", medico.Cedula);
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }

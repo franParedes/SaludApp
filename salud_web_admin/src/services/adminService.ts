@@ -1,6 +1,6 @@
 import type { Administrador } from '../types/Administrador'; // Usamos el nuevo type
 
-const BASE_URL = "http://localhost:5005/api/Administradores";
+const BASE_URL = "https://localhost:7239/api/Administradores";
 
 export async function createAdministrador(adminData: Administrador): Promise<any> {
     console.log("Enviando payload de Administrador:", adminData);

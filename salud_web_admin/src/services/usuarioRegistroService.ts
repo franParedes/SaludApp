@@ -1,7 +1,7 @@
 import type { UsuarioRegistro } from '../types/UsuarioRegistro';
 
 // Asume que el endpoint base es similar a los otros, pero para el personal de registro.
-const BASE_URL = "http://localhost:5005/api/UsuarioRegistro"; 
+const BASE_URL = "https://localhost:7239/api/UsuarioRegistro"; 
 
 export async function createUsuarioRegistro(registroData: UsuarioRegistro): Promise<any> {
     console.log("Enviando payload de UsuarioRegistro:", registroData);

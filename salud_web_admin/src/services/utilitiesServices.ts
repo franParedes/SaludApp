@@ -12,7 +12,7 @@ import type { Turno } from '../types/Turno';
 import type { Universidad } from '../types/Universidad';
 import type { TipoUsuario } from '../types/TipoUsuario';
 
-const BASE_URL = "http://localhost:5005/api/Utilities";
+const BASE_URL = "https://localhost:7239/api/Utilities";
 
 export async function fetchAreasMedicas(): Promise<Area[]> {
     try {

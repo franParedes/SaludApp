@@ -1,6 +1,6 @@
 // src/services/authService.ts
 
-const API_BASE_URL = 'http://localhost:5005/api';
+const API_BASE_URL = 'https://localhost:7239/api';
 const LOGIN_ENDPOINT = '/Auth/VerificarCredenciales';
 
 export async function verificarCredenciales(correo: string, contrasenya: string): Promise<any> {

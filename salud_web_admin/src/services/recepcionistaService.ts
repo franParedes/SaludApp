@@ -1,6 +1,6 @@
 import type { Recepcionista } from '../types/Recepcionista';
 
-const BASE_URL = "http://localhost:5005/api/Recepcionsitas"; 
+const BASE_URL = "https://localhost:7239/api/Recepcionsitas"; 
 
 export async function createRecepcionista(recepcionistaData: Recepcionista): Promise<any> {
     console.log("Enviando payload de Recepcionista:", recepcionistaData);

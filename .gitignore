@@ -240,3 +240,4 @@ Thumbs.db
 *[Rr]esharper*
 .vs/CreditsAppInvSost/v17/.suo
 .vs/CreditsAppInvSost/v17/DocumentLayout.json
+/SaludAppBackend/SaludAppBackend.API/appsettings.json
