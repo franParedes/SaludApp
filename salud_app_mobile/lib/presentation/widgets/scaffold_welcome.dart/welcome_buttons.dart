@@ -19,8 +19,9 @@ class WelcomeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return GestureDetector( //Esto detecta el toque
       onTap: () {
+        //empuja la ruta cuyo contenido es el widget que pasaste en onTap (ej. LoginScreen()).
         Navigator.push(context, MaterialPageRoute(builder: (e) => onTap!));
       },
       child: Container(

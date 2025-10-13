@@ -15,6 +15,8 @@ namespace SaludAppBackend.Services.Mapper
         public partial IEnumerable<MunicipiosDTO> MunicipiosToMunicipiosDTO(IEnumerable<TbMunicipio> municipios);
         public partial IEnumerable<BarriosDTO> BarriosToBarriosDTO(IEnumerable<TbBarrio> barrios);
         public partial IEnumerable<ReligionesDTO> ReligionesToReligionesDTO(IEnumerable<TbReligione> religiones);
+        public partial IEnumerable<EstadoCivilDTO> EstadoCivilToEstadoCivilDTO(IEnumerable<TbEstadoCivil> religiones);
+        public partial IEnumerable<EscolaridadDTO> EscolaridadToEscolaridadDTO(IEnumerable<TbEscolaridad> religiones);
         public partial IEnumerable<OcupacionesDTO> OcupacionesToOcupacionesDTO(IEnumerable<TbOcupacione> ocupaciones);
 
         ////Mappers de medicos

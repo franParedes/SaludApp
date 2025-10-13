@@ -4,12 +4,12 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:salud_app_mobile/domain/services/cita_service.dart';
-import 'package:salud_app_mobile/domain/repositories/tipocita_repository.dart';
-import 'package:salud_app_mobile/domain/repositories/centromedico_repository.dart';
-import 'package:salud_app_mobile/domain/repositories/especialidad_repository.dart';
+import 'package:salud_app_mobile/domain/repositories/Citas/tipocita_repository.dart';
+import 'package:salud_app_mobile/domain/repositories/Utilidades/centromedico_repository.dart';
+import 'package:salud_app_mobile/domain/repositories/Utilidades/especialidad_repository.dart';
 import 'package:salud_app_mobile/presentation/widgets/citas/citas_date_field.dart';
 
-import '../../../domain/models/cita.dart';
+import '../../../domain/models/Citas/cita.dart';
 
 Future<Future<Object?>> showCitaDialog(BuildContext context) async {
   final TextEditingController descripcionController = TextEditingController();
