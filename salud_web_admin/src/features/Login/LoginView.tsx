@@ -1,9 +1,9 @@
+// src/features/Login/LoginView.tsx
+
 import { Button, Divider, CircularProgress, Snackbar, Alert as MuiAlert, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-// El hook de login ahora devuelve el roleId o null
 import { useLogin } from '../../hooks/useLogin'; 
-// El useAuth ahora tiene la función setUserEmailAndRole
 import { useAuth } from '../../context/AuthContext'; 
 
 // Importación de assets desde la ruta global
@@ -15,8 +15,8 @@ function LoginView() {
     const navigate = useNavigate();
     // Capturamos la función login que ahora devuelve el roleId
     const { login, loading, error } = useLogin(); 
-    // Capturamos la función actualizada del contexto
-    const { setUserEmailAndRole } = useAuth(); 
+    // Usamos la función loginUser (que persiste los datos)
+    const { loginUser } = useAuth(); 
 
     // Estados para el formulario
     const [correo, setCorreo] = useState('');
@@ -39,13 +39,13 @@ function LoginView() {
             return;
         }
 
-        // 🚀 CAMBIO CLAVE: Capturamos el roleId (TipoUsuario)
+        // Capturamos el roleId (TipoUsuario)
         const roleId = await login(correo, contrasenya); 
 
         if (roleId !== null) { // Si roleId NO es null, el login fue exitoso.
             
-            // 🚀 ALMACENAMIENTO DE ESTADO GLOBAL: Guardamos Correo Y Role ID
-            setUserEmailAndRole(correo, roleId); 
+            // ALMACENAMIENTO DE ESTADO GLOBAL: Guarda Correo y Role ID en Contexto y localStorage
+            loginUser(correo, roleId); 
             
             setSnackbarMessage("Inicio de sesión exitoso. Redirigiendo...");
             setSnackbarSeverity("success");

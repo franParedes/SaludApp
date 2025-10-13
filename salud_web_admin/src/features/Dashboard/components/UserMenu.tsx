@@ -1,3 +1,5 @@
+// src/features/Dashboard/components/UserMenu.tsx
+
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem, Typography, Divider } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -8,12 +10,10 @@ import { useNavigate } from 'react-router-dom';
 export const UserMenu: React.FC = () => {
     const navigate = useNavigate();
     
-    // 1. Consumir el Contexto para obtener el correo Y el rol
-    // NOTA: Asumo que en el AuthContext creaste una función para limpiar la sesión.
-    // Si no es así, usaré 'setUserEmailAndRole' con valores nulos/vacíos para limpiar.
-    const { userEmail, userRole, setUserEmailAndRole } = useAuth();
+    // Consumimos userEmail, userRole y la nueva función logoutUser
+    const { userEmail, userRole, logoutUser } = useAuth();
     
-    // 2. Estado para anclar (abrir/cerrar) el menú flotante
+    // Estado para anclar (abrir/cerrar) el menú flotante
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -25,19 +25,14 @@ export const UserMenu: React.FC = () => {
         setAnchorEl(null);
     };
 
-    // 3. Lógica para Cerrar Sesión
+    // Lógica para Cerrar Sesión
     const handleLogout = () => {
         // Cierra el menú
         handleClose(); 
         
-        // Limpia el estado del Contexto (Correo: null, Rol: null)
-        // Usamos 0 como roleId para limpiar el estado, ya que la función espera un number
-        // Si tu AuthContext tiene una función clearAuthData() o similar, úsala en su lugar.
-        setUserEmailAndRole("", 0); 
+        // Llama a la función que limpia el estado de React y el localStorage
+        logoutUser(); 
         
-        // Opcional: Si usas localStorage para tokens, bórralo aquí
-        localStorage.removeItem('authToken'); 
-
         // Redirige al login
         navigate('/auth/login');
     };
@@ -81,7 +76,7 @@ export const UserMenu: React.FC = () => {
                     </Typography>
                 </MenuItem>
                 
-                {/* 🚀 NUEVO: Mostramos el Rol */}
+                {/* 2. Mostramos el Rol si existe */}
                 {userRole && (
                     <MenuItem disabled>
                         <Typography variant="caption" color="text.secondary">
@@ -92,12 +87,12 @@ export const UserMenu: React.FC = () => {
                 
                 <Divider />
 
-                {/* 2. Opción de Ajustes (ejemplo) */}
+                {/* 3. Opción de Ajustes (ejemplo) */}
                 <MenuItem onClick={handleClose}>
                     Ajustes de Cuenta
                 </MenuItem>
                 
-                {/* 3. Opción de Cerrar Sesión */}
+                {/* 4. Opción de Cerrar Sesión */}
                 <MenuItem onClick={handleLogout}>
                     <LogoutIcon sx={{ mr: 1 }} fontSize="small" />
                     Cerrar Sesión
