@@ -3,14 +3,17 @@ import "dayjs/locale/es";
 import MenuIcon from "@mui/icons-material/Menu";
 import CardItem from "./components/CardItem";
 import Calendar from "./components/Calendar";
-import  Imageconsulta from "../../assets/images/icono_consulta.png"
-import  ImnageEspera from "../../assets/images/icono_espera.png"
-import  ImageFinalizado from "../../assets/images/icono_finalizado.png"
-import  IconoCancelado from "../../assets/images/icono_cancelados.png"
-import  Icono_emergencia from "../../assets/images/icono_emergencia.png"
-import  IconoPersonal from "../../assets/images/icono_personal.png"
-import  IconoPacientes from "../../assets/images/icono_pacientes.png"
-import  IconoFarmacia from "../../assets/images/icono_medicamentos.png"
+// Importar el nuevo componente
+import { UserMenu } from "./components/UserMenu"; 
+// ... (Otros imports de imágenes) ...
+import Imageconsulta from "../../assets/images/icono_consulta.png"
+import ImnageEspera from "../../assets/images/icono_espera.png"
+import ImageFinalizado from "../../assets/images/icono_finalizado.png"
+import IconoCancelado from "../../assets/images/icono_cancelados.png"
+import Icono_emergencia from "../../assets/images/icono_emergencia.png"
+import IconoPersonal from "../../assets/images/icono_personal.png"
+import IconoPacientes from "../../assets/images/icono_pacientes.png"
+import IconoFarmacia from "../../assets/images/icono_medicamentos.png"
 
 function Dashboard() {
   return (
@@ -30,7 +33,11 @@ function Dashboard() {
             <Button color="inherit">Inicio</Button>
             <Button color="inherit">Citas</Button>
             <Button color="inherit">Historial</Button>
-            <Button color="inherit">Perfil</Button>
+            
+            {/* 👈 REEMPLAZO DEL BOTÓN PERFIL POR EL MENÚ FLOTANTE */}
+            <UserMenu /> 
+            {/* ---------------------------------------------------- */}
+            
           </div>
         </Toolbar>
       </AppBar>

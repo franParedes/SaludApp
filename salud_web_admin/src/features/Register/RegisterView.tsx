@@ -15,10 +15,10 @@ import { type UsuarioModel, type DireccionModel, type TelefonoModel } from '../.
 import { useState } from 'react';
 
 
-const ID_MEDICO = 1;
-const ID_ADMIN = 2;
+const ID_MEDICO = 2;
+const ID_ADMIN = 4;
 const ID_RECEPCIONISTA = 3;
-const ID_REGISTRO = 4;
+const ID_REGISTRO = 5;
 
 interface FormData {
     primerNombre?: string;

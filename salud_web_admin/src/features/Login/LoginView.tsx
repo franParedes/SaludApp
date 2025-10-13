@@ -4,6 +4,7 @@ import { Button, Divider, CircularProgress, Snackbar, Alert as MuiAlert, TextFie
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin'; 
+import { useAuth } from '../../context/AuthContext'; 
 
 // Importación de assets desde la ruta global
 import logo from '../../assets/logos/Logo.png'; 
@@ -12,7 +13,10 @@ import GoogleLogo from '../../assets/logos/GoogleIcon.png';
 
 function LoginView() {
     const navigate = useNavigate();
-    const { login, loading, error } = useLogin();
+    // Capturamos la función login que ahora devuelve el roleId
+    const { login, loading, error } = useLogin(); 
+    // Usamos la función loginUser (que persiste los datos)
+    const { loginUser } = useAuth(); 
 
     // Estados para el formulario
     const [correo, setCorreo] = useState('');
@@ -35,9 +39,14 @@ function LoginView() {
             return;
         }
 
-        const success = await login(correo, contrasenya);
+        // Capturamos el roleId (TipoUsuario)
+        const roleId = await login(correo, contrasenya); 
 
-        if (success) {
+        if (roleId !== null) { // Si roleId NO es null, el login fue exitoso.
+            
+            // ALMACENAMIENTO DE ESTADO GLOBAL: Guarda Correo y Role ID en Contexto y localStorage
+            loginUser(correo, roleId); 
+            
             setSnackbarMessage("Inicio de sesión exitoso. Redirigiendo...");
             setSnackbarSeverity("success");
             setOpenSnackbar(true);
@@ -47,7 +56,7 @@ function LoginView() {
             }, 1500);
 
         } else {
-            setSnackbarMessage(error || "credenciales invalidas!");
+            setSnackbarMessage(error || "Credenciales inválidas!");
             setSnackbarSeverity("error");
             setOpenSnackbar(true);
         }
@@ -82,13 +91,13 @@ function LoginView() {
             {/* Lado derecho: Login (Formulario) */}
             <form 
                 className="bg-stone-50 md:w-3/5 min-h-full flex flex-col gap-7 justify-center px-4 md:px-[7rem] items-center text-center"
-                onSubmit={handleLogin} // Asignamos la función de manejo de envío
+                onSubmit={handleLogin}
             >
                 <h1 className="text-azul-claro font-bold text-4xl md:text-4xl text-center">
                     Iniciar sesión en <span className="block py-5"> PacienteApp </span>
                 </h1>
 
-                {/* Campos de texto integrados para simplificar el estado */}
+                {/* Campo de Correo */}
                 <TextField
                     label="Correo"
                     type="email"
@@ -98,6 +107,7 @@ function LoginView() {
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
                 />
+                {/* Campo de Contraseña */}
                 <TextField
                     label="Contraseña"
                     type="password"
@@ -108,20 +118,23 @@ function LoginView() {
                     onChange={(e) => setContrasenya(e.target.value)}
                 />
                 
+                {/* Botón de Acceder */}
                 <Button 
                     variant="contained"
-                    type="submit" // Cambiado de component={Link} a type="submit"
+                    type="submit"
                     fullWidth 
                     sx={{ mt:1, paddingY: 1 }}
-                    disabled={loading || !isFormValid} // Deshabilitar si está cargando o no es válido
+                    disabled={loading || !isFormValid}
                 >
                     {loading ? <CircularProgress size={24} color="inherit" /> : 'ACCEDER'}
                 </Button>
 
+                {/* Separador */}
                 <Divider sx={{my: 2, width: '100%' }}>
                     <span className="text-gray-500 text-sm">o inicia con</span>
                 </Divider>
 
+                {/* Botón de Google */}
                 <Button 
                     variant="outlined"
                     startIcon={
