@@ -12,7 +12,7 @@ import type { Turno } from '../types/Turno';
 import type { Universidad } from '../types/Universidad';
 import type { TipoUsuario } from '../types/TipoUsuario';
 
-const BASE_URL = "https://localhost:7239/api/Utilities";
+const BASE_URL = "http://localhost:5005/api/Utilities";
 
 export async function fetchAreasMedicas(): Promise<Area[]> {
     try {
@@ -120,8 +120,6 @@ export async function fetchGeneros(): Promise<Genero[]> {
     }
 }
 export async function fetchMunicipios(departamentoId: number): Promise<Municipio[]> {
-    const BASE_URL = "https://localhost:7239/api/Utilities"; // Asumo que esta constante está definida arriba.
-
     try {
         const response = await fetch(`${BASE_URL}/ObtenerMunicipios/${departamentoId}`);
 

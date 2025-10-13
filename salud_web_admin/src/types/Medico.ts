@@ -1,28 +1,21 @@
-// src/types/Medico.ts
+import type { UsuarioModel} from './UsuarioModel'; 
+// NOTA: Asegúrate de que DireccionModel y TelefonoModel ya no se exporten
+// o se definan en este archivo, sino que se importen desde UsuarioModel.ts.
 
-export type Medico = {
-    nombre: string;
-    apellido: string;
-    especialidad: number;
-    telefono: number;
-    GeneralInfo: {
-        Cedula: string;
-        PrimerNombre: string;
-        SegundoNombre: string;
-        PrimerApellido: string;
-        SegundoApellido: string;
-        Correo: string;
-        Genero: number;
-        FechaNacimiento: string; // YYYY-MM-DD
-        TipoUsuario: number;
-    };
+
+// Tipo Medico, extiende de UsuarioModel y añade campos específicos.
+export type Medico = UsuarioModel & {
+    // --- CAMPOS EXCLUSIVOS DE MedicoModel ---
     Cod_sanitario: string;
     Especialidad: number;
-    EgresadoDe: number;
-    EgresadoEl: string; // YYYY-MM-DD
-    Experiencia_anyos: number;
-    Area_actual: number;
-    Centro_actual: number;
-    Turno_actual: number;
-    Telefonos: { Telefono: number; Compania: number }[];
+    EgresadoDe: number | null; // Tipos flexibles
+    EgresadoEl: string | null; // Formato YYYY-MM-DD
+    Experiencia_anyos: number | null;
+    Area_actual: number | null;
+    Centro_actual: number | null;
+    Turno_actual: number | null;
+    
+    nombre?: string;
+    apellido?: string;
+    telefono?: number;
 };

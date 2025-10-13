@@ -1,1 +1,0 @@
-export const verificarCredenciales = (correo: String, password: String): Boolean => true
