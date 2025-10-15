@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
+using SaludAppBackend.Models.Citas;
 
 namespace SaludAppBackend.Data.Repositories.Citas
 {
@@ -72,6 +73,50 @@ namespace SaludAppBackend.Data.Repositories.Citas
         {
             var cita = new TbCitasMedica { IdCitaMedica = idCitaMedica };
             _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+        }
+
+        public async Task<DetalleCitaLaboratorioModel> ObtenerDetalleDeCitaLaboratorio(int idCita)
+        {
+            try
+            {
+                return (DetalleCitaLaboratorioModel)
+                    await QuerySPAsync<DetalleCitaLaboratorioModel>("sp_detalle_cita_laboratorio",
+                    new { Id_cita = idCita });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el detalle de la cita {cita}", idCita);
+                throw;
+            }
+        }
+
+        public async Task<DetalleCitaMedicaModel> ObtenerDetalleDeCitaMedica(int idCita)
+        {
+            try
+            {
+                return (DetalleCitaMedicaModel)
+                    await QuerySPAsync<DetalleCitaMedicaModel>("sp_detalle_cita_medica",
+                    new { Id_cita = idCita });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el detalle de la cita {cita}", idCita);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CitaPendienteModel>> ObtenerListaDeCitasPendientes()
+        {
+            try
+            {
+                return await QuerySPAsync<CitaPendienteModel>("sp_citas_pendientes_aprobacion", new { });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener las citas pendientes de aprobación");
+                throw;
+            }
         }
 
         public void RechazarCita(int idCita, string motivoRechazo)
