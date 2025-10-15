@@ -10,7 +10,7 @@ namespace SaludAppBackend.Models.Citas
     {
         public int IdCita { get; set; }
         public int IdPendiente { get; set; }
-        public string CentroMedico { get; set; } = null!;
-        public string TipoDeCita { get; set; } = null!;
+        public string? CentroMedico { get; set; }
+        public string? TipoDeCita { get; set; }
     }
 }

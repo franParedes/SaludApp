@@ -198,5 +198,77 @@ namespace SaludAppBackend.API.Controllers
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
+
+        [HttpGet]
+        [Route("ObtenerListaDeCitasPendientes")]
+        public async Task<IActionResult> ObtenerListaDeCitasPendientes()
+        {
+            try
+            {
+                _logger.LogInformation("Solicitud recibida para obtener lista de citas pendientes");
+                var listaCitas = await _citaService.ObtenerListaDeCitasPendientes();
+                _logger.LogInformation("Lista obtenida");
+                return Ok(listaCitas);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al eliminar cita de laboratorio: {message}", ex.Message);
+
+                return StatusCode(409 , "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerDetalleDeCitaMedica/{idCita}")]
+        public async Task<IActionResult> ObtenerDetalleDeCitaMedica(int idCita)
+        {
+            try
+            {
+                _logger.LogInformation("Solicitud recibida para obtener el detalle de cita medica");
+                var cita = await _citaService.ObtenerDetalleDeCitaMedica(idCita);
+                _logger.LogInformation("Detalle obtenido");
+                return Ok(cita);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al eliminar cita de laboratorio: {message}", ex.Message);
+
+                return StatusCode(409, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerDetalleDeCitaLaboratorio/{idCita}")]
+        public async Task<IActionResult> ObtenerDetalleDeCitaLaboratorio(int idCita)
+        {
+            try
+            {
+                _logger.LogInformation("Solicitud recibida para obtener el detalle de cita de lab");
+                var cita = await _citaService.ObtenerDetalleDeCitaLaboratorio(idCita);
+                _logger.LogInformation("Detalle obtenido");
+                return Ok(cita);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al eliminar cita de laboratorio: {message}", ex.Message);
+
+                return StatusCode(409, "Ocurrió un error interno en el servidor.");
+            }
+        }
     }
 }

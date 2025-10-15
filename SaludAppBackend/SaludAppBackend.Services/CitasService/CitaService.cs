@@ -93,7 +93,6 @@ namespace SaludAppBackend.Services.CitasService
 
             try
             {
-                //await _unitOfWork.Citas.AddCita(nuevaCita);
                 await _unitOfWork.Citas.AddCitaLaboratorio(nuevaCitaLab);
                 await _unitOfWork.CompleteAsync(); 
             }
@@ -149,7 +148,6 @@ namespace SaludAppBackend.Services.CitasService
 
             try
             {
-                //await _unitOfWork.Citas.AddCita(nuevaCita);
                 await _unitOfWork.Citas.AddCitaMedica(nuevaCitaMedica);
                 await _unitOfWork.CompleteAsync();
             }
@@ -192,6 +190,52 @@ namespace SaludAppBackend.Services.CitasService
             {
                 _logger.LogError("{mensaje}", ex.Message);
                 return false;
+            }
+        }
+
+        public async Task<DetalleCitaLaboratorioModel> ObtenerDetalleDeCitaLaboratorio(int idCita)
+        {
+            var cita = new DetalleCitaLaboratorioModel();
+            try
+            {
+               cita = await _unitOfWork.Citas.ObtenerDetalleDeCitaLaboratorio(idCita);
+                return cita;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return cita;
+            }
+        }
+
+        public async Task<DetalleCitaMedicaModel> ObtenerDetalleDeCitaMedica(int idCita)
+        {
+            var cita = new DetalleCitaMedicaModel();
+            try
+            {
+                cita = await _unitOfWork.Citas.ObtenerDetalleDeCitaMedica(idCita);
+                return cita;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return cita;
+            }
+        }
+
+        public async Task<IEnumerable<CitaPendienteModel>> ObtenerListaDeCitasPendientes()
+        {
+            IEnumerable<CitaPendienteModel> citasList = [];
+            try
+            {
+                citasList = await _unitOfWork.Citas.ObtenerListaDeCitasPendientes();
+                return citasList;
+            } catch(Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                return citasList;
             }
         }
 

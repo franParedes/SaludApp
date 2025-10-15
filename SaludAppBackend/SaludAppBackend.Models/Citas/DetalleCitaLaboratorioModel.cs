@@ -10,12 +10,12 @@ namespace SaludAppBackend.Models.Citas
     {
         public int IdCita { get; set; }
         public int IdPendiente { get; set; }
-        public string CentroMedico { get; set; } = null!;
+        public string? CentroMedico { get; set; }
         public DateTime FechaSolicitud { get; set; }
         public DateTime FechaCita { get; set; }
-        public string Estado { get; set; } = null!;
-        public string MotivoCita { get; set; } = null!;
-        public string MotivoRechazo { get; set; } = null!;
-        public string ExamenesRealizar {  get; set; } = null!;
+        public string? Estado { get; set; }
+        public string? MotivoCita { get; set; }
+        public string? MotivoRechazo { get; set; }
+        public string? ExamenesRealizar {  get; set; }
     }
 }
