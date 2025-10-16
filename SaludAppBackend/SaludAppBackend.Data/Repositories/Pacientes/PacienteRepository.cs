@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
+using SaludAppBackend.Models.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,21 @@ namespace SaludAppBackend.Data.Repositories.Pacientes
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, "Error en la base de datos al intentar comprobar la existencia del paciente");
+                throw;
+            }
+        }
+
+        public async Task<InformacionGeneralPacienteModel?> ObtenerInformacionGeneralPaciente(int idUsuario)
+        {
+            try
+            {
+                return await QuerySingleSPAsync<InformacionGeneralPacienteModel>(
+                    "sp_obtener_info_general_paciente",
+                    new { iNId_usuario = idUsuario });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener la información del paciente");
                 throw;
             }
         }

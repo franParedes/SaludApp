@@ -32,7 +32,7 @@ namespace SaludAppBackend.Services.CitasService
             } catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return false;
+                throw;
             }
         }
 
@@ -49,7 +49,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return false;
+                throw;
             }
         }
 
@@ -99,6 +99,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                throw;
             }
 
             return nuevaCitaLab.IdCitaLab;
@@ -154,6 +155,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                throw;
             }
 
             return nuevaCitaMedica.IdCitaMedica;
@@ -172,7 +174,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return false;
+                throw;
             }
         }
 
@@ -189,11 +191,11 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return false;
+                throw;
             }
         }
 
-        public async Task<DetalleCitaLaboratorioModel> ObtenerDetalleDeCitaLaboratorio(int idCita)
+        public async Task<DetalleCitaLaboratorioModel?> ObtenerDetalleDeCitaLaboratorio(int idCita)
         {
             var cita = new DetalleCitaLaboratorioModel();
             try
@@ -205,11 +207,11 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return cita;
+                throw;
             }
         }
 
-        public async Task<DetalleCitaMedicaModel> ObtenerDetalleDeCitaMedica(int idCita)
+        public async Task<DetalleCitaMedicaModel?> ObtenerDetalleDeCitaMedica(int idCita)
         {
             var cita = new DetalleCitaMedicaModel();
             try
@@ -221,7 +223,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return cita;
+                throw;
             }
         }
 
@@ -235,7 +237,7 @@ namespace SaludAppBackend.Services.CitasService
             } catch(Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return citasList;
+                throw;
             }
         }
 
@@ -252,7 +254,7 @@ namespace SaludAppBackend.Services.CitasService
             catch (Exception ex)
             {
                 _logger.LogError("{mensaje}", ex.Message);
-                return false;
+                throw;
             }
         }
     }

@@ -75,32 +75,30 @@ namespace SaludAppBackend.Data.Repositories.Citas
             _appDbContext.Entry(cita).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
         }
 
-        public async Task<DetalleCitaLaboratorioModel> ObtenerDetalleDeCitaLaboratorio(int idCita)
+        public async Task<DetalleCitaLaboratorioModel?> ObtenerDetalleDeCitaLaboratorio(int idCita)
         {
             try
             {
-                return (DetalleCitaLaboratorioModel)
-                    await QuerySPAsync<DetalleCitaLaboratorioModel>("sp_detalle_cita_laboratorio",
-                    new { Id_cita = idCita });
+                return await QuerySingleSPAsync<DetalleCitaLaboratorioModel?>("sp_detalle_cita_laboratorio",
+                    new { iNId_cita = idCita });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el detalle de la cita {cita}", idCita);
+                _logger.LogError("Error {message} en la base de datos al intentar obtener el detalle de la cita {cita}", ex.Message, idCita);
                 throw;
             }
         }
 
-        public async Task<DetalleCitaMedicaModel> ObtenerDetalleDeCitaMedica(int idCita)
+        public async Task<DetalleCitaMedicaModel?> ObtenerDetalleDeCitaMedica(int idCita)
         {
             try
             {
-                return (DetalleCitaMedicaModel)
-                    await QuerySPAsync<DetalleCitaMedicaModel>("sp_detalle_cita_medica",
-                    new { Id_cita = idCita });
+                return await QuerySingleSPAsync<DetalleCitaMedicaModel?>("sp_detalle_cita_medica",
+                    new { iNId_cita = idCita });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el detalle de la cita {cita}", idCita);
+                _logger.LogError("Error {message} en la base de datos al intentar obtener el detalle de la cita {cita}", ex.Message, idCita);
                 throw;
             }
         }
@@ -114,7 +112,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener las citas pendientes de aprobación");
+                _logger.LogError("Error {message} en la base de datos al intentar obtener las citas pendientes de aprobación", ex.Message);
                 throw;
             }
         }

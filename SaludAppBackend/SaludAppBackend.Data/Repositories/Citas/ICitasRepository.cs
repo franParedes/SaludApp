@@ -14,7 +14,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
         void EliminarCitaMedica(int idCitaMedica);
         void EliminarCitaLab(int idCitaLab);
         Task<IEnumerable<CitaPendienteModel>> ObtenerListaDeCitasPendientes();
-        Task<DetalleCitaMedicaModel> ObtenerDetalleDeCitaMedica(int idCita);
-        Task<DetalleCitaLaboratorioModel> ObtenerDetalleDeCitaLaboratorio(int idCita);
+        Task<DetalleCitaMedicaModel?> ObtenerDetalleDeCitaMedica(int idCita);
+        Task<DetalleCitaLaboratorioModel?> ObtenerDetalleDeCitaLaboratorio(int idCita);
     }
 }

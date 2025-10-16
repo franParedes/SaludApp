@@ -23,7 +23,7 @@ namespace SaludAppBackend.API.Controllers
         {
             try
             {
-                _logger.LogInformation($"Recibida petición para crear nuevo paciente con cédula {paciente.Cedula}");
+                _logger.LogInformation("Recibida petición para crear nuevo paciente con cédula {paciente.Cedula}", paciente.Cedula);
 
                 var nuevoPaciente = await _pacienteService.CrearNuevoPacienteAsync(paciente);
 
@@ -38,8 +38,25 @@ namespace SaludAppBackend.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error inesperado al crear el paciente con cédula {Cedula}", paciente.Cedula);
+                _logger.LogError("Error {message} inesperado al crear el paciente con cédula {Cedula}", ex.Message, paciente.Cedula);
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("ObtenerInformacionGeneralPaciente/{idUsuario}")]
+        public async Task<IActionResult> ObtenerInformacionGeneralPaciente(int idUsuario)
+        {
+            try
+            {
+                _logger.LogInformation("Petición recibida para obtener información general del paciente con id de usuario {idUsuario}", idUsuario);
+                var infoGeneral = await _pacienteService.ObtenerInformacionGeneralPaciente(idUsuario);
+                return Ok(infoGeneral);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error inesperado al consultar la información del paciente {message}", ex.Message);
+                return StatusCode(404, "No se pudo encontrar la información");
             }
         }
     }

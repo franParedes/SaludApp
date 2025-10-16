@@ -10,5 +10,6 @@ namespace SaludAppBackend.Services.PacienteService
     public interface IPacienteService
     {
         Task<int> CrearNuevoPacienteAsync(PacienteModel paciente);
+        Task<InformacionGeneralPacienteModel?> ObtenerInformacionGeneralPaciente(int idUsuario);
     }
 }

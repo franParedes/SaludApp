@@ -46,5 +46,20 @@ namespace SaludAppBackend.Services.PacienteService
 
             return nuevoPaciente.IdPaciente;
         }
+
+        public async Task<InformacionGeneralPacienteModel?> ObtenerInformacionGeneralPaciente(int idUsuario)
+        {
+            var infoPaciente = new InformacionGeneralPacienteModel();
+            try
+            {
+                infoPaciente = await _unitOfWork.Pacientes.ObtenerInformacionGeneralPaciente(idUsuario);
+                return infoPaciente;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Erro en el servicio de pacientes {message}", ex.Message);
+                return infoPaciente;
+            }
+        }
     }
 }
