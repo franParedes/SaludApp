@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:salud_app_mobile/domain/models/Utilidades/especialidades.dart';
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:salud_app_mobile/domain/services/cita_service.dart';
 import 'package:salud_app_mobile/domain/repositories/Citas/tipocita_repository.dart';
 import 'package:salud_app_mobile/domain/repositories/Utilidades/centromedico_repository.dart';
 import 'package:salud_app_mobile/domain/repositories/Utilidades/especialidad_repository.dart';
-import 'package:salud_app_mobile/presentation/widgets/citas/citas_date_field.dart';
 
 import '../../../domain/models/Citas/cita.dart';
 
 Future<Future<Object?>> showCitaDialog(BuildContext context) async {
   final TextEditingController descripcionController = TextEditingController();
-  final TextEditingController fechaController = TextEditingController();
 
   File? imagenSeleccionada;
   int? tipoCitaSeleccionada;
-  int? especialidadSeleccionada;
   int? centroMedicoSeleccionado;
+  int especialidad;
 
   final ImagePicker picker = ImagePicker();
   final repoEspecialidad = EspecialidadRepository();
@@ -29,9 +27,14 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
   final tiposCita = await repoTipoCita.getTipocitas();
   final centrosMedicos = await repoCentroMedico.getCentrosmedicos();
 
+  //Por defecto selecciona la especialidad de médico general
+  especialidad = especialidades.firstWhere(
+    (esp) => esp.especialidad == "General",
+    orElse: () => Especialidades(id: 0, especialidad: ""),
+  ).id;
   DateTime fechaCitaSolicitada = DateTime.now();
 
-  Future<void> _solicitarCita() async {
+  Future<void> solicitarCita() async {
     final citaService = CitaService();
 
     String? base64Image;
@@ -57,24 +60,20 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
               ),
             ]
           : [],
-      especialidad: especialidadSeleccionada ?? 0,
+      especialidad: especialidad,
     );
 
     final success = await citaService.solicitarCita(cita);
 
     if (success) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("✅ Cita solicitada con éxito")),
       );
-      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
     } else {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("❌ Error al solicitar la cita")),
       );
-      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
     }
   }
@@ -99,7 +98,7 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -125,20 +124,13 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                       ),
                       const SizedBox(height: 20),
 
-                      // Fecha
-                      CitasDateField(
-                        label: "Fecha de solicitud de cita",
-                        controller: fechaController,
-                      ),
-                      const SizedBox(height: 10),
-
                       // Tipo de cita
                       DropdownButtonFormField<int>(
                         decoration: const InputDecoration(
                           labelText: "Tipo de cita",
                           border: OutlineInputBorder(),
                         ),
-                        value: tipoCitaSeleccionada,
+                        initialValue: tipoCitaSeleccionada,
                         items: tiposCita
                             .map(
                               (e) => DropdownMenuItem(
@@ -155,36 +147,13 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                       ),
                       const SizedBox(height: 20),
 
-                      // Especialidad
-                      DropdownButtonFormField<int>(
-                        decoration: const InputDecoration(
-                          labelText: "Especialidad",
-                          border: OutlineInputBorder(),
-                        ),
-                        value: especialidadSeleccionada,
-                        items: especialidades
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.id,
-                                child: Text(e.especialidad),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            especialidadSeleccionada = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
                       // Centro médico
                       DropdownButtonFormField<int>(
                         decoration: const InputDecoration(
                           labelText: "Centro Médico",
                           border: OutlineInputBorder(),
                         ),
-                        value: centroMedicoSeleccionado,
+                        initialValue: centroMedicoSeleccionado,
                         items: centrosMedicos
                             .map(
                               (e) => DropdownMenuItem(
@@ -199,7 +168,7 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                           });
                         },
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
 
                       // Preview imagen
                       if (imagenSeleccionada != null) ...[
@@ -216,9 +185,9 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
 
                       // Botones
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ElevatedButton.icon(
+                          Expanded(
+                            child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue.shade100,
                               foregroundColor: Colors.black,
@@ -237,9 +206,18 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                               }
                             },
                             icon: const Icon(Icons.attach_file),
-                            label: const Text("Añadir archivos"),
+                            label: const Text("Añadir archivos",),
+                            ),
                           ),
-                          ElevatedButton(
+                        ]
+                      ),
+                      
+                      const SizedBox(height: 20),
+                      
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               foregroundColor: Colors.white,
@@ -247,10 +225,11 @@ Future<Future<Object?>> showCitaDialog(BuildContext context) async {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            onPressed: _solicitarCita,
+                            onPressed: solicitarCita,
                             child: const Text("Solicitar cita"),
+                            ),
                           ),
-                        ],
+                        ]
                       ),
                     ],
                   ),

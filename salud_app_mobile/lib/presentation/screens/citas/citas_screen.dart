@@ -4,7 +4,11 @@ import 'package:salud_app_mobile/theme/app_colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CitasScreen extends StatefulWidget {
-  const CitasScreen({super.key});
+  final VoidCallback onNavigationBack;
+  const CitasScreen({
+    super.key,
+    required this.onNavigationBack
+  });
 
   @override
   State<CitasScreen> createState() => _CitasScreenState();
@@ -19,8 +23,27 @@ class _CitasScreenState extends State<CitasScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        centerTitle: true,
+        backgroundColor: AppColors.primary,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              // Un fondo sutil para que el botón destaque
+              color: Colors.black.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              // Usamos pop() para volver a la pantalla anterior en el stack (HomeScreen)
+              onPressed: widget.onNavigationBack,
+              icon: const Icon(Icons.navigate_before),
+              color: Colors.white,
+              tooltip: 'Regresar', // Buena práctica para accesibilidad
+            ),
+          ),
+        ),
         title: const Text(
+          textAlign: TextAlign.center,
           "Gestión de citas",
           style: TextStyle(color: Colors.white),
         ),
@@ -64,9 +87,9 @@ class _CitasScreenState extends State<CitasScreen> {
                 ),
               ),
             ),
-
+    
             const SizedBox(height: 20),
-
+    
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -79,7 +102,7 @@ class _CitasScreenState extends State<CitasScreen> {
               ),
             ),
             const SizedBox(height: 10),
-
+    
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -117,25 +140,29 @@ class _CitasScreenState extends State<CitasScreen> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "Reprogramar cita",
-                          style: TextStyle(color: Colors.blue),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            "Reprogramar",
+                            style: TextStyle(color: Colors.blue),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade900,
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "Cancelar cita",
-                          style: TextStyle(color: Colors.white),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade900,
+                          ),
+                          onPressed: () {},
+                          child: const Text(
+                            "Cancelar cita",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
@@ -143,47 +170,37 @@ class _CitasScreenState extends State<CitasScreen> {
                 ],
               ),
             ),
-
+    
             const SizedBox(height: 10),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    
+            Column(
               children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade200,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal.shade200,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () {
+                          showCitaDialog(context);
+                        },
+                        child: const Text(
+                          "Agendar nueva cita",
+                          style: TextStyle(color: AppColors.secondary),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  onPressed: () {
-                    showCitaDialog(context);
-                  },
-                  child: const Text(
-                    "Agendar nueva cita",
-                    style: TextStyle(color: AppColors.secondary),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal.shade200,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    "Reprogramar cita",
-                    style: TextStyle(color: AppColors.secondary),
-                  ),
+                  ],
                 ),
               ],
             ),

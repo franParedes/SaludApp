@@ -108,6 +108,9 @@ namespace SaludAppBackend.Services.CitasService
         public async Task<int> CrearNuevaCitaMedicaAsync(CitaMedicaModel citaMedica)
         {
             _logger.LogInformation("Creando nueva solicitud de cita médica");
+            if (citaMedica.Especialidad < 1)
+                throw new InvalidOperationException("No existe una especialidad con Id menor que 0");
+
             var pacienteExiste = await _unitOfWork.Pacientes.BuscarPacientePorIdAsync(citaMedica.PacienteId);
 
             if (pacienteExiste == 0)

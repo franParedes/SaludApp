@@ -25,7 +25,7 @@ class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.primary),
           ),
           Text(
-            "Pedro Romero",
+            "Francisco Paredes",
             style: TextStyle(fontSize: 20, color: AppColors.primary,),
           ),
         ],

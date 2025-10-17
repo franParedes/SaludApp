@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Aquí pasamos el callback _onItemTapped al HomeContent
     _screens = [
       _HomeContent(onItemTapped: _onItemTapped),
-      const CitasScreen(),
+      CitasScreen(onNavigationBack: () => _onItemTapped(0)),
       const Center(child: Text("Historial")),
       const Center(child: Text("Perfil")),
     ];
@@ -40,11 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+    // PopScope previene que el usuario salga de la app con el botón de atrás
+    // si no está en la pestaña de inicio.
+    return PopScope(
+      // Solo permite salir de la app si estamos en la primera pestaña (index 0).
+      canPop: _selectedIndex == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        // 'didPop' será true si 'canPop' era true y se salió.
+        // Si 'didPop' es false, significa que 'canPop' era false.
+        if (!didPop) {
+          // Si no se permitió el pop, entonces navegamos a la pestaña de inicio.
+          _onItemTapped(0);
+        }
+      },
+      child: Scaffold(
+        // IndexedStack mantiene el estado de todas las pestañas en memoria,
+        // lo que mejora la experiencia de usuario al cambiar entre ellas.
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: _selectedIndex,
+          onItemTapped: _onItemTapped,
+        ),
       ),
     );
   }
@@ -65,14 +84,19 @@ class _HomeContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "¿Cómo te sientes hoy?",
-              style: TextStyle(
-                fontFamily: 'Kanit',
-                fontWeight: FontWeight.w500,
-                fontSize: 30,
-                color: AppColors.primary,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                "¿Cómo te sientes hoy?",
+                  style: TextStyle(
+                    fontFamily: 'Kanit',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 30,
+                    color: AppColors.primary,
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 12),
             HomeSearch(),

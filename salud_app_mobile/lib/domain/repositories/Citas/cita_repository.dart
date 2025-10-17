@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../models/Citas/cita.dart';
 import '../../services/api_service_cita.dart';
 
@@ -8,10 +10,10 @@ class CitaRepository {
         "Citas/AgendarCitaMedica",
         cita.toJson(),
       );
-      print("✅ Cita agendada: $response");
+      debugPrint("✅ Cita agendada: $response");
       return true;
     } catch (e) {
-      print("❌ Error en agendarCita: $e");
+      debugPrint("❌ Error en agendarCita: $e");
       return false;
     }
   }
