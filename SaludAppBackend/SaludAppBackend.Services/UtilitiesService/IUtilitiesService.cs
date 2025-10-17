@@ -1,4 +1,5 @@
-﻿using SaludAppBackend.Services.DTOs.UtilitiesDTO;
+﻿using SaludAppBackend.Data.Models;
+using SaludAppBackend.Services.DTOs.UtilitiesDTO;
 
 namespace SaludAppBackend.Services.UtilitiesService
 {
@@ -22,9 +23,11 @@ namespace SaludAppBackend.Services.UtilitiesService
         Task<IEnumerable<UniversidadesDTO>> GetUniversidadesAsync();
         Task<IEnumerable<AreasMedicasDTO>> GetAreasMedicasAsync();
         Task<IEnumerable<CentrosMedicosDTO>> GetCentrosMedicosAsync();
+        Task<IEnumerable<CentrosMedicosDTO>> GetCentrosMedicosByDepAsync(int IdDepartamento);
         Task<IEnumerable<TurnosMedicosDTO>> GetTurnosMedicosAsync();
 
         //Métodos para citas
         Task<IEnumerable<TiposCitasDTO>> GetTipoDeCitasAsync();
+        Task<IEnumerable<TbExamenesDisponiblesLab>> GetExamenesDisponiblesLabAsync();
     }
 }

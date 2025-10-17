@@ -23,10 +23,12 @@ namespace SaludAppBackend.Data.Repositories.Utilities
         Task<IEnumerable<TbUniversidade>> GetUniversidadesAsync();
         Task<IEnumerable<TbAreasMedica>> GetAreasMedicasAsync();
         Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosAsync();
+        Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosByDepAsync(int IdDepartamento);
         Task<IEnumerable<TbTurnosMedico>> GetTurnosMedicosAsync();
 
         //Métodos para citas
         Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync();
+        Task<IEnumerable<TbExamenesDisponiblesLab>> GetExamenesDisponiblesLabAsync();
 
         //Métodos de historial clínico
         //Task<IEnumerable<TbBarrio>> GetBarriosAsync();

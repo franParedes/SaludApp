@@ -274,5 +274,37 @@ namespace SaludAppBackend.API.Controllers
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
+
+        [HttpGet]
+        [Route("GetExamenesDisponiblesLab")]
+        public async Task<IActionResult> GetExamenesDisponiblesLabAsync()
+        {
+            try
+            {
+                var examenesList = await _utilitiesService.GetExamenesDisponiblesLabAsync();
+                return Ok(examenesList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error {message} inesperado al obtener los examenes disponibles", ex.Message);
+                return StatusCode(402, $"Error {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCentrosMedicosByDep/{IdDepartamento}")]
+        public async Task<IActionResult> GetCentrosMedicosByDepAsync(int IdDepartamento)
+        {
+            try
+            {
+                var centros = await _utilitiesService.GetCentrosMedicosByDepAsync(IdDepartamento);
+                return Ok(centros);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error {message} inesperado al obtener centros med por dep", ex.Message);
+                return StatusCode(402, $"Error {ex.Message}");
+            }
+        }
     }
 }

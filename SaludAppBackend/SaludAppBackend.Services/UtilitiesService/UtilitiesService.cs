@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.UnitOfWork;
 using SaludAppBackend.Services.DTOs.UtilitiesDTO;
 using SaludAppBackend.Services.Mapper;
@@ -111,6 +112,33 @@ namespace SaludAppBackend.Services.UtilitiesService
         {
             var universidadesList = await _unitOfWork.Utilities.GetUniversidadesAsync();
             return _mapper.UniversidadesToUniversidadesDTO(universidadesList);
+        }
+
+        public async Task<IEnumerable<TbExamenesDisponiblesLab>> GetExamenesDisponiblesLabAsync()
+        {
+            try
+            {
+                var examenesList = await _unitOfWork.Utilities.GetExamenesDisponiblesLabAsync();
+                return examenesList;
+            } catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CentrosMedicosDTO>> GetCentrosMedicosByDepAsync(int IdDepartamento)
+        {
+            try
+            {
+                var centros = await _unitOfWork.Utilities.GetCentrosMedicosByDepAsync(IdDepartamento);
+                return _mapper.CentrosMedicosToCentrosMedicosDTO(centros);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{mensaje}", ex.Message);
+                throw;
+            }
         }
     }
 }

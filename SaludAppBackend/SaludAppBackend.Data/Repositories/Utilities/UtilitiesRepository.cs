@@ -1,4 +1,5 @@
-﻿using SaludAppBackend.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.Repositories.Generic;
 using SaludAppBackend.Models.DTOs;
 using System;
@@ -63,5 +64,15 @@ namespace SaludAppBackend.Data.Repositories.Utilities
 
         public async Task<IEnumerable<TbTiposCita>> GetTipoDeCitasAsync()
             => await GetAllAsync<TbTiposCita>();
+
+        public async Task<IEnumerable<TbExamenesDisponiblesLab>> GetExamenesDisponiblesLabAsync()
+            => await GetAllAsync<TbExamenesDisponiblesLab>();
+
+        public async Task<IEnumerable<TbCentrosMedico>> GetCentrosMedicosByDepAsync(int IdDepartamento)
+        {
+            return await _appDbContext.TbCentrosMedicos
+                .Where(centro => centro.Departamento == IdDepartamento)
+                .ToListAsync();
+        }
     }
 }
