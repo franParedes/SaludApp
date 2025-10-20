@@ -205,7 +205,6 @@ public partial class AppDbContext : DbContext
             entity.ToTable("tb_archivos");
 
             entity.Property(e => e.ArchivoId).HasColumnName("Archivo_id");
-            entity.Property(e => e.Base64).HasColumnType("text");
             entity.Property(e => e.FechaSubida)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_subida");

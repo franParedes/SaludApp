@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:salud_app_mobile/domain/providers/session_provider.dart';
 import 'package:salud_app_mobile/domain/repositories/Autenticacion/auth_repository.dart';
 import 'package:salud_app_mobile/presentation/screens/home/home_screen.dart';
 import '../dialogs/dialog.dart';
@@ -34,9 +36,12 @@ class _LoginButtonState extends State<LoginButton> {
     final email = widget.email.text.trim();
     final password = widget.password.text;
 
+    // Capturamos el provider ANTES del await para evitar el warning de context.
+    // Usamos context.read porque solo necesitamos llamar un método, no necesitamos "escuchar" cambios aquí.
+    final sessionProvider = context.read<SessionProvider>();
+
     // Validación simple
     if (email.isEmpty || password.isEmpty) {
-
       /*
         la variable mounted es una propiedad booleana que pertenece a la clase State de un 
         StatefulWidget. Indica si el objeto State está actualmente "montado" en el árbol de 
@@ -62,6 +67,9 @@ class _LoginButtonState extends State<LoginButton> {
       if (!mounted) return;
 
       if (auth.verificacion == 1) {
+        // En lugar de navegar directamente, actualizamos el provider con los datos del usuario.
+        sessionProvider.login(auth);
+
         // Reemplaza la pantalla de login para que el usuario no regrese con back
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
