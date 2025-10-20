@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SaludAppBackend.Data.Models;
 
@@ -13,6 +14,7 @@ public partial class TbArchivo
 
     public string TipoMime { get; set; } = null!;
 
+    [Column(TypeName = "longtext")]
     public string Base64 { get; set; } = null!;
 
     public DateTime FechaSubida { get; set; }

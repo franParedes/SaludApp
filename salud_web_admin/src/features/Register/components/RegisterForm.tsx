@@ -1,5 +1,3 @@
-// src/features/Register/components/RegisterForm.tsx
-
 import { TextField, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 // Imports de fechas
@@ -47,6 +45,7 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
     const [departamentos, setDepartamentos] = useState<number | ''>('');
     const [municipio, setMunicipio] = useState<number | ''>('');
     const [barrio, setBarrios] = useState<number | ''>('');
+    
     // --- ESTADOS CONDICIONALES (Compartidos entre roles) ---
     const [c_medico, setC_medico] = useState<number | ''>(''); // CentroActual
     const [turno, setTurno] = useState<number | ''>(''); // TurnoActual
@@ -159,7 +158,10 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
                     <TextField required label="Cédula" fullWidth value={cedula}
                         onChange={(e) => { setCedula(e.target.value); }} />
                 </Grid>
-                <MenuGenero genero={genero} setGenero={setGenero} />
+                {/* Asumiendo que MenuGenero también necesita ser envuelto para aplicar el tamaño de la cuadrícula */}
+                <Grid size={{ xs: 12, sm: 6 }}>
+                    <MenuGenero genero={genero} setGenero={setGenero} />
+                </Grid>
 
                 {/* fecha de nacimiento */}
                 <Grid size={{ xs: 12 }}>
@@ -174,10 +176,16 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
                     </LocalizationProvider>
                 </Grid>
 
-                {/* Ubicación (Dpto, Municipio, Barrio) - Corrección de props de ID */}
-                <MenuDepartamento departamento={departamentos} setDepartamento={setDepartamentos} />
-                <MenuMunicipios departamentoId={departamentos === '' ? null : departamentos} municipio={municipio} setMunicipio={setMunicipio} disabled={!departamentos} />
-                <MenuBarrio municipioId={municipio === '' ? null : municipio} barrio={barrio} setBarrios={setBarrios} disabled={!municipio} />
+                {/* Ubicación (Dpto, Municipio, Barrio) - Se envuelven los componentes Select en Grid con size */}
+                <Grid size={{ xs: 12, sm: 4 }}>
+                    <MenuDepartamento departamento={departamentos} setDepartamento={setDepartamentos} />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 4 }}>
+                    <MenuMunicipios departamentoId={departamentos === '' ? null : departamentos} municipio={municipio} setMunicipio={setMunicipio} disabled={!departamentos} />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 4 }}>
+                    <MenuBarrio municipioId={municipio === '' ? null : municipio} barrio={barrio} setBarrios={setBarrios} disabled={!municipio} />
+                </Grid>
 
                 {/* correo */}
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -185,37 +193,46 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
                         onChange={(e) => { setCorreo(e.target.value); }} />
                 </Grid>
 
-                {/* Teléfono + Proveedor */}
-                <MenuProveedoresTelef
-                    telefono={telefono}
-                    setTelefono={setTelefono}
-                    proveedor={proveedor}
-                    setProveedor={setProveedor}
-                />
+                {/* Teléfono + Proveedor - Asumiendo que MenuProveedoresTelef es un componente que ya maneja su propia estructura de Grid interna, lo envolvemos en un Grid de 12 para que ocupe todo el ancho. */}
+                <Grid size={{ xs: 12, sm: 6 }}>
+                    <MenuProveedoresTelef
+                        telefono={telefono}
+                        setTelefono={setTelefono}
+                        proveedor={proveedor}
+                        setProveedor={setProveedor}
+                    />
+                </Grid>
 
                 {/* --- 3. CAMPOS ESPECÍFICOS POR ROL --- */}
 
                 {/* A. CAMPOS PARA ADMINISTRADOR, RECEPCIONISTA Y REGISTRO (Centro Actual) */}
                 {(tipo === ID_ADMIN || tipo === ID_RECEPCIONISTA || tipo === ID_REGISTRO) && (
-                    <MenuCentrosMedicos c_medico={c_medico} setC_medico={setC_medico} />
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                        <MenuCentrosMedicos c_medico={c_medico} setC_medico={setC_medico} />
+                    </Grid>
                 )}
 
                 {/* B. CAMPOS PARA RECEPCIONISTA Y REGISTRO (Turno Actual) */}
                 {(tipo === ID_RECEPCIONISTA || tipo === ID_REGISTRO) && (
-                    <MenuTurnosActual turno={turno} setTurno={setTurno} />
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                        <MenuTurnosActual turno={turno} setTurno={setTurno} />
+                    </Grid>
                 )}
 
                 {/* C. CAMPOS EXCLUSIVOS DE MÉDICO */}
                 {tipo === ID_MEDICO && (
                     <>
                         {/* Egresado de (Universidad) */}
-                        <MenuUniversidad universidad={universidad} setUniversidad={setUniversidad} />
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MenuUniversidad universidad={universidad} setUniversidad={setUniversidad} />
+                        </Grid>
 
                         {/* Egresado el (DateField) */}
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DemoContainer components={['DateField']} >
-                                    <DateField required label="Egresado el" variant="outlined" value={egresadoEl}
+                                    <DateField required label="Egresado el" variant="outlined" fullWidth
+                                        value={egresadoEl}
                                         onChange={(nuevoValor) => { setEgresadoEl(nuevoValor); }}
                                         slotProps={{ textField: { InputProps: { sx: { borderRadius: "3rem", "& fieldset": { borderColor: "#0088FF", }, } } } }}
                                     />
@@ -231,9 +248,15 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
                         </Grid>
 
                         {/* Centro de Trabajo (Área, Centro, Turno) - Nota: Centro y Turno se repiten por el bloque anterior, pero aquí incluimos Área */}
-                        <MenuAreasMedicas area={area} setArea={setArea} />
-                        <MenuCentrosMedicos c_medico={c_medico} setC_medico={setC_medico} />
-                        <MenuTurnosActual turno={turno} setTurno={setTurno} />
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MenuAreasMedicas area={area} setArea={setArea} />
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MenuCentrosMedicos c_medico={c_medico} setC_medico={setC_medico} />
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MenuTurnosActual turno={turno} setTurno={setTurno} />
+                        </Grid>
 
                         {/* Cod. Sanitario (TextField) */}
                         <Grid size={{ xs: 12, sm: 6 }}>
@@ -242,7 +265,9 @@ export default function RegisterForm({ setFormData }: { setFormData: Function })
                         </Grid>
 
                         {/* Especialidad con Select */}
-                        <MenuEspecialidades especialidad={especialidad} setEspecialidad={setEspecialidad} />
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MenuEspecialidades especialidad={especialidad} setEspecialidad={setEspecialidad} />
+                        </Grid>
                     </>
                 )}
 
