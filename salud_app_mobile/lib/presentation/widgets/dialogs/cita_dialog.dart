@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:provider/provider.dart';
 import 'package:salud_app_mobile/domain/models/Citas/cita.dart';
+import 'package:salud_app_mobile/domain/models/Citas/cita_labortorio.dart';
 import 'package:salud_app_mobile/domain/models/Utilidades/centrosmedicos.dart';
 import 'package:salud_app_mobile/domain/models/Utilidades/especialidades.dart';
 import 'package:salud_app_mobile/domain/models/Citas/tipocita.dart';
 import 'package:salud_app_mobile/domain/models/Utilidades/examenes_disponibles.dart';
+import 'package:salud_app_mobile/domain/providers/session_provider.dart';
 import 'package:salud_app_mobile/domain/repositories/Citas/tipocita_repository.dart';
 import 'package:salud_app_mobile/domain/repositories/Utilidades/centromedico_repository.dart';
 import 'package:salud_app_mobile/domain/repositories/Utilidades/especialidad_repository.dart';
@@ -46,7 +50,8 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
   // Listas para los dropdowns
   List<Tipocita> _tiposCita = [];
   List<Centrosmedicos> _centrosMedicos = [];
-  List<ExamenesDisponibles> _examenesDisponibles =[]; // Lista de exámenes para los checkboxes
+  List<ExamenesDisponibles> _examenesDisponibles =
+      []; // Lista de exámenes para los checkboxes
 
   // Valores seleccionados
   int? _tipoCitaSeleccionada;
@@ -120,57 +125,119 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
   Future<void> _solicitarCita() async {
     if (_isSubmitting) return;
 
+    final sessionProvider = context.read<SessionProvider>();
+
+    final auth = sessionProvider.auth;
+    if (auth == null) {
+      // Si por alguna razón no hay datos de sesión, mostramos un error y detenemos la ejecución.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "❌ Error: Sesión no encontrada. Por favor, inicie sesión de nuevo.",
+          ),
+        ),
+      );
+      return;
+    }
+
     // Validaciones simples
     if (_tipoCitaSeleccionada == null || _centroMedicoSeleccionado == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Por favor, complete todos los campos obligatorios.")),
+        const SnackBar(
+          content: Text("Por favor, complete todos los campos obligatorios."),
+        ),
       );
       return;
     }
 
     setState(() => _isSubmitting = true);
 
-    String? base64Image;
-    if (_imagenSeleccionada != null) {
-      final bytes = await _imagenSeleccionada!.readAsBytes();
-      base64Image = base64Encode(bytes);
-    }
-    
     // MODIFICACIÓN 4: Recolectar los IDs de los exámenes seleccionados.
-    final idsExamenesSeleccionados = _examenesSeleccionados.entries
+    final nameExamenesSeleccionados = _examenesSeleccionados.entries
         .where((entry) => entry.value) // Filtra solo los que son 'true'
-        .map((entry) => entry.key)     // Obtiene sus IDs (la llave del mapa)
+        .map((entry) {
+          final examen = _examenesDisponibles.firstWhere(
+            (e) => e.idExamen == entry.key,
+          );
+          return examen.examen;
+        })
         .toList();
 
-    final cita = Cita(
-      pacienteId: 1, // Debería venir de un gestor de estado o SharedPreferences
-      fechaSolicitud: DateTime.now(),
-      lugar: _centroMedicoSeleccionado!,
-      fechaCita: DateTime.now(), // El usuario debería poder seleccionarla
-      motivoCita: _descripcionController.text,
-      tipoCita: _tipoCitaSeleccionada!,
-      adjuntos: base64Image != null
-          ? [
-              Adjunto(
-                nombreArchivo: _imagenSeleccionada!.path.split('/').last,
-                tipoArchivo: "imagen",
-                tipoMime: "image/jpeg", // O detectar el mime type real
-                bytesArchivo: base64Image,
-              ),
-            ]
-          : [],
-      especialidad: _especialidadSeleccionada!,
-      // Añade el campo a tu modelo Cita si es necesario.
-      // examenes: idsExamenesSeleccionados.join(','), 
-    );
+    bool success = false;
+    String? mimeType;
 
-    final success = await CitaService().solicitarCita(cita);
+    String? base64Image;
+    if (_imagenSeleccionada != null) {
+      final fileBytes = await _imagenSeleccionada!.readAsBytes();
+      mimeType =
+          lookupMimeType(_imagenSeleccionada!.path) ??
+          'application/octet-stream';
+
+      base64Image = base64Encode(fileBytes);
+    }
+
+    if (_tipoCitaSeleccionada != citaLabId) {
+      final citaMedica = Cita(
+        pacienteId: auth
+            .idUser, // Debería venir de un gestor de estado o SharedPreferences
+        fechaSolicitud: DateTime.now(),
+        lugar: _centroMedicoSeleccionado!,
+        fechaCita: DateTime.now(), // El usuario debería poder seleccionarla
+        motivoCita: _descripcionController.text,
+        tipoCita: _tipoCitaSeleccionada!,
+        adjuntos: base64Image != null
+            ? [
+                Adjunto(
+                  nombreArchivo: _imagenSeleccionada!.path.split('/').last,
+                  tipoArchivo: "imagen",
+                  tipoMime: mimeType!, // O detectar el mime type real
+                  bytesArchivo: base64Image,
+                ),
+              ]
+            : [],
+        especialidad: _especialidadSeleccionada!,
+        // Añade el campo a tu modelo Cita si es necesario.
+        // examenes: idsExamenesSeleccionados.join(','),
+      );
+
+      success = await CitaService().solicitarCita(citaMedica);
+    } 
+    else {
+      final citaLab = CitaLabortorio(
+        pacienteId: auth.idUser,
+        fechaSolicitud: DateTime.now(),
+        lugar: _centroMedicoSeleccionado!,
+        fechaCita: DateTime.now(), // El usuario debería poder seleccionarla
+        motivoCita: _descripcionController.text,
+        tipoCita: _tipoCitaSeleccionada!,
+        adjuntos: base64Image != null
+            ? [
+                Adjunto(
+                  nombreArchivo: _imagenSeleccionada!.path.split('/').last,
+                  tipoArchivo: "imagen",
+                  tipoMime: mimeType!, // O detectar el mime type real
+                  bytesArchivo: base64Image,
+                ),
+              ]
+            : [],
+        examenesRealzar: nameExamenesSeleccionados,
+      );
+
+      success = await CitaService().solicitarCitaLab(citaLab);
+    }
+
+    String message;
+    if (success == true) {
+      message = "✅ Cita solicitada con éxito";
+    } else {
+      message = "❌ Error al solicitar la cita";
+    }
 
     // Como estamos dentro de un StatefulWidget, 'context' y 'mounted' están disponibles y son seguros.
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(success ? "✅ Cita solicitada con éxito" : "❌ Error al solicitar la cita")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
       Navigator.of(context).pop();
     }
   }
@@ -203,26 +270,50 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                           filled: true,
                           fillColor: Colors.grey.shade100,
                           contentPadding: const EdgeInsets.all(12),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
 
                       // Dropdown Tipo de cita
                       DropdownButtonFormField<int>(
-                        decoration: const InputDecoration(labelText: "Tipo de cita", border: OutlineInputBorder()),
+                        decoration: const InputDecoration(
+                          labelText: "Tipo de cita",
+                          border: OutlineInputBorder(),
+                        ),
                         initialValue: _tipoCitaSeleccionada,
-                        items: _tiposCita.map((e) => DropdownMenuItem(value: e.id, child: Text(e.nombre))).toList(),
-                        onChanged: _onTipoCitaChanged, // Llama a la nueva función
+                        items: _tiposCita
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e.id,
+                                child: Text(e.nombre),
+                              ),
+                            )
+                            .toList(),
+                        onChanged:
+                            _onTipoCitaChanged, // Llama a la nueva función
                       ),
                       const SizedBox(height: 20),
-                      
+
                       // Dropdown Centro médico
                       DropdownButtonFormField<int>(
-                        decoration: const InputDecoration(labelText: "Centro Médico", border: OutlineInputBorder()),
+                        decoration: const InputDecoration(
+                          labelText: "Centro Médico",
+                          border: OutlineInputBorder(),
+                        ),
                         initialValue: _centroMedicoSeleccionado,
-                        items: _centrosMedicos.map((e) => DropdownMenuItem(value: e.id, child: Text(e.centroMedico))).toList(),
-                        onChanged: (value) => setState(() => _centroMedicoSeleccionado = value),
+                        items: _centrosMedicos
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e.id,
+                                child: Text(e.centroMedico),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) =>
+                            setState(() => _centroMedicoSeleccionado = value),
                       ),
                       const SizedBox(height: 10),
 
@@ -238,17 +329,24 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Exámenes a realizar", style: TextStyle(fontWeight: FontWeight.bold)),
+                              const Text(
+                                "Exámenes a realizar",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               ..._examenesDisponibles.map((examen) {
                                 return CheckboxListTile(
                                   title: Text(examen.examen),
-                                  value: _examenesSeleccionados[examen.idExamen] ?? false,
+                                  value:
+                                      _examenesSeleccionados[examen.idExamen] ??
+                                      false,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      _examenesSeleccionados[examen.idExamen] = value ?? false;
+                                      _examenesSeleccionados[examen.idExamen] =
+                                          value ?? false;
                                     });
                                   },
-                                  controlAffinity: ListTileControlAffinity.leading,
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
                                   contentPadding: EdgeInsets.zero,
                                 );
                               }),
@@ -260,7 +358,11 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                       if (_imagenSeleccionada != null) ...[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.file(_imagenSeleccionada!, height: 120, fit: BoxFit.cover),
+                          child: Image.file(
+                            _imagenSeleccionada!,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         const SizedBox(height: 10),
                       ],
@@ -270,12 +372,18 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue.shade50,
                           foregroundColor: Colors.blue.shade800,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 16,
+                          ),
                         ),
                         onPressed: _seleccionarImagen,
                         child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.start, // Alinea el contenido a la izquierda
+                          mainAxisAlignment: MainAxisAlignment
+                              .start, // Alinea el contenido a la izquierda
                           children: [
                             Icon(Icons.attach_file, size: 20),
                             SizedBox(width: 8),
@@ -292,7 +400,9 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
                           onPressed: _solicitarCita,
@@ -300,7 +410,10 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
                               ? const SizedBox(
                                   height: 20,
                                   width: 20,
-                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
                                 )
                               : const Text("Solicitar cita"),
                         ),

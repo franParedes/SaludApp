@@ -334,7 +334,7 @@ CREATE TABLE tb_archivos (
     Nombre_archivo VARCHAR(200) NOT NULL,
     Tipo_archivo VARCHAR(50) NOT NULL,
     Tipo_mime VARCHAR(50) NOT NULL,
-    Base64 TEXT NOT NULL,
+    Base64 LONGTEXT NOT NULL,
     Fecha_subida DATETIME NOT NULL
 ) ENGINE = InnoDB;
 
