@@ -11,6 +11,11 @@ import type { Proveedor } from '../types/Proveedor';
 import type { Turno } from '../types/Turno';
 import type { Universidad } from '../types/Universidad';
 import type { TipoUsuario } from '../types/TipoUsuario';
+import type { TipoCita } from '../types/CitaTypes';
+import type { Ocupacion } from '../types/Ocupacion';
+import type { Escolaridad } from '../types/Escolaridad';
+import type { Religion } from '../types/Religion';
+import type { EstadoCivil } from '../types/EstadoCivil';
 
 const BASE_URL = "https://localhost:7239/api/Utilities";
 
@@ -198,4 +203,88 @@ export async function fetchTiposUsuarios(): Promise<TipoUsuario[]> {
     console.error("Fallo en la petición de tipos de usuario:", error);
     throw error;
   }
+}
+  export const fetchTiposCita = async (): Promise<TipoCita[]> => {
+    const url = `${BASE_URL}/ObtenerTipoDeCita`;
+    
+    try {
+        const response = await fetch(url, { method: 'GET' });
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener tipos de cita: ${response.statusText}`);
+        }
+
+        const data: TipoCita[] = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error("Error en fetchTiposCita:", error);
+        throw error;
+    }
+  };
+  export async function fetchOcupaciones(): Promise<Ocupacion[]> {
+    try {
+        const response = await fetch(`${BASE_URL}/ObtenerOcupacionesDePacientes`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText || 'Error al obtener ocupaciones'}`);
+        }
+
+        const data: Ocupacion[] = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Fallo en la petición de ocupaciones:", error);
+        throw error;
+    }
+}
+export async function fetchEscolaridades(): Promise<Escolaridad[]> {
+    try {
+        const response = await fetch(`${BASE_URL}/ObtenerEscolaridad`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText || 'Error al obtener escolaridades'}`);
+        }
+
+        const data: Escolaridad[] = await response.json();
+        // Nota: Si el backend devuelve "IdEscolaridad" y "Escolaridad" con mayúsculas iniciales,
+        // esto coincide con el tipo definido.
+        return data;
+    } catch (error) {
+        console.error("Fallo en la petición de escolaridades:", error);
+        throw error;
+    }
+}
+export async function fetchReligiones(): Promise<Religion[]> {
+    try {
+        const response = await fetch(`${BASE_URL}/ObtenerReligiones`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText || 'Error al obtener religiones'}`);
+        }
+
+        const data: Religion[] = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Fallo en la petición de religiones:", error);
+        throw error;
+    }
+}
+export async function fetchEstadosCiviles(): Promise<EstadoCivil[]> {
+    try {
+        const response = await fetch(`${BASE_URL}/ObtenerEstadosCiviles`);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error ${response.status}: ${errorText || 'Error al obtener estados civiles'}`);
+        }
+
+        const data: EstadoCivil[] = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Fallo en la petición de estados civiles:", error);
+        throw error;
+    }
 }
