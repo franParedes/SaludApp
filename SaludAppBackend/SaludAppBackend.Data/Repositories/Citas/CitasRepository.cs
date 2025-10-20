@@ -43,7 +43,7 @@ namespace SaludAppBackend.Data.Repositories.Citas
              */
             _appDbContext.TbCitas.Attach(cita);
 
-            cita.Estado = 1;
+            cita.Estado = 2;
             cita.FechaCita = fechaCita;
 
             /*
