@@ -178,8 +178,7 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
 
     if (_tipoCitaSeleccionada != citaLabId) {
       final citaMedica = Cita(
-        pacienteId: auth
-            .idUser, // Debería venir de un gestor de estado o SharedPreferences
+        pacienteId: auth.idPaciente, // Debería venir de un gestor de estado o SharedPreferences
         fechaSolicitud: DateTime.now(),
         lugar: _centroMedicoSeleccionado!,
         fechaCita: DateTime.now(), // El usuario debería poder seleccionarla
@@ -204,7 +203,7 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
     } 
     else {
       final citaLab = CitaLabortorio(
-        pacienteId: auth.idUser,
+        pacienteId: auth.idPaciente,
         fechaSolicitud: DateTime.now(),
         lugar: _centroMedicoSeleccionado!,
         fechaCita: DateTime.now(), // El usuario debería poder seleccionarla

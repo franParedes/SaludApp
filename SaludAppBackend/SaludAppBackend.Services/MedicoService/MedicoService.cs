@@ -28,29 +28,35 @@ namespace SaludAppBackend.Services.MedicoService
         {
             _logger.LogInformation("Intentando agregar nuevo médico");
 
-            var nuevoUsuario = await _usuarioService.CrearUsuario(medico);
-            var nuevaContrasenya = await _usuarioService.CrearPasswd(medico.Contrasenya, nuevoUsuario);
-
-            var nuevoMedico = new TbMedico
+            try
             {
-                IdUsuarioNavigation = nuevoUsuario,
-                CodSanitario        = medico.Cod_sanitario,
-                Especialidad        = medico.Especialidad,
-                EgresadoDe          = medico.EgresadoDe,
-                EgresadoEl          = medico.EgresadoEl,
-                ExperienciaAnyos    = medico.Experiencia_anyos,
-                AreaActual          = medico.Area_actual,
-                CentroActual        = medico.Centro_actual,
-                TurnoActual         = medico.Turno_actual,
-            };
+                var nuevoUsuario = await _usuarioService.CrearUsuario(medico);
+                var nuevaContrasenya = await _usuarioService.CrearPasswd(medico.Contrasenya, nuevoUsuario);
 
-            await _unitOfWork.Usuarios.AddUsuarioAsync( nuevoUsuario );
-            await _unitOfWork.Passwd.AddPasswdAsync(nuevaContrasenya);
-            await _unitOfWork.Medicos.AddMedicoAsync( nuevoMedico );
+                var nuevoMedico = new TbMedico
+                {
+                    IdUsuarioNavigation = nuevoUsuario,
+                    CodSanitario = medico.Cod_sanitario,
+                    Especialidad = medico.Especialidad,
+                    EgresadoDe = medico.EgresadoDe,
+                    EgresadoEl = medico.EgresadoEl,
+                    ExperienciaAnyos = medico.Experiencia_anyos,
+                    AreaActual = medico.Area_actual,
+                    CentroActual = medico.Centro_actual,
+                    TurnoActual = medico.Turno_actual,
+                };
 
-            await _unitOfWork.CompleteAsync();
+                await _unitOfWork.Usuarios.AddUsuarioAsync(nuevoUsuario);
+                await _unitOfWork.Passwd.AddPasswdAsync(nuevaContrasenya);
+                await _unitOfWork.Medicos.AddMedicoAsync(nuevoMedico);
 
-            return nuevoMedico.IdMedico;
+                await _unitOfWork.CompleteAsync();
+                return nuevoMedico.IdMedico;
+            } catch (Exception ex)
+            {
+                _logger.LogError("Error {message} en creacion de medicos", ex.Message);
+                throw;
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ namespace SaludAppBackend.Services.Autenticacion
             try
             {
                 var idUsuario = await _unitOfWork.Usuarios.BuscarUsuarioPorCorreo(correo);
+                var idPaciente = _unitOfWork.Pacientes.BuscarPacientePorIdUsuarioAsync(idUsuario);
                 var usuario = await _unitOfWork.Usuarios.GetUsuarioByIdSPAsync(idUsuario);
                 var hashPassword = await _unitOfWork.Usuarios.GetPasswordHashPorCorreo(correo);
 
@@ -46,6 +47,7 @@ namespace SaludAppBackend.Services.Autenticacion
                 return new AutenticacionResponse
                 {
                     IdUsuario = usuario!.IdUsuario,
+                    IdPaciente = idPaciente,
                     TipoUsuario = usuario.TipoUsuario,
                     Verificado = 1
                 };

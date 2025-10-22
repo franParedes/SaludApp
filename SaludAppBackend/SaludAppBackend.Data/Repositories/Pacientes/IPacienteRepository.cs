@@ -7,6 +7,7 @@ namespace SaludAppBackend.Data.Repositories.Pacientes
     {
         Task AddPacienteAsync(TbPaciente paciente);
         Task<int> BuscarPacientePorIdAsync(int idPaciente);
+        int BuscarPacientePorIdUsuarioAsync(int idUsuario);
         Task<InformacionGeneralPacienteModel?> ObtenerInformacionGeneralPaciente(int idUsuario);
     }
 }

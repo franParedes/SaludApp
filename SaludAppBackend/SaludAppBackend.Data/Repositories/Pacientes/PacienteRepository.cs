@@ -40,6 +40,24 @@ namespace SaludAppBackend.Data.Repositories.Pacientes
             }
         }
 
+        public int BuscarPacientePorIdUsuarioAsync(int idUsuario)
+        {
+            try
+            {
+                var pacienteId = (from us in _appDbContext.TbUsuarios
+                                  join pac in _appDbContext.TbPacientes
+                                  on us.IdUsuario equals pac.IdUsuario
+                                  where us.IdUsuario == idUsuario
+                                  select pac.IdPaciente).FirstOrDefault();
+
+                return pacienteId;
+            } catch (Exception ex)
+            {
+                _logger.LogError("Error {message} al buscar paciente por id de usuario", ex.Message);
+                throw;
+            }
+        }
+
         public async Task<InformacionGeneralPacienteModel?> ObtenerInformacionGeneralPaciente(int idUsuario)
         {
             try
