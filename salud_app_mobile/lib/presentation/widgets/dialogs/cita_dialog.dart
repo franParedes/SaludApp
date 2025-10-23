@@ -70,11 +70,15 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
   }
 
   Future<void> _cargarDatosIniciales() async {
+    final sessionProvider = context.read<SessionProvider>();
+    final auth = sessionProvider.auth;
+
     // Usamos Future.wait para ejecutar todas las llamadas a la API en paralelo, es más eficiente.
     final results = await Future.wait([
       EspecialidadRepository().getEspecialidades(),
       TipocitaRepository().getTipocitas(),
       CentromedicoRepository().getCentrosmedicos(),
+      CentromedicoRepository().getCentrosMedicosPorDep( auth!.departamento ),
     ]);
 
     // Buscamos el ID de la especialidad "General" para preseleccionarla.
@@ -126,8 +130,8 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
     if (_isSubmitting) return;
 
     final sessionProvider = context.read<SessionProvider>();
-
     final auth = sessionProvider.auth;
+
     if (auth == null) {
       // Si por alguna razón no hay datos de sesión, mostramos un error y detenemos la ejecución.
       ScaffoldMessenger.of(context).showSnackBar(
@@ -200,8 +204,7 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
       );
 
       success = await CitaService().solicitarCita(citaMedica);
-    } 
-    else {
+    } else {
       final citaLab = CitaLabortorio(
         pacienteId: auth.idPaciente,
         fechaSolicitud: DateTime.now(),

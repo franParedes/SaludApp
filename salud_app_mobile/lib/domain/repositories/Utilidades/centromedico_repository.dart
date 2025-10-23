@@ -6,4 +6,9 @@ class CentromedicoRepository {
     final data = await ApiService.get("ObtenerCentrosMedicos");
     return (data as List).map((e) => Centrosmedicos.fromJson(e)).toList();
   }
+
+  Future<List<Centrosmedicos>> getCentrosMedicosPorDep(int departamento) async {
+    final data = await ApiService.get("GetCentrosMedicosByDep/$departamento");
+    return (data as List).map((e) => Centrosmedicos.fromJson(e)).toList();
+  }
 }

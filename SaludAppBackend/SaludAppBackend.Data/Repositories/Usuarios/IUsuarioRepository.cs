@@ -5,7 +5,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
 {
     public interface IUsuarioRepository
     {
-        Task<IEnumerable<TbUsuario>> GetAllUsuariosSPAsync();
+        Task<IEnumerable<TbUsuario>> GetAllUsuariosPorTipo(int tipoDeUsuario);
         Task<TbUsuario?> GetUsuarioByIdSPAsync(int idUsuario);
         Task<int> BuscarUsuarioPorCorreo(string email);
         Task AddUsuarioAsync(TbUsuario usuario);

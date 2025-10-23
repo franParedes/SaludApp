@@ -41,15 +41,19 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             }
         }
 
-        public async Task<IEnumerable<TbUsuario>> GetAllUsuariosSPAsync()
+        public async Task<IEnumerable<TbUsuario>> GetAllUsuariosPorTipo(int tipoDeUsuario)
         {
             try
             {
-                return await QuerySPAsync<TbUsuario>("sp_GetAllUsuarios");
+                var usuariosList = await _appDbContext.TbUsuarios.
+                               Where(usuario => usuario.TipoUsuario == tipoDeUsuario)
+                               .ToListAsync();
+
+                return usuariosList;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener todos los usuarios");
+                _logger.LogError("Error {message} al obtener los usuarios por tipo de usuario", ex.Message);
                 throw;
             }
         }
@@ -65,7 +69,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
                 return hash!;
             } catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error en la base de datos al intentar obtener el hash de la contraseña");
+                _logger.LogError("Error {message} en la base de datos al intentar obtener el hash de la contraseña", ex.Message);
                 throw;
             }
         }
@@ -75,6 +79,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             try
             {
                 var usuario = await _appDbContext.TbUsuarios
+                                .Include(u => u.TbDirecciones)
                                 .FirstOrDefaultAsync(u => u.IdUsuario == idUsuario);
 
                 if (usuario == null)
@@ -85,7 +90,7 @@ namespace SaludAppBackend.Data.Repositories.Usuarios
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, $"Error en la base de datos al intentar obtener el usuario con ID {idUsuario}");
+                _logger.LogError("Error {message} al intentar obtener el usuario con ID {idUsuario}", ex.Message, idUsuario);
                 throw;
             }
 

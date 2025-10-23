@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.UnitOfWork;
 using SaludAppBackend.Models.DTOs.AutenticacionDTOs;
 using System;
@@ -22,6 +23,10 @@ namespace SaludAppBackend.Services.Autenticacion
 
         public async Task<AutenticacionResponse> VerificarCredencialesAsync(string correo, string password)
         {
+            int? Departamento = 0;
+            int? Municipio = 0;
+            int? Barrio = 0;
+
             _logger.LogInformation("Verificando credenciales para el correo {correo}", correo);
             try
             {
@@ -44,11 +49,24 @@ namespace SaludAppBackend.Services.Autenticacion
                     return new AutenticacionResponse();
                 }
 
+                // Forma más limpia de obtener la primera dirección
+                var primeraDireccion = usuario!.TbDirecciones.FirstOrDefault();
+
+                if (primeraDireccion != null)
+                {
+                    Departamento = primeraDireccion.Departamento;
+                    Municipio = primeraDireccion.Municipio;
+                    Barrio = primeraDireccion.Barrio;
+                }
+
                 return new AutenticacionResponse
                 {
                     IdUsuario = usuario!.IdUsuario,
                     IdPaciente = idPaciente,
                     TipoUsuario = usuario.TipoUsuario,
+                    Departamento = Departamento,
+                    Municipio = Municipio,
+                    Barrio = Barrio,
                     Verificado = 1
                 };
             } catch (Exception ex)

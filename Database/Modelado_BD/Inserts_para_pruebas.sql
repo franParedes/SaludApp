@@ -1,4 +1,4 @@
-SELECT * FROM db_saludapp.tb_stados;
+SELECT * FROM db_saludapp.tb_centros_medicos;
 
 INSERT INTO `db_saludapp`.`tb_tipo_estado` (`Tipo`) VALUES ('Usuario');
 INSERT INTO `db_saludapp`.`tb_tipo_estado` (`Tipo`) VALUES ('Cita');
@@ -68,6 +68,9 @@ INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('ER');
 INSERT INTO `db_saludapp`.`tb_areas_medicas` (`Area`) VALUES ('Obstetricia');
 
 INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('José Rubí', '1', '1');
+INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('Centro2', '2', '3');
+INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('Centro3', '3', '3');
+INSERT INTO `db_saludapp`.`tb_centros_medicos` (`Centro`, `Departamento`, `Municipio`) VALUES ('Centro4', '4', '3');
 
 INSERT INTO `db_saludapp`.`tb_turnos_medicos` (`Turno`) VALUES ('8 Horas vespertino');
 
