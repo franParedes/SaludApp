@@ -77,7 +77,6 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
     final results = await Future.wait([
       EspecialidadRepository().getEspecialidades(),
       TipocitaRepository().getTipocitas(),
-      CentromedicoRepository().getCentrosmedicos(),
       CentromedicoRepository().getCentrosMedicosPorDep( auth!.departamento ),
     ]);
 
