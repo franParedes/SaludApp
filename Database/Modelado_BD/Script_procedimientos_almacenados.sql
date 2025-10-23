@@ -119,3 +119,13 @@ BEGIN
     WHERE usr.Id_usuario = iNId_usuario;
 END //
 DELIMITER ;
+
+/*
+DROP PROCEDURE IF EXISTS sp_obtener_usuarios_por_tipo;
+DELIMITER //
+CREATE PROCEDURE sp_obtener_usuarios_por_tipo(iNTipo INT)
+BEGIN
+	SELECT Id_usuario AS 'IdUsuario', Usename, Cedula
+END //
+DELIMITER ;
+*/
