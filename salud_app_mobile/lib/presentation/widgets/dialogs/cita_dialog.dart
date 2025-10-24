@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
+//import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:salud_app_mobile/domain/models/Citas/cita.dart';
 import 'package:salud_app_mobile/domain/models/Citas/cita_labortorio.dart';
 import 'package:salud_app_mobile/domain/models/Utilidades/centrosmedicos.dart';
@@ -41,6 +42,15 @@ class CitaDialogWidget extends StatefulWidget {
 class _CitaDialogWidgetState extends State<CitaDialogWidget> {
   static const int citaLabId = 2;
 
+  // Global key para el form
+  final _formKey = GlobalKey<FormState>();
+
+  // Formateador de máscara
+  // final _phoneMaskFormatter = MaskTextInputFormatter(
+  //   mask: '####-####',
+  //   filter: {"#": RegExp(r'[0-9]')}
+  // );
+
   // --- Variables de Estado ---
   final _descripcionController = TextEditingController();
   final _picker = ImagePicker();
@@ -69,6 +79,13 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
     _cargarDatosIniciales();
   }
 
+  @override
+  void dispose() {
+    _descripcionController.dispose();
+    // _telefonoController.dispose(); esto se usa en el formulario normal
+    super.dispose();
+  }
+
   Future<void> _cargarDatosIniciales() async {
     final sessionProvider = context.read<SessionProvider>();
     final auth = sessionProvider.auth;
@@ -77,7 +94,7 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
     final results = await Future.wait([
       EspecialidadRepository().getEspecialidades(),
       TipocitaRepository().getTipocitas(),
-      CentromedicoRepository().getCentrosMedicosPorDep( auth!.departamento ),
+      CentromedicoRepository().getCentrosMedicosPorDep(auth!.departamento),
     ]);
 
     // Buscamos el ID de la especialidad "General" para preseleccionarla.
@@ -126,6 +143,28 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
   }
 
   Future<void> _solicitarCita() async {
+    // 1. Validamos el Formulario (TextFields, Dropdowns) usando la GlobalKey.
+    // Si 'validate()' devuelve false, la UI mostrará los mensajes de error automáticamente.
+    if (!_formKey.currentState!.validate()) {
+      return; // Detenemos la ejecución si el formulario no es válido.
+    }
+
+    // 2. Validación manual para los Checkboxes (ya que no son parte del Form).
+    // Esta se ejecuta solo si el formulario base es válido.
+    final scaffoldMessenger = ScaffoldMessenger.of(context); // Guardamos el messenger
+    
+    if (_examenesDisponibles.isNotEmpty) {
+      // Verificamos si algún valor en el mapa de seleccionados es 'true'.
+      final bool isAnyCheckboxSelected = _examenesSeleccionados.values.any((isSelected) => isSelected);
+      if (!isAnyCheckboxSelected) {
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(content: Text('Por favor, seleccione al menos un examen.')),
+        );
+        return; // Detenemos si no hay ningún examen seleccionado.
+      }
+    }
+
+    // Si todas las validaciones pasan continuamos
     if (_isSubmitting) return;
 
     final sessionProvider = context.read<SessionProvider>();
@@ -181,7 +220,8 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
 
     if (_tipoCitaSeleccionada != citaLabId) {
       final citaMedica = Cita(
-        pacienteId: auth.idPaciente, // Debería venir de un gestor de estado o SharedPreferences
+        pacienteId: auth
+            .idPaciente, // Debería venir de un gestor de estado o SharedPreferences
         fechaSolicitud: DateTime.now(),
         lugar: _centroMedicoSeleccionado!,
         fechaCita: DateTime.now(), // El usuario debería poder seleccionarla
@@ -258,170 +298,241 @@ class _CitaDialogWidgetState extends State<CitaDialogWidget> {
           ),
           child: _isLoading
               ? const Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // --- FORMULARIO ---
-                      TextField(
-                        controller: _descripcionController,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          hintText: "Escribe tu mensaje...",
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                          contentPadding: const EdgeInsets.all(12),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+              : Form(
+                key: _formKey, // Asignamos la clave global
+                child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // --- FORMULARIO ---
+                        TextFormField(
+                          controller: _descripcionController,
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            hintText: "Describa sus síntomas o el motivo de la cita...",
+                            labelText: "Motivo de la Cita",
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            contentPadding: const EdgeInsets.all(12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
+                          // Añadimos el validador
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'El motivo es obligatorio.';
+                            }
+                            return null; // 'null' significa que es válido.
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Dropdown Tipo de cita
-                      DropdownButtonFormField<int>(
-                        decoration: const InputDecoration(
-                          labelText: "Tipo de cita",
-                          border: OutlineInputBorder(),
-                        ),
-                        initialValue: _tipoCitaSeleccionada,
-                        items: _tiposCita
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.id,
-                                child: Text(e.nombre),
-                              ),
-                            )
-                            .toList(),
-                        onChanged:
-                            _onTipoCitaChanged, // Llama a la nueva función
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Dropdown Centro médico
-                      DropdownButtonFormField<int>(
-                        decoration: const InputDecoration(
-                          labelText: "Centro Médico",
-                          border: OutlineInputBorder(),
-                        ),
-                        initialValue: _centroMedicoSeleccionado,
-                        items: _centrosMedicos
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.id,
-                                child: Text(e.centroMedico),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) =>
-                            setState(() => _centroMedicoSeleccionado = value),
-                      ),
-                      const SizedBox(height: 10),
-
-                      // MODIFICACIÓN 5: Sección de exámenes condicional.
-                      if (_examenesDisponibles.isNotEmpty)
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 20),
+                
+                        // Dropdown Tipo de cita
+                        DropdownButtonFormField<int>(
+                          decoration: const InputDecoration(
+                            labelText: "Tipo de cita",
+                            border: OutlineInputBorder(),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Exámenes a realizar",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              ..._examenesDisponibles.map((examen) {
-                                return CheckboxListTile(
-                                  title: Text(examen.examen),
-                                  value:
-                                      _examenesSeleccionados[examen.idExamen] ??
-                                      false,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _examenesSeleccionados[examen.idExamen] =
-                                          value ?? false;
-                                    });
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  contentPadding: EdgeInsets.zero,
-                                );
-                              }),
-                            ],
-                          ),
+                          initialValue: _tipoCitaSeleccionada,
+                          items: _tiposCita
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e.id,
+                                  child: Text(e.nombre),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: _onTipoCitaChanged, // Llama a la nueva función
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Por favor, seleccione un tipo de cita.';
+                            }
+                            return null;
+                          },
                         ),
-
-                      // Preview imagen
-                      if (_imagenSeleccionada != null) ...[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            _imagenSeleccionada!,
-                            height: 120,
-                            fit: BoxFit.cover,
+                        const SizedBox(height: 20),
+                
+                        // Dropdown Centro médico
+                        DropdownButtonFormField<int>(
+                          decoration: const InputDecoration(
+                            labelText: "Centro Médico",
+                            border: OutlineInputBorder(),
                           ),
+                          initialValue: _centroMedicoSeleccionado,
+                          items: _centrosMedicos
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e.id,
+                                  child: Text(e.centroMedico),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) =>
+                              setState(() => _centroMedicoSeleccionado = value),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Por favor, seleccione un centro médico.';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
-                      ],
+                        // TextFormField(
+                        //   controller: _telefonoController,
+                        // Aplicamos el formateador de máscara
+                        //   inputFormatters: [_phoneMaskFormatter],
+                        //   keyboardType: TextInputType.phone,
+                        //   decoration: const InputDecoration(
+                        //     labelText: "Teléfono de Contacto (Opcional)",
+                        //     hintText: "0000-0000",
+                        //     prefixIcon: Icon(Icons.phone),
+                        //     border: OutlineInputBorder(),
+                        //   ),
+                        // Este campo es opcional, por lo que no añadimos validador.
+                        // Si quisieras que fuera obligatorio Y con la máscara:
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'El teléfono es obligatorio';
+                        //   }
+                        //   if (!_phoneMaskFormatter.isFill()) {
+                        //      return 'Por favor, complete el teléfono';
+                        //   }
+                        //   return null;
+                        // },
+                        // ),
 
-                      // MODIFICACIÓN 6: Botón de adjuntar con alineación a la izquierda.
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade50,
-                          foregroundColor: Colors.blue.shade800,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
-                          ),
-                        ),
-                        onPressed: _seleccionarImagen,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .start, // Alinea el contenido a la izquierda
-                          children: [
-                            Icon(Icons.attach_file, size: 20),
-                            SizedBox(width: 8),
-                            Text("Añadir archivos"),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
+                        if (_examenesDisponibles.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Exámenes a realizar",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
 
-                      // Botón de Solicitar Cita
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
+                                // Esto previene un overflow si la lista de exámenes es muy larga.
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: MediaQuery.of(context).size.height * 02,
+                                  ),
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: _examenesDisponibles.map((examen) {
+                                      return CheckboxListTile(
+                                        title: Text(examen.examen),
+                                        value:
+                                            _examenesSeleccionados[examen.idExamen] ??
+                                                false,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            _examenesSeleccionados[examen.idExamen] =
+                                                value ?? false;
+                                          });
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        contentPadding: EdgeInsets.zero,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+
+                                // ..._examenesDisponibles.map((examen) {
+                                //   return CheckboxListTile(
+                                //     title: Text(examen.examen),
+                                //     value:
+                                //         _examenesSeleccionados[examen.idExamen] ??
+                                //         false,
+                                //     onChanged: (bool? value) {
+                                //       setState(() {
+                                //         _examenesSeleccionados[examen.idExamen] =
+                                //             value ?? false;
+                                //       });
+                                //     },
+                                //     controlAffinity:
+                                //         ListTileControlAffinity.leading,
+                                //     contentPadding: EdgeInsets.zero,
+                                //   );
+                                // }),
+                              ],
+                            ),
+                          ),
+                
+                        // Preview imagen
+                        if (_imagenSeleccionada != null) ...[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(
+                              _imagenSeleccionada!,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                
+                        ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.blue.shade50,
+                            foregroundColor: Colors.blue.shade800,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 16,
+                            ),
                           ),
-                          onPressed: _solicitarCita,
-                          child: _isSubmitting
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : const Text("Solicitar cita"),
+                          onPressed: _seleccionarImagen,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment
+                                .start, // Alinea el contenido a la izquierda
+                            children: [
+                              Icon(Icons.attach_file, size: 20),
+                              SizedBox(width: 8),
+                              Text("Añadir archivos"),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                
+                        // Botón de Solicitar Cita
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            onPressed: _isSubmitting ? null : _solicitarCita,
+                            child: _isSubmitting
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text("Solicitar cita"),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+              ),
         ),
       ),
     );
