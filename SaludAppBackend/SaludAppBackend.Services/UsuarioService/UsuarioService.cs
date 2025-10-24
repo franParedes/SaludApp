@@ -2,6 +2,8 @@
 using SaludAppBackend.Data.Models;
 using SaludAppBackend.Data.UnitOfWork;
 using SaludAppBackend.Models.Usuarios;
+using SaludAppBackend.Services.DTOs.UsuariosDTO;
+using SaludAppBackend.Services.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace SaludAppBackend.Services.UsuarioService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<UsuarioService> _logger;
+        private readonly UsuariosMapper _mapper = new();
 
         public UsuarioService(IUnitOfWork unitOfWork, ILogger<UsuarioService> logger)
         {
@@ -87,6 +90,19 @@ namespace SaludAppBackend.Services.UsuarioService
             }
 
             return nuevoUsuario;
+        }
+
+        public async Task<IEnumerable<UsuarioPorTipoDTO>> GetAllUsuariosPorTipo(int tipoDeUsuario)
+        {
+            try
+            {
+                var usuariosList = await _unitOfWork.Usuarios.GetAllUsuariosPorTipo(tipoDeUsuario);
+                return _mapper.UsuariosPorTipoToUsuariosPorTipoDTO(usuariosList);
+            } catch (Exception ex)
+            {
+                _logger.LogError("Error {message} en UsuarioService metodo GetAllUsuariosPorTipo", ex.Message);
+                throw;
+            }
         }
     }
 }

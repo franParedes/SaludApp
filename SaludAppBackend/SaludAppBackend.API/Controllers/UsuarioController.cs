@@ -35,5 +35,22 @@ namespace SaludAppBackend.API.Controllers
                 return StatusCode(500, "Ocurrió un error interno en el servidor.");
             }
         }
+
+        [HttpGet("GetUsuariosPorTipo/{tipo}")]
+        public async Task<IActionResult> GetUsuariosPorTipo(int tipo)
+        {
+            try
+            {
+                var usuariosList = await _usuarioService.GetAllUsuariosPorTipo(tipo);
+
+                return Ok(usuariosList);
+            }
+            catch (Exception ex)
+            {
+                // Capturamos cualquier otro error inesperado
+                _logger.LogError("Error {message} al obtener los usuarios por su tipo", ex.Message);
+                return StatusCode(500, "Ocurrió un error interno en el servidor.");
+            }
+        }
     }
 }
